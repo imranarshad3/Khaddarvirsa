@@ -263,10 +263,13 @@ export default function ProductDetail() {
           {product.variants.length > 0 && (
             <>
               <strong style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                <span>Choose a Size</span>
-                <Link className="inline-link" to="/page/size-guide">
-                  Size Guide ↗
-                </Link>
+                {/* colour ranges use code-prefixed labels such as "KV-201 Navy Blue" */}
+                {product.variants.every((v) => /^[A-Z]{2,3}-\d+\s/.test(v.label)) ? <span>Choose a Colour</span> : <>
+                  <span>Choose a Size</span>
+                  <Link className="inline-link" to="/page/size-guide">
+                    Size Guide ↗
+                  </Link>
+                </>}
               </strong>
               <div className="size-buttons">
                 {product.variants.map((v) => (
