@@ -11,7 +11,10 @@ import { useToast } from '../../context/ToastContext'
 import { Logo, Spinner } from './Primitives'
 import Icon from './Icon'
 import CurrencySelector from './CurrencySelector'
-import { useCurrency } from '../../lib/currency'
+import { useCurrency, useMoney } from '../../lib/currency'
+import { fetchProducts } from '../../lib/api'
+import { productCover } from './ProductCard'
+import type { ProductFull } from '../../lib/types'
 
 const PRIMARY = [
   { to: '/', label: 'Home', end: true },
@@ -60,7 +63,24 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [term, setTerm] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const money = useMoney()
+  const [results, setResults] = useState<{ term: string; products: ProductFull[]; total: number } | null>(null)
   useOverlayFocus(panelRef,onClose)
+  const q = term.trim()
+
+  useEffect(() => {
+    if (q.length < 2) return
+    let active = true
+    const timer = setTimeout(() => {
+      fetchProducts({ search: q, perPage: 6 })
+        .then((r) => { if (active) setResults({ term: q, ...r }) })
+        .catch(() => { if (active) setResults({ term: q, products: [], total: 0 }) })
+    }, 250)
+    return () => { active = false; clearTimeout(timer) }
+  }, [q])
+
+  const shown = q.length >= 2 && results?.term === q ? results : null
+  const loading = q.length >= 2 && !shown
 
   return (
     <div className="drawer-backdrop" onClick={onClose} role="presentation">
@@ -81,7 +101,9 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             ref={inputRef}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Search shawls and outfits by name, colour or fabric…"
+            placeholder="Search khaddar, shawls and outfits by name, colour or code…"
+            autoComplete="off"
+            aria-controls="search-suggestions"
           />
           <button className="btn" type="submit">
             Search
@@ -90,6 +112,33 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             Close
           </button>
         </form>
+        {q.length >= 2 && (
+          <div id="search-suggestions" className="search-suggestions" aria-live="polite">
+            {loading && <p className="search-suggest-note">Searching…</p>}
+            {shown && !shown.products.length && <p className="search-suggest-note">No products match “{q}”. Try a colour, fabric or code.</p>}
+            {shown && shown.products.length > 0 && (
+              <>
+                <ul>
+                  {shown.products.map((p) => (
+                    <li key={p.id}>
+                      <Link to={`/product/${p.slug}`} onClick={onClose}>
+                        <img src={productCover(p)} alt="" loading="lazy" />
+                        <span className="search-suggest-text">
+                          <strong>{p.name}</strong>
+                          <small>{[p.category?.name, p.sku].filter(Boolean).join(' · ')}</small>
+                        </span>
+                        <span className="search-suggest-price">{money(p.price)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <Link className="search-suggest-all" to={`/shop?q=${encodeURIComponent(q)}`} onClick={onClose}>
+                  View all {shown.total} result{shown.total === 1 ? '' : 's'} <ArrowUpRight aria-hidden="true" size={14} />
+                </Link>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -240,7 +289,16 @@ function Footer() {
         <Newsletter />
         <div className="footer-columns">
         <div className="footer-brand">
-          <Logo />
+          <Link to="/" className="footer-wordmark" aria-label={`${store.name} home`}>
+            <span className="footer-emblem" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="30.5"/><circle cx="32" cy="32" r="25" strokeDasharray="1.5 2.5"/></svg>
+              <span>{store.name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2)}</span>
+            </span>
+            <span className="footer-wordmark-text">
+              <strong>{store.name}</strong>
+              <small>Feel the Fabric of Tradition</small>
+            </span>
+          </Link>
           <p className="footer-brand-description">
             Khaddar Virsa blends timeless cultural tradition with modern elegance: premium khaddar crafted for comfort and style, redesigned for the contemporary wardrobe.
           </p>
