@@ -1092,3 +1092,7 @@
  @keyframes kvAddedUp{from{opacity:0;transform:translateY(1rem)}}
 }
 @media(prefers-reduced-motion:reduce){.rg-client .added-to-cart,.rg-client .header-cart-count{animation:none}.rg-client .added-timer{display:none}}
+
+/* Prices in the theme's deep gold (same as search suggestions); a struck-through compare price stays muted. */
+.rg-client :is(.prodbody .price,.pd-price) {color:#8a6440;font-weight:600}
+.rg-client .pd-price del {font-weight:400}

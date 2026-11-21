@@ -18,3 +18,21 @@ export function sizeLabel(label: string,width: string,length: string) {
   if(!width||!length||!Number.isFinite(Number(width))||!Number.isFinite(Number(length))||Number(width)<=0||Number(length)<=0||Number(width)>100||Number(length)>100)return ''
   return `${Number(width)} × ${Number(length)} ft`
 }
+
+// Shop filter groups variant colours ("KV-101 Chocolate Brown") into a few families. Order matters: first match wins.
+const COLOUR_FAMILIES: [string, RegExp][] = [
+  ['Greys & Charcoal', /grey|gray|charcoal|silver|ash/],
+  ['Black', /black/],
+  ['Whites & Creams', /white|cream|ivory|beige|oatmeal/],
+  ['Purples', /purple|lilac|lavender/],
+  ['Blues', /blue|navy|denim/],
+  ['Greens & Teals', /green|teal|turquoise|aqua|mint|pistachio|emerald|olive/],
+  ['Browns & Rust', /brown|camel|tan\b|khaki|rust|orange|coffee|chocolate/],
+  ['Reds & Maroons', /red|maroon/],
+  ['Yellows & Mustard', /yellow|mustard/],
+]
+export const COLOUR_FAMILY_ORDER = COLOUR_FAMILIES.map(([name]) => name)
+export function colourFamily(label: string): string | null {
+  const name = label.toLowerCase().replace(/^[a-z]+-\d+\s*/, '')
+  return COLOUR_FAMILIES.find(([, re]) => re.test(name))?.[0] ?? null
+}

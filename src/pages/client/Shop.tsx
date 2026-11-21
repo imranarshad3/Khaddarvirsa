@@ -11,11 +11,8 @@ import type { Banner, ProductFull } from '../../lib/types'
 
 const PER_PAGE = 12
 
-const DEFAULT_PRICE_BANDS = [
-  { id: 'under-300', label: 'Under 300', min: null, max: 299.99 },
-  { id: '300-500', label: '300 – 500', min: 300, max: 500 },
-  { id: 'over-500', label: '500+', min: 500.01, max: null },
-]
+// Fallback price split when the store has not set its own; splits suits priced Rs 1,699–14,000 into roughly even thirds.
+const DEFAULT_PRICE_LIMITS: [number, number] = [3500, 5000]
 
 const SORTS: { value: ProductSort; label: string }[] = [
   { value: 'featured', label: 'Featured' },
@@ -40,7 +37,8 @@ function FilterGroup({
   onToggle: (value: string) => void
 }) {
   const [open, setOpen] = useState(true)
-  if (!options.length) return null
+  // A single option (e.g. every suit is Winter) filters nothing, so hide the group.
+  if (options.length < 2 && !selected.length) return null
   return (
     <section>
       <h4>
@@ -67,8 +65,8 @@ export default function Shop() {
   const [params, setParams] = useSearchParams()
   const { categories, store } = useStore()
   const priceBands = useMemo(() => {
-    const limits = store.price_filter_limits
-    if (!limits || limits.length !== 2 || !limits.every(n => Number.isFinite(n) && n > 0) || limits[1] <= limits[0]) return DEFAULT_PRICE_BANDS
+    const custom = store.price_filter_limits
+    const limits = custom && custom.length === 2 && custom.every(n => Number.isFinite(n) && n > 0) && custom[1] > custom[0] ? custom : DEFAULT_PRICE_LIMITS
     return [
       {id:'under-300',label:`Under ${money(limits[0])}`,min:null,max:limits[0]-1},
       {id:'300-500',label:`${money(limits[0])} – ${money(limits[1])}`,min:limits[0],max:limits[1]},
@@ -142,7 +140,7 @@ export default function Shop() {
       try {
         const result = await fetchProducts({
           categories: list('category'),
-          sizes: list('size'),
+          colours: list('colour'),
           styles: list('style'),
           materials: list('material'),
           rooms: list('room'),
@@ -171,7 +169,7 @@ export default function Shop() {
   const pageCount = Math.max(Math.ceil(total / PER_PAGE), 1)
   const activeChips = useMemo(() => {
     const chips: { key: string; value: string; label: string }[] = []
-    for (const key of ['category', 'size', 'style', 'material', 'room'] as const) {
+    for (const key of ['category', 'colour', 'style', 'material', 'room'] as const) {
       for (const value of params.getAll(key)) {
         const label = key === 'category' ? categories.find((c) => c.slug === value)?.name ?? value : value
         chips.push({ key, value, label })
@@ -213,7 +211,7 @@ export default function Shop() {
               if (slug) toggle('category', slug)
             }}
           />
-          <FilterGroup title="Size" options={facets?.sizes ?? []} selected={list('size')} onToggle={(v) => toggle('size', v)} />
+          <FilterGroup title="Colour" options={facets?.colours ?? []} selected={list('colour')} onToggle={(v) => toggle('colour', v)} />
           <FilterGroup title="Season" options={facets?.styles ?? []} selected={list('style')} onToggle={(v) => toggle('style', v)} />
           <FilterGroup title="Fabric" options={facets?.materials ?? []} selected={list('material')} onToggle={(v) => toggle('material', v)} />
           <FilterGroup title="Occasion" options={facets?.rooms ?? []} selected={list('room')} onToggle={(v) => toggle('room', v)} />
@@ -229,7 +227,7 @@ export default function Shop() {
                   checked={priceBand === b.id}
                   onChange={() => update((next) => { next.set('price', b.id); next.delete('page') })}
                 />
-                {store.price_filter_limits ? b.label : b.label === '500+' ? `${money(500)}+` : b.label.includes('–') ? `${money(300)} – ${money(500)}` : `Under ${money(300)}`}
+                {b.label}
               </label>
             ))}
           </section>

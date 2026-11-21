@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import type { Banner, Page, ProductFull, Review } from './types'
+import { COLOUR_FAMILY_ORDER, colourFamily } from './productColors'
 
 export const PRODUCT_SELECT =
   '*, category:categories(id,name,slug), images:product_images(*), variants:product_variants(*)'
@@ -21,7 +22,7 @@ export type ProductSort = 'featured' | 'newest' | 'price-asc' | 'price-desc' | '
 
 export type ProductQuery = {
   categories?: string[]
-  sizes?: string[]
+  colours?: string[]
   styles?: string[]
   materials?: string[]
   rooms?: string[]
@@ -51,16 +52,16 @@ export async function fetchProducts(q: ProductQuery = {}): Promise<{ products: P
     query = query.in('category_id', ids)
   }
 
-  if (q.sizes?.length) {
-    // Size lives on the variant, so resolve matching products first.
+  if (q.colours?.length) {
+    // Colour lives on the variant label, so resolve products with an in-stock variant in a chosen family first.
     const { data: variants, error: variantError } = await supabase
       .from('product_variants')
-      .select('product_id')
-      .in('label', q.sizes)
+      .select('product_id,label')
       .gt('stock_quantity', 0)
       .eq('is_active', true)
     if (variantError) throw variantError
-    const ids = [...new Set((variants ?? []).map((v) => v.product_id))]
+    const wanted = new Set(q.colours)
+    const ids = [...new Set((variants ?? []).filter((v) => wanted.has(colourFamily(v.label) ?? '')).map((v) => v.product_id))]
     if (!ids.length) return { products: [], total: 0 }
     query = query.in('id', ids)
   }
@@ -185,17 +186,19 @@ export async function fetchProductReviews(productId: string): Promise<Review[]> 
 export async function fetchFilterFacets() {
   const [{ data: products }, { data: variants }] = await Promise.all([
     supabase.from('products').select('style,material,room,price').eq('status', 'published'),
-    supabase.from('product_variants').select('label,sort_order').eq('is_active', true),
+    supabase.from('product_variants').select('label,products!inner(status)').eq('is_active', true).eq('products.status', 'published'),
   ])
 
-  const uniq = (values: (string | null)[]) =>
-    [...new Set(values.filter((v): v is string => Boolean(v && v.trim())))].sort()
-
-  const sizeOrder = new Map<string, number>()
-  for (const v of variants ?? []) if (!sizeOrder.has(v.label)) sizeOrder.set(v.label, v.sort_order)
+  // Case-insensitive unique values, so "100% Cotton Kamalia Khaddar" and "100% cotton Kamalia khaddar" show once.
+  const uniq = (values: (string | null)[]) => {
+    const seen = new Map<string, string>()
+    for (const v of values) if (v?.trim() && !seen.has(v.trim().toLowerCase())) seen.set(v.trim().toLowerCase(), v.trim())
+    return [...seen.values()].sort()
+  }
+  const families = new Set((variants ?? []).map((v) => colourFamily(v.label)))
 
   return {
-    sizes: [...sizeOrder.keys()].sort((a, b) => (sizeOrder.get(a) ?? 0) - (sizeOrder.get(b) ?? 0)),
+    colours: COLOUR_FAMILY_ORDER.filter((name) => families.has(name)),
     styles: uniq((products ?? []).map((p) => p.style)),
     materials: uniq((products ?? []).map((p) => p.material)),
     rooms: uniq((products ?? []).map((p) => p.room)),
