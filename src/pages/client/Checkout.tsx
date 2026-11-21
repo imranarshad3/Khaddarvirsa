@@ -170,8 +170,8 @@ export default function Checkout() {
       <section className="section wrap">
         <EmptyState
           title="There is nothing to check out"
-          message="Add a rug to your cart and we’ll take it from there."
-          actionLabel="Shop all rugs"
+          message="Add a piece to your cart and we’ll take it from there."
+          actionLabel="Shop the collection"
           actionTo="/shop"
         />
       </section>
@@ -189,7 +189,7 @@ export default function Checkout() {
           <div>
             <div className="eyebrow">SECURE CHECKOUT</div>
             <h2>Complete Your Order</h2>
-            <p>Just one step closer to your handmade rug.</p>
+            <p>Just one step closer to your new favourite piece.</p>
           </div>
           {!user && (
             <p className="subtitle" style={{ textAlign: 'right' }}>
@@ -331,7 +331,7 @@ export default function Checkout() {
               >
                 <img
                   style={{ width: 80, height: 95, objectFit: 'cover' }}
-                  src={line.product.images[0]?.url ?? '/assets/rug_lifestyle_1.jpg'}
+                  src={line.product.images[0]?.url ?? '/assets/fashion/placeholder.jpg'}
                   alt=""
                   aria-hidden="true"
                 />

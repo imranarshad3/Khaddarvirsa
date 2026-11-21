@@ -213,14 +213,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (productId, variantId, quantity = 1) =>
       mutate(async (previous) => {
         if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10)
-          throw new Error('Choose between 1 and 10 rugs.')
+          throw new Error('Choose between 1 and 10 items.')
         const { data: product, error: failure } = await supabase
           .from('products')
           .select('stock_quantity,status,variants:product_variants(id,stock_quantity,is_active)')
           .eq('id', productId)
           .maybeSingle()
         if (failure) throw failure
-        if (!product || product.status !== 'published') throw new Error('This rug is no longer available.')
+        if (!product || product.status !== 'published') throw new Error('This item is no longer available.')
         const variant = product.variants.find((v) => v.id === variantId && v.is_active)
         if ((variantId && !variant) || (!variantId && product.variants.length > 0))
           throw new Error('Please choose an available size.')
@@ -236,7 +236,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     async (line, quantity) => {
       await mutate((previous) => {
         if (!Number.isInteger(quantity) || quantity < 0 || quantity > 10)
-          throw new Error('Choose between 1 and 10 rugs.')
+          throw new Error('Choose between 1 and 10 items.')
         return previous.map((l) => (sameLine(l, line) ? { ...l, quantity } : l)).filter((l) => l.quantity > 0)
       })
     },

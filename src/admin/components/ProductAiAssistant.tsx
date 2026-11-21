@@ -39,8 +39,8 @@ export default function ProductAiAssistant({images,context,onApply,onBusy,disabl
     <section className="card form-card product-ai" aria-label="AI product assistant">
       <div className="hstack space"><div><div className="eyebrow">YOUR STUDIO ASSISTANT</div><h2 className="smalltitle">Create from your photos</h2></div><Sparkles size={24} aria-hidden="true" /></div>
       <p className="sub">Upload product photos, then describe what you know. AI suggests a draft and asks about missing details. Nothing is saved automatically.</p>
-      <Field label="Tell us about this rug" hint={`Price must use the store’s base currency (${String(context.currency||'USD')}). AI reviews up to 3 photos; videos are not analyzed.`}>
-        <textarea className="textarea" value={notes} onChange={e=>setNotes(e.target.value)} maxLength={6000} rows={3} placeholder="For example: wool rug, 5 × 8 ft, blue and ivory, 4 available. Include the selling price and any other sizes." disabled={busy} />
+      <Field label="Tell us about this product" hint={`Price must use the store’s base currency (${String(context.currency||'USD')}). AI reviews up to 3 photos; videos are not analyzed.`}>
+        <textarea className="textarea" value={notes} onChange={e=>setNotes(e.target.value)} maxLength={6000} rows={3} placeholder="For example: pashmina shawl, 40 × 80 in, maroon with tilla embroidery, 4 available. Include the selling price and any sizes." disabled={busy} />
       </Field>
       {error&&!open&&<Notice tone="error">{error}</Notice>}
       <button type="button" className="btn" disabled={disabled||busy||!photos.length} onClick={()=>void generate()}>{busy?<Spinner label="Analyzing photos…" />:<><Sparkles size={16} aria-hidden="true" /> Generate with AI</>}</button>

@@ -17,8 +17,8 @@ import {
 import { Reveal } from '../../components/client/Primitives'
 import type { Banner, ProductFull } from '../../lib/types'
 
-const HERO_TITLE = 'Tradition Woven Into Every Thread.'
-const HERO_FALLBACK = '/assets/rug-living-hero.webp'
+const HERO_TITLE = 'Elegance Woven Into Every Thread.'
+const HERO_FALLBACK = '/assets/fashion/hero.webp'
 
 export default function Home() {
   const { categories, store } = useStore()
@@ -55,25 +55,25 @@ export default function Home() {
       {loadError && <div className="notice error" role="alert">We could not load the latest collection. Please refresh and try again.</div>}
       <section className="home-hero" aria-labelledby="home-hero-title">
         <div className="home-hero-copy">
-          <div className="eyebrow">{hero?.eyebrow || 'Handmade Rugs for a Brighter Home'}</div>
-          <h1 id="home-hero-title">{heroTitle === HERO_TITLE ? <><span>Tradition</span>{' '}<span>Woven Into</span>{' '}<span>Every Thread.</span></> : heroTitle}</h1>
+          <div className="eyebrow">{hero?.eyebrow || 'Pakistani Fashion & Shawls'}</div>
+          <h1 id="home-hero-title">{heroTitle === HERO_TITLE ? <><span>Elegance</span>{' '}<span>Woven Into</span>{' '}<span>Every Thread.</span></> : heroTitle}</h1>
           <p className="home-hero-description">
             {hero?.subtitle ||
-              'Discover timeless handmade rugs, thoughtfully crafted to bring warmth, beauty, and character into your home.'}
+              'Discover timeless Pakistani fashion, beautifully crafted shawls, and elegant outfits designed to make every moment special.'}
           </p>
           <div className="home-hero-actions">
             <Link className="btn home-hero-cta" to={hero?.link_url || '/shop'}>
-              {hero?.cta_label || 'Shop Collection'} <ArrowUpRight size={18} aria-hidden="true" />
+              {hero?.cta_label || 'Explore Collection'} <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
-            <Link className="home-hero-story" to="/our-story">Our Story <span aria-hidden="true">↗</span></Link>
+            <Link className="home-hero-story" to="/shop?category=premium-shawls">Shop Shawls <span aria-hidden="true">↗</span></Link>
           </div>
-          <p className="home-hero-signature"><span aria-hidden="true" />Natural textures. Individual character. Made by hand.</p>
+          <p className="home-hero-signature"><span aria-hidden="true" />Fine fabrics. Delicate embroidery. Made with care.</p>
         </div>
         <figure className="home-hero-figure">
           <div className="home-hero-image">
-            <img src={HERO_FALLBACK} srcSet="/assets/rug-living-hero-640.webp 640w, /assets/rug-living-hero-960.webp 960w, /assets/rug-living-hero.webp 1672w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={941} fetchPriority="high" alt="A patterned blue rug brings warmth to a sunlit living room with natural wood and linen furnishings" />
+            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1672w, /assets/fashion/hero-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={941} fetchPriority="high" alt="A model in a royal-blue embroidered organza outfit with a sheer dupatta" />
           </div>
-          <figcaption><span>The art of living well</span><span>Rugistan · Handmade living</span></figcaption>
+          <figcaption><span>The art of dressing well</span><span>Khaddar Virsa · Feel the Fabric of Tradition</span></figcaption>
         </figure>
       </section>
 
@@ -84,7 +84,7 @@ export default function Home() {
           <SectionTitle
             eyebrow="EXPLORE BY STYLE"
             title="Shop by Category"
-            description="Discover the perfect rug for your individual space."
+            description="Shawls, suits and festive wear for every occasion."
             linkTo="/collections"
           />
           <CategoryTiles categories={categories} />
@@ -94,8 +94,8 @@ export default function Home() {
       <section className="section wrap paper">
         <SectionTitle
           eyebrow="BESTSELLERS"
-          title="Our Featured Rugs"
-          description="Handpicked pieces that blend heritage, quality and modern living."
+          title="Best Sellers"
+          description="Our most-loved shawls and outfits, chosen for fabric, finish and fit."
           linkTo="/shop"
         />
         <div className="gridprod">

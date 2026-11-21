@@ -12,25 +12,25 @@ import {
 } from '../../components/client/Sections'
 import type { Banner, ProductFull } from '../../lib/types'
 
-/** Room edits sit beside the category cards and share their card design. */
+/** Occasion edits sit beside the category cards and share their card design. */
 const EDITS = [
   {
-    to: '/shop?room=Bedroom',
+    to: '/shop?room=Formal',
     photo: 'edit-neutral',
     image: null as string | null,
-    alt: 'A handmade rug in a bedroom',
-    title: 'Bedroom Soft Neutrals',
-    body: 'Quiet textures and a softer landing for your most restful space.',
-    cta: 'Shop Bedroom Rugs',
+    alt: 'Shawls in soft neutral tones',
+    title: 'Formal Elegance',
+    body: 'Refined suits and graceful shawls for dinners, events and evenings out.',
+    cta: 'Shop Formal Wear',
   },
   {
-    to: '/shop?room=Living%20Room',
+    to: '/shop?room=Festive',
     photo: '',
-    image: '/assets/rug_lifestyle_3.jpg',
-    alt: 'A handmade rug in a living room',
-    title: 'Living Room Statements',
-    body: 'Expressive patterns and natural textures to bring your room together.',
-    cta: 'Shop Living Room Rugs',
+    image: '/assets/fashion/lifestyle.jpg',
+    alt: 'Embroidered shawls on display',
+    title: 'Festive Statements',
+    body: 'Rich colours and detailed embroidery for weddings, Eid and celebrations.',
+    cta: 'Shop Festive Wear',
   },
 ]
 
@@ -61,11 +61,11 @@ export default function Collections() {
       <PageBanner
         title="Collections"
         editorial
-        eyebrow="CURATED BY RUGISTAN"
+        eyebrow="CURATED BY KHADDAR VIRSA"
         cta="Explore Our Collections"
         ctaTo="#our-collections"
-        description="Curated rug collections combining handmade tradition and thoughtful contemporary design."
-        image="/assets/rug-living-hero.webp"
+        description="Curated shawls and outfits combining Pakistani tradition and thoughtful contemporary design."
+        image="/assets/fashion/hero.webp"
       />
 
       <section className="section wrap" id="our-collections">

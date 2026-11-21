@@ -1,6 +1,6 @@
 # Rugistan
 
-React 19 + TypeScript + Vite storefront and administration console. Clerk owns sign-in; Supabase PostgreSQL/RLS and Storage own application data and media. There is no repository-owned HTTP application server. Product/order amounts are stored in the base currency (currently USD); PKR/INR are display conversions.
+Pakistani fashion, shawls and women's clothing store: React 19 + TypeScript + Vite storefront and administration console. Clerk owns sign-in; Supabase PostgreSQL/RLS and Storage own application data and media. There is no repository-owned HTTP application server. Product/order amounts are stored in the base currency (currently PKR); other currencies are display conversions.
 
 ## Development
 

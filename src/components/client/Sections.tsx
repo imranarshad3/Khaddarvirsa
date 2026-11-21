@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 import { Reveal, SectionTitle } from './Primitives'
 import type { Banner, Category } from '../../lib/types'
 
-const FALLBACK = '/assets/rug-living-hero.webp'
+const FALLBACK = '/assets/fashion/hero.webp'
 
 export function PageBanner({
-  eyebrow = 'RUGISTAN HANDMADE RUGS',
+  eyebrow = 'KHADDAR VIRSA · FEEL THE FABRIC OF TRADITION',
   title,
   description,
   image = FALLBACK,
@@ -30,14 +30,14 @@ export function PageBanner({
     <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}`}>
       <img src={image || FALLBACK} alt="" aria-hidden="true" />
       <div className="shade" />
-      {shop && <span className="shop-hero-caption">THE ART OF LIVING WELL <span>RUGISTAN / COLLECTION</span></span>}
+      {shop && <span className="shop-hero-caption">THE ART OF DRESSING WELL <span>KHADDAR VIRSA / COLLECTION</span></span>}
       <div className="inner">
         <nav className="banner-crumb" aria-label="Breadcrumb"><Link to="/">Home</Link><span>›</span><span aria-current="page">{title}</span></nav>
         <div className="eyebrow">{eyebrow}</div>
         <h1>{title}</h1>
         {shop && <span className="shop-hero-rule" aria-hidden="true" />}
         {description && <p>{description}</p>}
-        {shop && <><a className="btn shop-hero-cta" href="#rug-catalogue">Explore Rugs <ArrowDownRight size={18} aria-hidden="true" /></a><div className="shop-hero-note"><Sparkles size={16} aria-hidden="true" /><span>Natural textures. Timeless character.</span></div></>}
+        {shop && <><a className="btn shop-hero-cta" href="#rug-catalogue">Explore Collection <ArrowDownRight size={18} aria-hidden="true" /></a><div className="shop-hero-note"><Sparkles size={16} aria-hidden="true" /><span>Fine fabrics. Timeless character.</span></div></>}
         {cta && ctaTo && <Link className="btn" to={ctaTo}>{cta} <Icon name="arrow" /></Link>}
       </div>
     </div>
@@ -46,10 +46,10 @@ export function PageBanner({
 
 export function FeatureRow() {
   const features = [
-    ['leaf', '100% Natural Wool', 'Beautiful, lasting materials'],
-    ['heart', 'Made by Hand', 'Crafted with patience and care'],
-    ['spark', 'Durable & Timeless', 'Artistry for generations'],
-    ['truck', 'Shipping Options', 'Confirmed at checkout'],
+    ['leaf', 'Premium Fabrics', '100% chemical-free, soft on skin'],
+    ['heart', 'Handcrafted Embroidery', 'Finished with patience and care'],
+    ['spark', '15-Day Returns', 'Easy exchange or refund'],
+    ['truck', 'Free Delivery', 'Cash on Delivery across Pakistan'],
   ] as const
   return (
     <section className="feature-row">
@@ -95,7 +95,7 @@ export function CategoryTiles({ categories, three = false }: { categories: Categ
 export function StoryBand({
   banner,
   reverse = false,
-  fallbackImage = '/assets/rug_handmade_blue.jpg',
+  fallbackImage = '/assets/fashion/story.jpg',
 }: {
   banner?: Banner | null
   reverse?: boolean
@@ -105,12 +105,12 @@ export function StoryBand({
   const copy = (
     <div className="storycopy">
       <div className="eyebrow">{banner?.eyebrow || 'OUR CRAFTSMANSHIP'}</div>
-      <h2>{banner?.title || 'A Story of People, Tradition & Craft'}</h2>
+      <h2>{banner?.title || 'A Story of Heritage, Craft & Grace'}</h2>
       <p>
         {banner?.subtitle ||
-          'Every Rugistan piece celebrates handmade textures and the artistry that turns natural fibers into treasured pieces.'}
+          'Every Khaddar Virsa piece celebrates our rich heritage, redesigned for the contemporary wardrobe. Embrace your roots and elevate your everyday look.'}
       </p>
-      <div className="craft-values">{([['leaf','Natural materials'],['heart','Made by hand'],['spark','Individual character']] as const).map(([name,label])=><div className="craft-value" key={name}><Icon name={name}/><span>{label}</span></div>)}</div>
+      <div className="craft-values">{([['leaf','Fine fabrics'],['heart','Hand embroidery'],['spark','Individual character']] as const).map(([name,label])=><div className="craft-value" key={name}><Icon name={name}/><span>{label}</span></div>)}</div>
       <Link className="btn" to={banner?.link_url || '/our-story'}>
         {banner?.cta_label || 'Discover Our Story'} →
       </Link>
@@ -119,19 +119,19 @@ export function StoryBand({
 
   return (
     <div className="storyband">
-      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Artisan hands weaving a wool rug" />}
-      {reverse ? <div className="craft-photo" role="img" aria-label="Artisan hands weaving a wool rug" /> : copy}
+      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Shawls and embroidered outfits on display" />}
+      {reverse ? <div className="craft-photo" role="img" aria-label="Shawls and embroidered outfits on display" /> : copy}
     </div>
   )
 }
 
-export function LifestyleBand({ banner, fallbackImage = '/assets/blue_rug_interior.jpg' }: { banner?: Banner | null; fallbackImage?: string }) {
+export function LifestyleBand({ banner, fallbackImage = '/assets/fashion/lifestyle.jpg' }: { banner?: Banner | null; fallbackImage?: string }) {
   return (
     <div className="lifestyle">
       <img src={banner?.image_url || fallbackImage} alt="" aria-hidden="true" loading="lazy" />
       <div className="text">
         {banner?.eyebrow && <div className="eyebrow">{banner.eyebrow}</div>}
-        <h2>{banner?.title || 'Rugs for Every Space'}</h2>
+        <h2>{banner?.title || 'Shawls for Every Season'}</h2>
         {banner?.subtitle && <p>{banner.subtitle}</p>}
         <Link className="btn" to={banner?.link_url || '/shop'}>
           {banner?.cta_label || 'Shop Now'} →
@@ -142,27 +142,27 @@ export function LifestyleBand({ banner, fallbackImage = '/assets/blue_rug_interi
 }
 
 /**
- * Rugistan's own design philosophy — brand copy, not customer testimonials.
+ * Khaddar Virsa's own design philosophy — brand copy, not customer testimonials.
  * Real customer reviews appear on product pages once they are approved.
  */
 export function PhilosophyBand() {
   const items = [
-    ['Handmade with intention', 'The beauty of craft is in the small details: texture, balance and natural materials.'],
-    ['Warmth in every detail', 'Your home deserves tactile comfort, lasting quality and a considered design.'],
-    ['Designed for real spaces', 'Discover color, character and thoughtful materials for your everyday spaces.'],
+    ['Crafted with intention', 'The beauty of craft is in the small details: fabric, stitching and a graceful drape.'],
+    ['Elegance in every detail', 'You deserve soft comfort, lasting quality and a considered design.'],
+    ['Designed for real moments', 'Discover colour, character and thoughtful fabrics for every day and every celebration.'],
   ]
   return (
     <section className="section cream center philosophy">
       <div className="eyebrow">A CLOSER LOOK</div>
-      <h2>Made to Feel Like Home</h2>
-      <p className="subtitle">From quiet textures to expressive patterns, find a rug that fits the way you live.</p>
+      <h2>Made to Feel Like You</h2>
+      <p className="subtitle">From quiet neutrals to festive embroidery, find a piece that fits the way you live.</p>
       <div className="testimonials">
         {items.map(([title, body], index) => (
           <Reveal className="quote" key={title}>
             <span className="quote-number">0{index + 1}</span>
             <h3 style={{ marginBottom: 12 }}>{title}</h3>
             <p>{body}</p>
-            <strong>RUGISTAN DESIGN PHILOSOPHY</strong>
+            <strong>KHADDAR VIRSA DESIGN PHILOSOPHY</strong>
           </Reveal>
         ))}
       </div>
@@ -250,10 +250,10 @@ export function InstagramStrip({ images, handle }: { images: string[]; handle?: 
   }, [paused, hovered, reducedMotion, visible, photoCount])
   if (!photos.length) return null
   return (
-    <section ref={galleryRef} className="section wrap journal-gallery" aria-label="Rugistan interiors gallery">
+    <section ref={galleryRef} className="section wrap journal-gallery" aria-label="Khaddar Virsa gallery">
       <div className="journal-heading">
         <div><div className="eyebrow">FOLLOW OUR JOURNEY</div>
-          <h2>{handle ? `@${handle}` : 'Rugistan in Real Homes'}</h2>
+          <h2>{handle ? `@${handle}` : 'Khaddar Virsa, as Worn'}</h2>
         </div>
         <div className="journal-heading-aside"><p>Natural textures. Individual spaces. A little inspiration for your home.</p>
           {photos.length > 1 && !reducedMotion && <button type="button" className="journal-playback" onClick={() => setPaused(value => !value)} aria-label={paused ? 'Play gallery rotation' : 'Pause gallery rotation'} aria-pressed={paused}>
@@ -263,7 +263,7 @@ export function InstagramStrip({ images, handle }: { images: string[]; handle?: 
       </div>
       <div className="gallery journal-cards" data-count={photos.length} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}>
         {order.map(index => <figure className="journal-card" data-photo={index} key={index}>
-          <img className="journal-current" src={photos[index]} alt={`Handmade rug styling inspiration ${index + 1}`} loading="lazy" decoding="async" />
+          <img className="journal-current" src={photos[index]} alt={`Shawl and outfit styling inspiration ${index + 1}`} loading="lazy" decoding="async" />
         </figure>)}
       </div>
     </section>

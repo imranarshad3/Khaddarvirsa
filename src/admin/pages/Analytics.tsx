@@ -119,7 +119,7 @@ export default function Analytics() {
           ) : (
             products.map((p,index) => (
               <div className="kpi analytics-product" key={p.product_id}><span className="analytics-rank">{String(index+1).padStart(2,'0')}</span>
-                <img src={p.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" />
+                <img src={p.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" />
                 <div style={{ flex: 1 }}>
                   <strong>{p.name}</strong>
                   <p className="tiny">{p.units} units sold</p>

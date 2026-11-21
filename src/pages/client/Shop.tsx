@@ -189,19 +189,19 @@ export default function Shop() {
   return (
     <>
       <PageBanner
-        title="Shop All Rugs"
+        title="Shop All"
         editorial
         shop
-        eyebrow="THE HANDMADE COLLECTION"
-        description="Every handmade rug is a new chapter of comfort, design and craftsmanship."
-        image="/assets/rug-living-hero.webp"
+        eyebrow="SHAWLS & WOMEN'S CLOTHING"
+        description="Premium shawls, embroidered suits and festive wear, crafted with care."
+        image="/assets/fashion/hero.webp"
       />
 
       {loadError && <div className="notice error" role="alert">Products could not be loaded. Please refresh and try again.</div>}
       <section className="section sidebar-layout" id="rug-catalogue">
         <aside className={`filters ${filtersOpen ? 'open' : ''}`} aria-label="Product filters">
           <div className="filter-heading">
-            <div><span className="filter-kicker">CURATE YOUR SPACE</span><h3>Refine your search</h3></div>
+            <div><span className="filter-kicker">CURATE YOUR LOOK</span><h3>Refine your search</h3></div>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 7h16M4 17h16" /><circle cx="9" cy="7" r="2" fill="var(--paper)" /><circle cx="15" cy="17" r="2" fill="var(--paper)" /></svg>
           </div>
           <FilterGroup
@@ -214,9 +214,9 @@ export default function Shop() {
             }}
           />
           <FilterGroup title="Size" options={facets?.sizes ?? []} selected={list('size')} onToggle={(v) => toggle('size', v)} />
-          <FilterGroup title="Style" options={facets?.styles ?? []} selected={list('style')} onToggle={(v) => toggle('style', v)} />
-          <FilterGroup title="Material" options={facets?.materials ?? []} selected={list('material')} onToggle={(v) => toggle('material', v)} />
-          <FilterGroup title="Room" options={facets?.rooms ?? []} selected={list('room')} onToggle={(v) => toggle('room', v)} />
+          <FilterGroup title="Season" options={facets?.styles ?? []} selected={list('style')} onToggle={(v) => toggle('style', v)} />
+          <FilterGroup title="Fabric" options={facets?.materials ?? []} selected={list('material')} onToggle={(v) => toggle('material', v)} />
+          <FilterGroup title="Occasion" options={facets?.rooms ?? []} selected={list('room')} onToggle={(v) => toggle('room', v)} />
           <section>
             <h4>
               <span>Price</span>
@@ -254,10 +254,10 @@ export default function Shop() {
             </button>
             <span role="status" aria-live="polite" aria-atomic="true">
               {loading
-                ? 'Loading rugs…'
+                ? 'Loading products…'
                 : total === 0
-                  ? 'No rugs match these filters'
-                  : `Showing ${first}–${last} of ${total} rug${total === 1 ? '' : 's'}`}
+                  ? 'No products match these filters'
+                  : `Showing ${first}–${last} of ${total} product${total === 1 ? '' : 's'}`}
             </span>
             <PremiumSelect label="Sort by" value={sort} options={SORTS} onChange={value => update(next => { next.set('sort', value); next.delete('page') })} />
           </div>
@@ -293,7 +293,7 @@ export default function Shop() {
             </div>
           ) : products.length === 0 ? (
             <EmptyState
-              title="No rugs match those filters"
+              title="No products match those filters"
               message="Try removing a filter or searching for a different style, colour or size."
               actionLabel="Clear filters"
               onAction={() => setParams(new URLSearchParams())}
@@ -339,7 +339,7 @@ export default function Shop() {
         </div>
       </section>
 
-      <LifestyleBand banner={banner} fallbackImage="/assets/rug_lifestyle_1.jpg" />
+      <LifestyleBand banner={banner} fallbackImage="/assets/fashion/lifestyle.jpg" />
     </>
   )
 }

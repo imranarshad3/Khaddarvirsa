@@ -146,7 +146,7 @@ export default function OrderDetail() {
             <h2 style={{ marginBottom: 24 }}>Items in This Order</h2>
             {(order.items ?? []).map((item) => (
               <div className="kpi" key={item.id}>
-                <img src={item.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" />
+                <img src={item.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" />
                 <div style={{ flex: 1 }}>
                   <strong>{item.product_name}</strong>
                   <p className="sub">

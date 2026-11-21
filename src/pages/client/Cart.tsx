@@ -77,7 +77,7 @@ export default function Cart() {
 
   return (
     <>
-      <PageBanner title="Your Cart" description="Beautiful rugs. A more meaningful home." image="/assets/rug_lifestyle_1.jpg" />
+      <PageBanner title="Your Cart" description="Beautiful shawls. Timeless style." image="/assets/fashion/lifestyle.jpg" />
 
       <section className="section wrap">
         {cart.error && <div className="notice error" role="alert">{cart.error} <button className="linkbtn" type="button" onClick={() => void cart.reload()}>Try again</button></div>}
@@ -90,8 +90,8 @@ export default function Cart() {
         ) : cart.lines.length === 0 ? (
           <EmptyState
             title="Your cart is empty"
-            message="Browse the collection and add a handmade rug to get started."
-            actionLabel="Shop all rugs"
+            message="Browse the collection and add a shawl or outfit to get started."
+            actionLabel="Shop the collection"
             actionTo="/shop"
           />
         ) : (
@@ -104,12 +104,12 @@ export default function Cart() {
 
               {cart.lines.map((line) => (
                 <div className="cartitem" key={`${line.productId}-${line.variantId ?? 'base'}`}>
-                  <Link to={`/rug/${line.product.slug}`}>
-                    <img src={line.product.images[0]?.url ?? '/assets/rug_lifestyle_1.jpg'} alt={line.product.name} />
+                  <Link to={`/product/${line.product.slug}`}>
+                    <img src={line.product.images[0]?.url ?? '/assets/fashion/placeholder.jpg'} alt={line.product.name} />
                   </Link>
                   <div>
                     <h3>
-                      <Link to={`/rug/${line.product.slug}`}>{line.product.name}</Link>
+                      <Link to={`/product/${line.product.slug}`}>{line.product.name}</Link>
                     </h3>
                     <p>
                       {[line.product.material, line.variant?.label].filter(Boolean).join(' · ')}
@@ -198,7 +198,7 @@ export default function Cart() {
                 Proceed to Checkout →
               </Link>
               <div className="secure"><Icon name="spark" />Your details are sent over an encrypted connection</div>
-              <div className="secure"><Icon name="leaf" />Carefully crafted natural materials</div>
+              <div className="secure"><Icon name="leaf" />Carefully crafted premium fabrics</div>
             </aside>
           </div>
         )}
@@ -206,7 +206,7 @@ export default function Cart() {
 
       {suggestions.length > 0 && (
         <section className="section wrap cream">
-          <SectionTitle eyebrow="YOU MAY ALSO LIKE" title="Complete Your Space" linkTo="/shop" />
+          <SectionTitle eyebrow="YOU MAY ALSO LIKE" title="Complete Your Look" linkTo="/shop" />
           <div className="gridprod">
             {suggestions.map((p) => (
               <ProductCard key={p.id} product={p} />

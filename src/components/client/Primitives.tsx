@@ -49,7 +49,7 @@ export function Reveal({ children, className = '', as: Tag = 'div' }: { children
 
 export function Logo({ to = '/', className = '' }: { to?: string | null; className?: string }) {
   const { store } = useStore()
-  const inner = <img className="brand-reference-logo" src={store.logo_url || '/assets/rugistan-wordmark.webp'} alt={store.name} />
+  const inner = <img className="brand-reference-logo" src={store.logo_url || '/assets/fashion/khaddar-virsa-logo.webp'} alt={store.name} />
 
   if (!to) return <span className={`logo ${className}`.trim()}>{inner}</span>
   return (

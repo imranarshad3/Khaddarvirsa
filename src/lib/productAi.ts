@@ -38,9 +38,9 @@ export function parseProductAiDraft(value: unknown): ProductAiDraft {
   // Unknown facts must always prompt a clarification, even if the model omits the question.
   const ask=(field:string,question:string)=>{if(!result.questions.some(q=>q.field===field))result.questions.push({field,question})}
   if(!result.sizes.length&&!result.dimensions)ask('sizes','What sizes are available? Give a size label or width × length in feet.')
-  if(!result.colors.length)ask('colors','Please confirm the available rug colors (not the surrounding room).')
-  if(!result.material)ask('material','What material is the rug made from?')
+  if(!result.colors.length)ask('colors','Please confirm the available product colours (not the background or styling).')
+  if(!result.material)ask('material','What fabric is this product made from?')
   if(result.price===null)ask('price','What is the selling price in the store’s base currency?')
-  if(result.stock_quantity===null&&!result.sizes.some(s=>s.stock_quantity!==null))ask('stock_quantity','How many rugs are available in each size?')
+  if(result.stock_quantity===null&&!result.sizes.some(s=>s.stock_quantity!==null))ask('stock_quantity','How many pieces are available in each size?')
   return result
 }

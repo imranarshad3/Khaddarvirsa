@@ -60,8 +60,8 @@ export default function TrackOrder() {
     <>
       <PageBanner
         title="Track Your Order"
-        description="Enter your order number, email address and private tracking key to see where your rug is."
-        image="/assets/rug_lifestyle_3.jpg"
+        description="Enter your order number, email address and private tracking key to see where your order is."
+        image="/assets/fashion/lifestyle.jpg"
       />
 
       <section className="section wrap">
@@ -131,7 +131,7 @@ export default function TrackOrder() {
                 {(result.items ?? []).map((item, i) => (
                   <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'center', padding: '10px 0' }}>
                     <img
-                      src={item.image_url ?? '/assets/rug_lifestyle_1.jpg'}
+                      src={item.image_url ?? '/assets/fashion/placeholder.jpg'}
                       alt=""
                       aria-hidden="true"
                       style={{ width: 60, height: 60, objectFit: 'cover' }}

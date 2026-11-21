@@ -8,7 +8,7 @@ import { Spinner, Stars } from './Primitives'
 import Icon from './Icon'
 import type { ProductFull } from '../../lib/types'
 
-const FALLBACK = '/assets/rug_lifestyle_1.jpg'
+const FALLBACK = '/assets/fashion/placeholder.jpg'
 
 export function productCover(product: ProductFull) {
   return [...(product.images ?? [])].sort((a, b) => a.sort_order - b.sort_order)[0]?.url ?? FALLBACK
@@ -64,13 +64,13 @@ export default function ProductCard({ product }: { product: ProductFull }) {
         >
           <Icon name="heart" />
         </button>
-        <Link to={`/rug/${product.slug}`} aria-label={product.name}>
+        <Link to={`/product/${product.slug}`} aria-label={product.name}>
           <img className="productimg" src={productCover(product)} alt={product.name} loading="lazy" decoding="async" />
         </Link>
       </div>
       <div className="prodbody">
         <h3>
-          <Link to={`/rug/${product.slug}`}>{product.name}</Link>
+          <Link to={`/product/${product.slug}`}>{product.name}</Link>
         </h3>
         <div className={`card-rating ${product.rating_count ? '' : 'unrated'}`}>
           <Stars rating={product.rating_count > 0 ? Number(product.rating_avg) : 0} />

@@ -6,8 +6,8 @@ import { Logo } from '../../components/client/Primitives'
 
 function AuthShell({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return <div className="auth-screen">
-    <div className="auth-photo"><img src="/assets/rug-living-hero.webp" alt="" aria-hidden="true" /><div><div className="eyebrow">RUGISTAN · HANDMADE RUGS</div><h2>Tradition woven into every thread.</h2><p className="auth-caption">Natural materials. Thoughtful design. A home that feels like you.</p></div></div>
-    <div className="auth-body"><div className="auth-card"><Logo /><div className="eyebrow">YOUR RUGISTAN ACCOUNT</div><h1>{title}</h1><p className="subtitle" style={{ marginBottom: 26 }}>{intro}</p><div className="clerk-auth-panel">{children}</div></div></div>
+    <div className="auth-photo"><img src="/assets/fashion/hero.webp" alt="" aria-hidden="true" /><div><div className="eyebrow">KHADDAR VIRSA · FEEL THE FABRIC OF TRADITION</div><h2>Elegance woven into every thread.</h2><p className="auth-caption">Fine fabrics. Thoughtful design. Style that feels like you.</p></div></div>
+    <div className="auth-body"><div className="auth-card"><Logo /><div className="eyebrow">YOUR KHADDAR VIRSA ACCOUNT</div><h1>{title}</h1><p className="subtitle" style={{ marginBottom: 26 }}>{intro}</p><div className="clerk-auth-panel">{children}</div></div></div>
   </div>
 }
 const appearance = {
@@ -28,14 +28,14 @@ export function Login() {
   const next = safeNext(params.get('next'))
   const { user, loading } = useAuth()
   if (!loading && user) return <Navigate to={next} replace />
-  return <AuthShell title="Welcome Back" intro="Sign in to track orders, save rugs and check out faster."><SignIn routing="path" path="/login" signUpUrl={`/register?next=${encodeURIComponent(next)}`} forceRedirectUrl={next} appearance={appearance} /><p className="auth-switch">New to Rugistan? <Link to={`/register?next=${encodeURIComponent(next)}`}>Create an account</Link></p></AuthShell>
+  return <AuthShell title="Welcome Back" intro="Sign in to track orders, save favourites and check out faster."><SignIn routing="path" path="/login" signUpUrl={`/register?next=${encodeURIComponent(next)}`} forceRedirectUrl={next} appearance={appearance} /><p className="auth-switch">New to Khaddar Virsa? <Link to={`/register?next=${encodeURIComponent(next)}`}>Create an account</Link></p></AuthShell>
 }
 export function Register() {
   const [params] = useSearchParams()
   const next = safeNext(params.get('next'))
   const { user, loading } = useAuth()
   if (!loading && user) return <Navigate to={next} replace />
-  return <AuthShell title="Join Rugistan" intro="Save your favourite rugs, track orders and check out in moments."><SignUp routing="path" path="/register" signInUrl={`/login?next=${encodeURIComponent(next)}`} forceRedirectUrl={next} appearance={appearance} /><p className="auth-switch">Already have an account? <Link to={`/login?next=${encodeURIComponent(next)}`}>Sign in</Link></p></AuthShell>
+  return <AuthShell title="Join Khaddar Virsa" intro="Save your favourite pieces, track orders and check out in moments."><SignUp routing="path" path="/register" signInUrl={`/login?next=${encodeURIComponent(next)}`} forceRedirectUrl={next} appearance={appearance} /><p className="auth-switch">Already have an account? <Link to={`/login?next=${encodeURIComponent(next)}`}>Sign in</Link></p></AuthShell>
 }
 export function ForgotPassword() {
   return <AuthShell title="Account Recovery" intro="Use the Forgot password option below to securely recover your account."><SignIn routing="hash" signUpUrl="/register" forceRedirectUrl="/account" appearance={appearance} /><p className="auth-switch"><Link to="/login">Back to sign in</Link></p></AuthShell>

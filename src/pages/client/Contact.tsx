@@ -9,12 +9,12 @@ import { PageBanner, ProcessSteps, SectionTitle } from '../../components/client/
 import Icon from '../../components/client/Icon'
 import { Spinner } from '../../components/client/Primitives'
 
-const TOPICS = ['Order enquiry', 'Product advice', 'Custom sizing', 'Rug care', 'Delivery & returns', 'Something else']
+const TOPICS = ['Order enquiry', 'Product advice', 'Custom sizing', 'Fabric care', 'Delivery & returns', 'Something else']
 
 const HELP: [string, string, string][] = [
   ['01', 'Orders & Delivery', 'Questions about your shipment'],
-  ['02', 'Rug Care', 'Advice to preserve your rug'],
-  ['03', 'Custom Rugs', 'Start a tailored inquiry'],
+  ['02', 'Fabric Care', 'Advice to keep your pieces beautiful'],
+  ['03', 'Custom Orders', 'Start a tailored inquiry'],
 ]
 
 export default function Contact() {
@@ -72,10 +72,10 @@ export default function Contact() {
       <PageBanner
         title="Contact Us"
         eyebrow="WE ARE HERE TO HELP"
-        description="Questions about rugs, sizing, or custom orders? Our team would love to hear from you."
+        description="Questions about shawls, sizing, or custom orders? Our team would love to hear from you."
         cta="Send a Message"
         ctaTo="#inquiry-form"
-        image="/assets/rug_lifestyle_1.jpg"
+        image="/assets/fashion/lifestyle.jpg"
       />
 
       <section className="section wrap">
@@ -156,8 +156,8 @@ export default function Contact() {
       </section>
 
       <section className="contact-location">
-        <div className="contact-location-copy"><div className="eyebrow">A MORE PERSONAL EXPERIENCE</div><h2>Let’s Find the Right Rug for Your Home</h2><p>Explore textures, talk through sizes and get thoughtful advice from our team.</p>{store.location && <p className="location-address"><Icon name="pin" />{store.location}</p>}<Link className="btn" to="/contact?topic=Product%20advice">Plan Your Inquiry <Icon name="arrow" /></Link></div>
-        <div className="contact-location-photo" role="img" aria-label="A warm interior with handmade rugs" />
+        <div className="contact-location-copy"><div className="eyebrow">A MORE PERSONAL EXPERIENCE</div><h2>Let’s Find the Right Piece for You</h2><p>Visit our Lahore store for shopping and exchanges, open every day from 9 am to 5 pm, including Sunday.</p>{store.location && <p className="location-address"><Icon name="pin" />{store.location}</p>}<Link className="btn" to="/contact?topic=Product%20advice">Plan Your Inquiry <Icon name="arrow" /></Link></div>
+        <div className="contact-location-photo" role="img" aria-label="Shawls and embroidered outfits on display" />
       </section>
 
       <section className="section cream">
@@ -166,8 +166,8 @@ export default function Contact() {
           <ProcessSteps steps={HELP} />
           <p className="subtitle" style={{ marginTop: 22 }}>
             Looking for care advice? Visit our{' '}
-            <Link className="inline-link" to="/rug-care">
-              rug care guide
+            <Link className="inline-link" to="/fabric-care">
+              fabric care guide
             </Link>
             .
           </p>

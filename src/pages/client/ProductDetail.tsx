@@ -52,6 +52,36 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1)
   const [busy, setBusy] = useState<'cart' | 'buy' | null>(null)
 
+  // Per-product title and schema.org Product data for search engines and link previews.
+  useEffect(() => {
+    if (!product) return
+    const previousTitle = document.title
+    document.title = `${product.name} · Khaddar Virsa`
+    const ld = document.createElement('script')
+    ld.type = 'application/ld+json'
+    ld.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: product.name,
+      description: product.short_description || product.description,
+      sku: product.sku,
+      image: product.images.map((i) => new URL(i.url, location.origin).href),
+      material: product.material || undefined,
+      color: product.color || undefined,
+      offers: {
+        '@type': 'Offer',
+        price: product.price,
+        priceCurrency: 'PKR',
+        availability: `https://schema.org/${product.stock_quantity > 0 ? 'InStock' : 'OutOfStock'}`,
+      },
+    })
+    document.head.appendChild(ld)
+    return () => {
+      document.title = previousTitle
+      ld.remove()
+    }
+  }, [product])
+
   useEffect(() => {
     let active = true
     setLoading(true)
@@ -136,23 +166,23 @@ export default function ProductDetail() {
     return (
       <section className="section wrap">
         <EmptyState
-          title={loadError ? "This rug is temporarily unavailable" : "That rug could not be found"}
+          title={loadError ? "This product is temporarily unavailable" : "That product could not be found"}
           message={loadError ? "We could not reach the store. Please refresh and try again." : "It may have sold out or been renamed. Browse the full collection to find something similar."}
-          actionLabel="Shop all rugs"
+          actionLabel="Shop the collection"
           actionTo="/shop"
         />
       </section>
     )
   }
 
-  const images = product.images.length ? product.images : [{ id: 'f', url: '/assets/rug_lifestyle_1.jpg', alt: product.name } as never]
+  const images = product.images.length ? product.images : [{ id: 'f', url: '/assets/fashion/placeholder.jpg', alt: product.name } as never]
   const saved = wishlist.has(product.id)
 
   return (
     <>
       {loadError && <div className="notice error" role="alert">We could not load the latest collection. Please refresh and try again.</div>}
       <div className="breadcrumbs">
-        <Link to="/">Home</Link> &nbsp; › &nbsp; <Link to="/shop">All Rugs</Link>
+        <Link to="/">Home</Link> &nbsp; › &nbsp; <Link to="/shop">Shop All</Link>
         {product.category && (
           <>
             {' '}
@@ -183,7 +213,7 @@ export default function ProductDetail() {
         </div>
 
         <div className="pd-copy">
-          <div className="eyebrow">{product.material ? `HANDMADE ${product.material.toUpperCase()} RUG` : 'HANDMADE RUG'}</div>
+          <div className="eyebrow">{product.category?.name?.toUpperCase() || 'KHADDAR VIRSA'}</div>
           <h1>{product.name}</h1>
 
           <div className="review">
@@ -197,7 +227,7 @@ export default function ProductDetail() {
                 </span>
               </>
             ) : (
-              <span style={{ color: 'var(--rg-muted)' }}>No reviews yet — be the first to review this rug.</span>
+              <span style={{ color: 'var(--rg-muted)' }}>No reviews yet — be the first to review this piece.</span>
             )}
           </div>
 
@@ -294,17 +324,19 @@ export default function ProductDetail() {
 
       <FeatureRow />
       <section className="section wrap product-editorial">
-        <div className="product-craft-visual"><div className="product-craft-caption"><div className="eyebrow">MADE BY HAND</div><h2>The Art of Handwoven Rugs</h2><p>Texture, tradition and the beauty of patient work.</p><Link className="btn outline" to="/our-story">Discover Our Craft →</Link></div></div>
+        <div className="product-craft-visual"><div className="product-craft-caption"><div className="eyebrow">CRAFTED WITH CARE</div><h2>The Art of Pakistani Embroidery</h2><p>Fine fabrics, tradition and the beauty of patient work.</p><Link className="btn outline" to="/our-story">Discover Our Craft →</Link></div></div>
         <div>          <div className="product-information">
             <Accordion title="Product Details" defaultOpen>
               <p>{product.description || product.short_description}</p>
             </Accordion>
-            <Accordion title="Materials & Craftsmanship">
+            <Accordion title="Fabric & Craftsmanship">
               <p>
                 {[
-                  product.material && `Material: ${product.material}`,
-                  product.weave_technique && `Technique: ${product.weave_technique}`,
-                  product.dimensions && `Standard size: ${product.dimensions}`,
+                  product.material && `Fabric: ${product.material}`,
+                  product.weave_technique && `Embroidery: ${product.weave_technique}`,
+                  product.dimensions && `Size: ${product.dimensions}`,
+                  product.room && `Occasion: ${product.room}`,
+                  product.style && `Season: ${product.style}`,
                   product.color && `Primary colour: ${product.color}`,
                   `SKU: ${product.sku}`,
                 ]
@@ -314,8 +346,8 @@ export default function ProductDetail() {
             </Accordion>
             <Accordion title="Care Instructions">
               <p>
-                Vacuum gently without a beater bar, blot spills immediately with a dry cloth, and rotate the rug twice a
-                year. Full guidance is on our <Link className="inline-link" to="/rug-care">rug care page</Link>.
+                Dry clean or hand wash gently in cold water, dry in the shade and store folded in a breathable cotton bag.
+                Full guidance is on our <Link className="inline-link" to="/fabric-care">fabric care page</Link>.
               </p>
             </Accordion>
             <Accordion title="Delivery & Returns">
@@ -324,7 +356,7 @@ export default function ProductDetail() {
                 <Link className="inline-link" to="/page/shipping-and-returns">shipping &amp; returns</Link> for the full policy.
               </p>
             </Accordion>
-          </div><div className="product-legacy"><div className="eyebrow">OUR CRAFTSMANSHIP</div><h3>A Legacy of People, Tradition & Craft</h3><p>Explore the materials, makers and thoughtful details behind our rugs.</p><Link className="btn" to="/our-story">Our Story →</Link></div></div>
+          </div><div className="product-legacy"><div className="eyebrow">OUR CRAFTSMANSHIP</div><h3>A Legacy of Heritage, Craft & Grace</h3><p>Explore the fabrics, makers and thoughtful details behind every piece.</p><Link className="btn" to="/our-story">Our Story →</Link></div></div>
       </section>
 
       <ReviewsSection
@@ -338,7 +370,7 @@ export default function ProductDetail() {
 
       {related.length > 0 && (
         <section className="section wrap">
-          <SectionTitle eyebrow="YOU MAY ALSO LIKE" title="Similar Rugs" linkTo="/shop" />
+          <SectionTitle eyebrow="YOU MAY ALSO LIKE" title="You May Also Like" linkTo="/shop" />
           <div className="gridprod">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
@@ -373,14 +405,14 @@ function ReviewsSection({
     e.preventDefault()
     if (!user) return
     if (body.trim().length < 10) {
-      toast.error('Please write at least a sentence about the rug.')
+      toast.error('Please write at least a sentence about the product.')
       return
     }
     setBusy(true)
     const { error } = await supabase.from('reviews').insert({
       product_id: product.id,
       user_id: user.id,
-      author_name: `${profile?.first_name ?? ''} ${profile?.last_name ?? ''}`.trim() || 'Rugistan customer',
+      author_name: `${profile?.first_name ?? ''} ${profile?.last_name ?? ''}`.trim() || 'Khaddar Virsa customer',
       rating,
       title: title.trim(),
       body: body.trim(),
@@ -407,7 +439,7 @@ function ReviewsSection({
         description={
           reviews.length
             ? 'Every review is read and approved by our team before it appears here.'
-            : 'No approved reviews for this rug yet.'
+            : 'No approved reviews for this product yet.'
         }
       />
 
@@ -423,7 +455,7 @@ function ReviewsSection({
               </strong>
               {r.admin_reply && (
                 <p style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--rg-line)', fontSize: '0.875rem' }}>
-                  <strong>Rugistan:</strong> {r.admin_reply}
+                  <strong>Khaddar Virsa:</strong> {r.admin_reply}
                 </p>
               )}
             </div>
@@ -437,7 +469,7 @@ function ReviewsSection({
             <Link className="inline-link" to="/login">
               Sign in
             </Link>{' '}
-            to write a review for this rug.
+            to write a review for this product.
           </p>
         ) : !open ? (
           <button type="button" className="btn outline" onClick={() => setOpen(true)}>

@@ -58,7 +58,7 @@ export default function OrderConfirmation() {
         eyebrow="THANK YOU"
         title={order ? "Your Order Has Been Received" : "Order Details"}
         description="View your order details and payment status below."
-        image="/assets/rug_lifestyle_2.jpg"
+        image="/assets/fashion/story.jpg"
       />
 
       <section className="section wrap">
@@ -81,7 +81,7 @@ export default function OrderConfirmation() {
               </p>
               {(order.items ?? []).map((item, i) => (
                 <div className="cartitem confirmation-item" key={item.id ?? `${item.product_name}-${i}`}>
-                  <img src={item.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" />
+                  <img src={item.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" />
                   <div>
                     <h3>{item.product_name}</h3>
                     <p>

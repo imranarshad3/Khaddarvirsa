@@ -300,7 +300,7 @@ export default function ProductForm() {
             <h2 className="smalltitle">Basic Information</h2>
             <div className="formgrid">
               <Field label="Product Name" error={errors.name}>
-                <input className="input" value={form.name} onChange={set('name')} placeholder="Turquoise Heritage Rug" />
+                <input className="input" value={form.name} onChange={set('name')} placeholder="Royal Kashmiri Shawl" />
               </Field>
               <Field label={`Price (${store.currency})`} error={errors.price}>
                 <input className="input" type="number" min="0" step={store.currency === 'PKR' ? '1' : '0.01'} value={form.price} onChange={set('price')} />
@@ -339,23 +339,23 @@ export default function ProductForm() {
               Specifications
             </h2>
             <div className="formgrid">
-              <Field label="Material">
-                <input className="input" value={form.material} onChange={set('material')} placeholder="Natural Wool" />
+              <Field label="Fabric">
+                <input className="input" value={form.material} onChange={set('material')} placeholder="Pure Pashmina" />
               </Field>
-              <Field label="Dimensions">
-                <input className="input" value={form.dimensions} onChange={set('dimensions')} placeholder="5 × 8 ft" />
+              <Field label="Size / Length">
+                <input className="input" value={form.dimensions} onChange={set('dimensions')} placeholder="40 × 80 in" />
               </Field>
-              <Field label="Weaving Technique">
-                <input className="input" value={form.weave_technique} onChange={set('weave_technique')} placeholder="Handwoven" />
+              <Field label="Embroidery / Craft">
+                <input className="input" value={form.weave_technique} onChange={set('weave_technique')} placeholder="Hand-embroidered tilla" />
               </Field>
               <Field label="Primary Colour">
-                <input className="input" value={form.color} onChange={set('color')} placeholder="Turquoise Blue" />
+                <input className="input" value={form.color} onChange={set('color')} placeholder="Maroon" />
               </Field>
-              <Field label="Style" hint="Used by the shop filters.">
-                <input className="input" value={form.style} onChange={set('style')} placeholder="Traditional" />
+              <Field label="Season" hint="Used by the shop filters.">
+                <input className="input" value={form.style} onChange={set('style')} placeholder="Winter" />
               </Field>
-              <Field label="Room" hint="Used by the shop filters.">
-                <input className="input" value={form.room} onChange={set('room')} placeholder="Living Room" />
+              <Field label="Occasion" hint="Used by the shop filters.">
+                <input className="input" value={form.room} onChange={set('room')} placeholder="Formal" />
               </Field>
             </div>
           </div>
@@ -370,7 +370,7 @@ export default function ProductForm() {
                 <input className="input" type="number" min="0" value={form.low_stock_at} onChange={set('low_stock_at')} />
               </Field>
             </div>
-            <Field label="URL Slug" hint={`Storefront address: /rug/${form.slug || slugify(form.name) || '…'}`}>
+            <Field label="URL Slug" hint={`Storefront address: /product/${form.slug || slugify(form.name) || '…'}`}>
               <input className="input" value={form.slug} onChange={set('slug')} placeholder={slugify(form.name)} />
             </Field>
 
@@ -380,7 +380,7 @@ export default function ProductForm() {
 
             <label className="checkline">
               <input type="checkbox" checked={form.is_featured} onChange={(e) => setForm((f) => ({ ...f, is_featured: e.target.checked }))} />
-              Feature this rug on the homepage
+              Feature this product on the homepage (Best Sellers)
             </label>
 
           </details>
@@ -400,11 +400,11 @@ export default function ProductForm() {
             </div>
             {errors.variants && <Notice tone="error">{errors.variants}</Notice>}
             {variants.length === 0 ? (
-              <p className="tiny">No sizes added — the rug sells at a single size using the stock quantity above.</p>
+              <p className="tiny">No sizes added — the product sells at a single size using the stock quantity above.</p>
             ) : (
               <div className="variant-list">
                 {variants.map((v,i)=><section className="variant-row" key={v.id??`new-${i}`} aria-label={`Size ${i+1}`}>
-                  <Field label="Size label"><input className="input" value={v.label} maxLength={80} placeholder="5 × 8 ft" onChange={e=>setVariants(list=>list.map((x,j)=>j===i?{...x,label:e.target.value}:x))} /></Field>
+                  <Field label="Size label"><input className="input" value={v.label} maxLength={80} placeholder="M" onChange={e=>setVariants(list=>list.map((x,j)=>j===i?{...x,label:e.target.value}:x))} /></Field>
                   <Field label={`Price difference (${store.currency})`}><input className="input" type="number" step={store.currency === 'PKR' ? '1' : '0.01'} value={v.price_delta} onChange={e=>setVariants(list=>list.map((x,j)=>j===i?{...x,price_delta:e.target.value}:x))} /></Field>
                   <Field label="Stock"><input className="input" type="number" min="0" step="1" value={v.stock_quantity} onChange={e=>setVariants(list=>list.map((x,j)=>j===i?{...x,stock_quantity:e.target.value}:x))} /></Field>
                   <div className="hstack space variant-controls"><label className="checkline"><input type="checkbox" checked={v.is_active} onChange={e=>setVariants(list=>list.map((x,j)=>j===i?{...x,is_active:e.target.checked}:x))} />Active</label><button type="button" className="action danger" aria-label={`Remove size ${v.label||i+1}`} onClick={()=>setVariants(list=>list.filter((_,j)=>j!==i))}>Remove</button></div>
@@ -433,7 +433,7 @@ export default function ProductForm() {
                 <input
                   className="input grow"
                   value={c.name}
-                  placeholder="Dusty Blue"
+                  placeholder="Emerald Green"
                   aria-label={`Colour name ${i+1}`}
                   onChange={(e) => setColors((list) => list.map((x, j) => (j === i ? { ...x, name: e.target.value, hex: colorNameToHex(e.target.value) || x.hex } : x)))}
                 />
@@ -457,7 +457,7 @@ export default function ProductForm() {
         </div>
       </div>
       {sizeOpen&&<Modal title="Add a size" width={440} onClose={()=>setSizeOpen(false)} footer={<><button type="button" className="btn soft" onClick={()=>setSizeOpen(false)}>Cancel</button><button type="button" className="btn" onClick={addSize}>Add Size</button></>}>
-        <Field label="Size label" hint="Use a label, or enter dimensions below. You do not need both."><input className="input" value={sizeDraft.label} maxLength={80} placeholder="Small, Runner, 5 × 8 ft…" onChange={e=>setSizeDraft(v=>({...v,label:e.target.value}))} /></Field>
+        <Field label="Size label" hint="Use a label, or enter dimensions below. You do not need both."><input className="input" value={sizeDraft.label} maxLength={80} placeholder="XS, S, M, L, XL…" onChange={e=>setSizeDraft(v=>({...v,label:e.target.value}))} /></Field>
         <div className="formgrid"><Field label="Width (ft)" hint="Optional"><input className="input" type="number" min="0.1" max="100" step="0.1" value={sizeDraft.width} onChange={e=>setSizeDraft(v=>({...v,width:e.target.value}))} /></Field><Field label="Length (ft)" hint="Optional"><input className="input" type="number" min="0.1" max="100" step="0.1" value={sizeDraft.length} onChange={e=>setSizeDraft(v=>({...v,length:e.target.value}))} /></Field></div>
         {sizeError&&<Notice tone="error">{sizeError}</Notice>}
         <p className="tiny">Set price differences and stock in the size table after adding the label.</p>

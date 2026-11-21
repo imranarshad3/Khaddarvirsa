@@ -83,7 +83,7 @@ export default function Products() {
     const { error } = await supabase.from('products').delete().eq('id', pendingDelete.id)
     setDeleting(false)
     if (error) {
-      toast.error(readableError(error, 'This rug could not be deleted — it may appear on an existing order.'))
+      toast.error(readableError(error, 'This product could not be deleted — it may appear on an existing order.'))
       return
     }
     toast.success(`${pendingDelete.name} deleted.`)
@@ -96,7 +96,7 @@ export default function Products() {
       {loadError && <div className="notice error" role="alert">{loadError} <button type="button" className="action" onClick={() => void load()}>Try again</button></div>}
       <PageHeader
         title="Products"
-        subtitle="Manage your handmade rug catalogue, prices and availability."
+        subtitle="Manage your shawl and clothing catalogue, prices and availability."
         actions={
           <button type="button" className="btn" onClick={() => navigate('/admin/products/new')}>
             <Plus size={16} aria-hidden="true" /> Add New Product
@@ -145,7 +145,7 @@ export default function Products() {
         <div className="card">
           <EmptyState
             title={products.length ? 'No products match those filters' : 'No products yet'}
-            message={products.length ? 'Try a different search or clear the filters.' : 'Add your first rug to start selling.'}
+            message={products.length ? 'Try a different search or clear the filters.' : 'Add your first product to start selling.'}
             action={
               <Link className="btn" to="/admin/products/new">
                 <Plus size={16} aria-hidden="true" /> Add New Product
@@ -162,7 +162,7 @@ export default function Products() {
               const cover = [...p.images].sort((a,b) => a.sort_order - b.sort_order).find(item => !isVideoMedia(item.url))?.url
               const low = p.stock_quantity <= p.low_stock_at
               return <tr key={p.id}>
-                <td><Link className="product-list-name" to={`/admin/products/${p.id}`}><img src={cover || '/assets/rug_lifestyle_1.jpg'} alt="" loading="lazy" /><span><strong>{p.name}</strong><small>SKU: {p.sku} · {p.variants.length} sizes</small></span></Link></td>
+                <td><Link className="product-list-name" to={`/admin/products/${p.id}`}><img src={cover || '/assets/fashion/placeholder.jpg'} alt="" loading="lazy" /><span><strong>{p.name}</strong><small>SKU: {p.sku} · {p.variants.length} sizes</small></span></Link></td>
                 <td><span className="product-view-count" title="One view per browser session">{viewCounts ? (viewCounts[p.id] ?? 0).toLocaleString() : "—"}</span></td>
                 <td><strong className="list-price">{money(p.price)}</strong></td>
                 <td><span className={`tag ${p.stock_quantity === 0 ? 'red' : low ? 'orange' : 'green'}`}>{p.stock_quantity === 0 ? 'Out of stock' : `${p.stock_quantity} available`}</span></td>

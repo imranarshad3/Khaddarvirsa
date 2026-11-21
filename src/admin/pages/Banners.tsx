@@ -9,7 +9,7 @@ import type { Banner } from '../../lib/types'
 
 const PLACEMENTS = [
   { id: 'home_hero', label: 'Homepage • Hero section' },
-  { id: 'home_lifestyle', label: 'Homepage • Room-by-room band' },
+  { id: 'home_lifestyle', label: 'Homepage • Shop-by-occasion band' },
   { id: 'home_story', label: 'Homepage • Our story band' },
   { id: 'shop_lifestyle', label: 'Shop • Lifestyle band' },
 ]
@@ -168,7 +168,7 @@ export default function Banners() {
         ) : (
           rows.map((b, i) => (
             <div className="bannerrow" key={b.id}>
-              <img src={b.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" />
+              <img src={b.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" />
               <div>
                 <strong style={{ font: '1.25rem Georgia, serif' }}>{b.title}</strong>
                 <p className="sub">{PLACEMENTS.find((p) => p.id === b.placement)?.label ?? b.placement}</p>
@@ -197,7 +197,7 @@ export default function Banners() {
       <div style={{ marginTop: 20 }}>
         <Notice>
           Only the first active banner in each placement is used on the storefront. Keep banner text concise and use
-          high-quality rug photography for the best visual results.
+          high-quality fashion photography for the best visual results.
         </Notice>
       </div>
 

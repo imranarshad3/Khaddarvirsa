@@ -10,11 +10,11 @@ import {
 import type { Banner, Page } from '../../lib/types'
 
 const PROCESS: [string, string, string][] = [
-  ['01', 'Material Selection', 'Natural fibers chosen for texture and character.'],
-  ['02', 'Color & Design', 'A considered palette brings the design together.'],
-  ['03', 'Hand Weaving', 'Patient work brings every pattern to life.'],
-  ['04', 'Finishing', 'Careful finishing brings out the texture.'],
-  ['05', 'A Timeless Rug', 'Ready for a home and a life of its own.'],
+  ['01', 'Fabric Selection', 'Soft, lasting fabrics chosen for drape and character.'],
+  ['02', 'Colour & Design', 'A considered palette brings the design together.'],
+  ['03', 'Embroidery', 'Patient work brings every motif to life.'],
+  ['04', 'Finishing', 'Careful finishing and a final quality check.'],
+  ['05', 'A Timeless Piece', 'Ready to be worn and treasured.'],
 ]
 
 export default function OurStory() {
@@ -26,30 +26,30 @@ export default function OurStory() {
     void fetchBanners().then(setBanners)
   }, [])
 
-  const heroImage = page?.hero_image_url || '/assets/rug_handmade_blue.jpg'
+  const heroImage = page?.hero_image_url || '/assets/fashion/story.jpg'
 
   return (
     <>
       <PageBanner
-        title={page?.hero_heading || 'A Story Woven by Hand'}
+        title={page?.hero_heading || 'A Story Woven With Grace'}
         cta="Our Philosophy"
         ctaTo="#our-philosophy"
-        description="More than beautiful interiors: a celebration of patient craftsmanship and timeless design."
+        description="More than beautiful clothes: a celebration of Pakistani craftsmanship and timeless design."
         image={heroImage}
       />
 
       <div className="storyband" id="our-philosophy">
-        <img src={banners.home_hero?.image_url || '/assets/rug-living-hero.webp'} alt="" aria-hidden="true" />
+        <img src={banners.home_hero?.image_url || '/assets/fashion/hero.webp'} alt="" aria-hidden="true" />
         <div className="storycopy">
           <div className="eyebrow">OUR STORY</div>
           {page?.content ? (
             <div className="cms" dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }} />
           ) : (
             <>
-              <h2>Rooted in Heritage, Made for Modern Homes</h2>
+              <h2>Feel the Fabric of Tradition</h2>
               <p>
-                Rugistan brings together authentic textures, expressive patterns, and natural materials in pieces that
-                enrich everyday life.
+                Khaddar Virsa was born out of a passion to revive Pakistan&rsquo;s rich textile heritage for the modern world,
+                with premium, chemical-free fabrics that bridge cultural roots and contemporary everyday fashion.
               </p>
             </>
           )}
@@ -62,10 +62,10 @@ export default function OurStory() {
       <section className="section wrap story-foundations">
         <div className="foundation-grid">
           {[
-            ['The Beauty of Natural Materials', 'Texture, warmth and character begin with the fibers that make up every rug.', 'foundation-wool', '/shop?material=Natural%20Wool'],
-            ['Time-Honored Craftsmanship', 'Patient hands bring patterns to life, one considered detail at a time.', 'foundation-hands', '/shop'],
-            ['A Naturally Rich Palette', 'Quiet neutrals and expressive blues create a foundation for individual spaces.', 'foundation-palette', '/collections'],
-            ['Designed for Generations', 'Thoughtful design and careful everyday care help your rug become part of your story.', 'foundation-rugs', '/rug-care'],
+            ['The Beauty of Fine Fabrics', 'Softness, warmth and drape begin with the fabric behind every piece.', 'foundation-wool', '/shop?category=premium-shawls'],
+            ['Time-Honored Craftsmanship', 'Patient hands bring embroidery to life, one considered stitch at a time.', 'foundation-hands', '/shop'],
+            ['A Naturally Rich Palette', 'Quiet neutrals and jewel tones create a wardrobe for every occasion.', 'foundation-palette', '/collections'],
+            ['Designed for Generations', 'Thoughtful design and gentle care help your favourite piece become part of your story.', 'foundation-rugs', '/fabric-care'],
           ].map(([title,body,photo,to])=><article key={title}><div className={`foundation-photo ${photo}`} role="img" aria-label={title}/><h3>{title}</h3><p>{body}</p><Link className="inline-link" to={to}>Discover More →</Link></article>)}
         </div>
       </section>
@@ -77,14 +77,14 @@ export default function OurStory() {
             A Legacy That Lives On
           </h2>
           <p>
-            Thoughtful material selection, careful weaving and hand finishing define the character of each rug.
+            Thoughtful fabric selection, careful embroidery and hand finishing define the character of each piece.
           </p>
         </div>
-        <div className="heritage-photo" role="img" aria-label="An artisan working at a traditional loom" />
+        <div className="heritage-photo" role="img" aria-label="Embroidered shawls and fabrics on display" />
       </div>
 
       <section className="section wrap cream" id="process">
-        <div className="eyebrow">THE MAKING OF A RUG</div>
+        <div className="eyebrow">THE MAKING OF A PIECE</div>
         <h2 style={{ marginBottom: 25 }}>A Thoughtful Process</h2>
         <ProcessSteps steps={PROCESS} />
       </section>

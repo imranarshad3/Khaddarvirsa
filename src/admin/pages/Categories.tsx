@@ -112,7 +112,7 @@ export default function Categories() {
       {loadError && <div className="notice error" role="alert">{loadError} <button type="button" className="action" onClick={() => void load()}>Try again</button></div>}
       <PageHeader
         title="Categories"
-        subtitle="Organize your rugs into beautifully curated collections."
+        subtitle="Organize your shawls and clothing into beautifully curated collections."
         actions={
           <button type="button" className="btn" onClick={() => open('new')}>
             <Plus size={16} aria-hidden="true" /> Add Category
@@ -136,7 +136,7 @@ export default function Categories() {
         ) : visible.length === 0 ? (
           <EmptyState
             title={rows.length ? 'No categories match that search' : 'No categories yet'}
-            message={rows.length ? 'Try a different term.' : 'Group your rugs into collections customers can browse.'}
+            message={rows.length ? 'Try a different term.' : 'Group your products into collections customers can browse.'}
             action={
               <button type="button" className="btn" onClick={() => open('new')}>
                 <Plus size={16} aria-hidden="true" /> Add Category
@@ -160,7 +160,7 @@ export default function Categories() {
                   <tr key={c.id}>
                     <td>
                       <div className="catrow">
-                        <img src={c.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" />
+                        <img src={c.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" />
                         <div>
                           <strong>{c.name}</strong>
                           <div className="tiny">/{c.slug}</div>

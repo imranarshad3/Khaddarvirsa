@@ -56,7 +56,7 @@ export default function CmsPage() {
       <PageBanner
         title={page.hero_heading || page.title}
         description={page.meta_description}
-        image={page.hero_image_url || '/assets/rug_lifestyle_2.jpg'}
+        image={page.hero_image_url || '/assets/fashion/story.jpg'}
       />
       <section className="section wrap">
         <div className="cms-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }} />

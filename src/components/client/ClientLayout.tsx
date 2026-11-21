@@ -20,7 +20,7 @@ const PRIMARY = [
   { to: '/our-story', label: 'About' },
 ]
 const SECONDARY = [
-  { to: '/rug-care', label: 'Rug Care' },
+  { to: '/fabric-care', label: 'Fabric Care' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -28,9 +28,9 @@ function Announcement() {
   const { store } = useStore()
   return (
     <div className="announcement reference-announcement">
-      <span className="announcement-shipping"><Icon name="truck" />{store.announcement?.[0] || 'Free Shipping on All Rugs'}</span>
-      <span>Handmade by Artisans</span>
-      <span>A More Beautiful Home</span>
+      <span className="announcement-shipping"><Icon name="truck" />{store.announcement?.[0] || 'Free Delivery in Pakistan'}</span>
+      <span>100% Chemical-Free Fabrics</span>
+      <span>Guaranteed Premium Quality</span>
       <CurrencySelector />
     </div>
   )
@@ -74,14 +74,14 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
           }}
         >
           <label className="sr-only" htmlFor="site-search">
-            Search rugs
+            Search shawls &amp; outfits
           </label>
           <input
             id="site-search"
             ref={inputRef}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Search rugs by name, colour or material…"
+            placeholder="Search shawls and outfits by name, colour or fabric…"
           />
           <button className="btn" type="submit">
             Search
@@ -158,7 +158,7 @@ function Nav() {
         </div>
         <Logo />
         <div className="navright">
-          <button type="button" className="header-action header-search" onClick={() => setSearchOpen(true)} aria-label="Search rugs">
+          <button type="button" className="header-action header-search" onClick={() => setSearchOpen(true)} aria-label="Search shawls and outfits">
             <span>Search</span><Icon name="search" />
           </button>
           <Link to={user ? '/account' : '/login'} className="header-action header-account" aria-label={user ? 'My account' : 'Sign in'}>
@@ -205,8 +205,8 @@ function Newsletter() {
     <div className="newsletter">
       <div>
         <span className="newsletter-kicker">LET’S STAY IN TOUCH</span>
-        <h3>A little inspiration, woven in.</h3>
-        <p>New collections, handmade stories and exclusive updates.</p>
+        <h3>A little inspiration, stitched in.</h3>
+        <p>New collections, festive edits and exclusive updates.</p>
       </div>
       <form className="subscribe" onSubmit={subscribe}>
         <label className="sr-only" htmlFor="newsletter-email">
@@ -242,14 +242,14 @@ function Footer() {
         <div className="footer-brand">
           <Logo />
           <p className="footer-brand-description">
-            Artisan-crafted rugs, timeless beauty and meaningful living spaces.
+            Khaddar Virsa blends timeless cultural tradition with modern elegance: premium khaddar crafted for comfort and style, redesigned for the contemporary wardrobe.
           </p>
         </div>
         <div>
           <h4>Shop</h4>
           <ul>
             <li>
-              <Link to="/shop">All Rugs</Link>
+              <Link to="/shop">Shop All</Link>
             </li>
             <li>
               <Link to="/shop?sort=newest">New Arrivals</Link>
@@ -289,7 +289,7 @@ function Footer() {
               <Link to="/page/shipping-and-returns">Delivery &amp; Returns</Link>
             </li>
             <li>
-              <Link to="/rug-care">Rug Care</Link>
+              <Link to="/fabric-care">Fabric Care</Link>
             </li>
             <li>
               <Link to="/track-order">Track Order</Link>
@@ -311,8 +311,8 @@ function Footer() {
             </p>
           ) : (
             <>
-            <p>A little inspiration for a thoughtfully layered home.</p>
-            <Link className="footer-contact" to="/contact">Let’s talk rugs <span aria-hidden="true">↗</span></Link>
+            <p>A little inspiration for a beautifully dressed season.</p>
+            <Link className="footer-contact" to="/contact">Let’s talk style <span aria-hidden="true">↗</span></Link>
             </>
           )}
           {store.email && (

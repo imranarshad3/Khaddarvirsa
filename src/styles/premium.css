@@ -69,7 +69,7 @@
   .rg-client .storycopy{padding:50px 10%;position:relative}
   .rg-client .storycopy p{font-size:.9375rem;line-height:1.7;max-width:480px}
   .rg-client .storycopy .btn{margin-top:4px}
-  .rg-client .craft-photo{min-height:450px;background-image:url('/assets/rug-brand-editorial.webp');background-size:200% 200%;background-position:0 0}
+  .rg-client .craft-photo{min-height:450px;background-image:url('/assets/fashion/brand-editorial.webp');background-size:200% 200%;background-position:0 0}
   .rg-client .craft-values{display:flex;gap:20px;margin:0 0 24px;width:100%}
   .rg-client .craft-value{display:flex;flex:1;flex-direction:column;gap:7px;align-items:center;text-align:center;font-size:.625rem;color:#6e543d;line-height:1.5}
   .rg-client .craft-value svg{width:24px;height:24px;stroke-width:1.1}
@@ -224,7 +224,7 @@
   /* Rug care: reference layout */
   .rg-client main[data-page="rug-care"]{background:#fbf6ed}
   .rg-client .care-hero{position:relative;min-height:440px;overflow:hidden;background:#eee1cf}
-  .rg-client .care-hero-photo{position:absolute;inset:0 0 0 30%;background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%}
+  .rg-client .care-hero-photo{position:absolute;inset:0 0 0 30%;background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%}
   .rg-client .care-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#fbf5eaff 0%,#fbf5eaf5 24%,#fbf5eac9 37%,#fbf5ea00 60%);pointer-events:none}
   .rg-client .care-hero-copy{position:relative;z-index:1;width:46%;padding:28px var(--page-gutter) 40px}
   .rg-client .care-crumb{display:flex;gap:12px;align-items:center;font-size:.75rem;color:#6d5c4e;margin-bottom:20px}
@@ -236,7 +236,7 @@
   .rg-client .care-intro{font-size:.9375rem;margin:6px 0 28px}
   .rg-client .care-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
   .rg-client .care-card{border:1px solid #ebdfce;border-radius:3px;overflow:hidden;background:#fcf7ef}
-  .rg-client .care-card-photo{height:190px;background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%;background-repeat:no-repeat}
+  .rg-client .care-card-photo{height:190px;background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%;background-repeat:no-repeat}
   .rg-client .care-photo-0{background-position:0 0}.rg-client .care-photo-1{background-position:50% 0}.rg-client .care-photo-2{background-position:100% 0}.rg-client .care-photo-3{background-position:0 100%}.rg-client .care-photo-4{background-position:50% 100%}.rg-client .care-photo-5{background-position:100% 100%}
   .rg-client .care-card-body{position:relative;padding:30px 20px 24px}
   .rg-client .care-icon{position:relative;display:grid;place-items:center;width:74px;height:74px;margin:-80px 0 10px -7px;border:1px solid #d9c2a2;border-radius:50%;background:#fffaf1;color:#4c2b16;box-shadow:0 0 0 5px #fffaf154}
@@ -264,7 +264,7 @@
   .rg-client .care-support-action small{display:block;font-size:.6875rem;margin-top:8px;color:var(--rg-muted)}
   .rg-client .care-gallery-heading{font-size:1.75rem;margin:15px 0}
   .rg-client .care-gallery{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-  .rg-client .care-gallery>a{display:block;aspect-ratio:1.45;background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%;border-radius:2px;transition:opacity .2s}
+  .rg-client .care-gallery>a{display:block;aspect-ratio:1.45;background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%;border-radius:2px;transition:opacity .2s}
   .rg-client .care-gallery>a:hover{opacity:.85}
   /* Responsive layouts */
   @media(max-width:1150px){
@@ -433,16 +433,16 @@
   .rg-client .banner .inner>.eyebrow{display:none}
   .rg-client .banner .btn{margin-top:6px}
   .rg-client main[data-page="our-story"]>.banner>img{opacity:0}
-  .rg-client main[data-page="our-story"]>.banner{background-image:url('/assets/rug-brand-editorial.webp');background-size:200% 200%;background-position:100% 0;min-height:390px}
+  .rg-client main[data-page="our-story"]>.banner{background-image:url('/assets/fashion/brand-editorial.webp');background-size:200% 200%;background-position:100% 0;min-height:390px}
   .rg-client .foundation-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
-  .rg-client .foundation-photo{aspect-ratio:1.5;background-image:url('/assets/rug-brand-editorial.webp');background-size:200% 200%;margin-bottom:16px}
-  .rg-client .foundation-wool{background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%;background-position:50% 100%}
+  .rg-client .foundation-photo{aspect-ratio:1.5;background-image:url('/assets/fashion/brand-editorial.webp');background-size:200% 200%;margin-bottom:16px}
+  .rg-client .foundation-wool{background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%;background-position:50% 100%}
   .rg-client .foundation-hands{background-position:0 0}
-  .rg-client .foundation-palette{background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%;background-position:0 100%}
+  .rg-client .foundation-palette{background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%;background-position:0 100%}
   .rg-client .foundation-rugs{background-position:100% 100%}
   .rg-client .foundation-grid h3{font-size:1.375rem;line-height:1.2;margin-bottom:10px}
   .rg-client .foundation-grid p{font-size:.875rem;line-height:1.65;margin-bottom:15px}
-  .rg-client .heritage-photo{min-height:400px;background-image:url('/assets/rug-brand-editorial.webp');background-size:200% 200%;background-position:100% 0}
+  .rg-client .heritage-photo{min-height:400px;background-image:url('/assets/fashion/brand-editorial.webp');background-size:200% 200%;background-position:100% 0}
   .rg-client main[data-page="our-story"] #process .steps{grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
   .rg-client main[data-page="our-story"] #process .step{display:flex;flex-direction:column;gap:15px;text-align:center;border:0;align-items:center;padding:15px 4px}
   .rg-client main[data-page="our-story"] #process .step b{width:84px;height:84px;border:1px solid #b08a59;border-radius:50%;display:grid;place-items:center;background:#f8efdf;font-size:2rem;box-shadow:inset 0 0 0 5px #fcf8f1}
@@ -451,17 +451,17 @@
   .rg-client .collection-edits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:24px}
   .rg-client .collection-edit{border:1px solid #eaddc9;background:#fdf8ef;padding-bottom:20px}
   .rg-client .collection-edit img,.rg-client .edit-photo{width:100%;aspect-ratio:1.7;object-fit:cover;display:block}
-  .rg-client .edit-neutral{background-image:url('/assets/rug-brand-editorial.webp');background-size:200% 200%;background-position:0 100%}
+  .rg-client .edit-neutral{background-image:url('/assets/fashion/brand-editorial.webp');background-size:200% 200%;background-position:0 100%}
   .rg-client .collection-edit h3{font-size:1.625rem;line-height:1.2;margin:15px 18px 9px}
   .rg-client .collection-edit p{font-size:.875rem;line-height:1.6;margin:0 18px 14px}
   .rg-client .collection-edit span{font-size:.75rem;font-weight:600;display:block;margin:0 18px;text-decoration:underline;text-underline-offset:4px}
   .rg-client .contact-location{display:grid;grid-template-columns:1fr 1fr;background:#f0e5d4;max-width:1440px;margin:auto}
   .rg-client .contact-location-copy{padding:45px var(--page-gutter)}
   .rg-client .contact-location-copy p{font-size:.9375rem;line-height:1.6;margin:18px 0 22px}
-  .rg-client .contact-location-photo{min-height:340px;background-image:url('/assets/rug-care-editorial.webp');background-size:300% 200%;background-position:100% 100%}
+  .rg-client .contact-location-photo{min-height:340px;background-image:url('/assets/fashion/care-editorial.webp');background-size:300% 200%;background-position:100% 100%}
   .rg-client .location-address{display:flex;gap:10px;align-items:center}
   .rg-client .product-editorial{display:grid;grid-template-columns:1.1fr 1fr;gap:30px}
-  .rg-client .product-craft-visual{position:relative;min-height:570px;background-image:linear-gradient(0deg,#241809d9,transparent 65%),url('/assets/rug-brand-editorial.webp');background-size:100% 100%,200% 200%;background-position:0 0,0 0;border-radius:3px;overflow:hidden;display:flex;align-items:flex-end}
+  .rg-client .product-craft-visual{position:relative;min-height:570px;background-image:linear-gradient(0deg,#241809d9,transparent 65%),url('/assets/fashion/brand-editorial.webp');background-size:100% 100%,200% 200%;background-position:0 0,0 0;border-radius:3px;overflow:hidden;display:flex;align-items:flex-end}
   .rg-client .product-craft-caption{padding:32px;color:#fff8ed}
   .rg-client .product-craft-caption h2{font-size:2.5rem;max-width:360px}
   .rg-client .product-craft-caption p{color:#edddc5;margin:14px 0 20px;font-size:.875rem}
@@ -710,7 +710,7 @@
    .rg-client .product-editorial{gap:30px}
    .rg-client .foundation-grid{gap:32px 18px}
    .rg-client main[data-page="our-story"]>.banner{background-image:none;padding-bottom:230px;min-height:490px}
-   .rg-client main[data-page="our-story"]>.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:230px;background:url('/assets/rug-brand-editorial.webp') 100% 0/200% 200% no-repeat}
+   .rg-client main[data-page="our-story"]>.banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:230px;background:url('/assets/fashion/brand-editorial.webp') 100% 0/200% 200% no-repeat}
    .rg-client main[data-page="our-story"]>.banner>img{display:none}
    .rg-client main[data-page="our-story"]>.storyband{margin-top:32px;margin-bottom:32px}
    .rg-client .twocol{gap:34px}
@@ -1023,7 +1023,7 @@
 
   /* A taller, more immersive opening for Our Story. */
   .rg-client main[data-page="our-story"]>.banner{min-height:clamp(580px,43vw,800px);background-image:none;background-color:#f3e9db;isolation:isolate}
-  .rg-client main[data-page="our-story"]>.banner::before{content:'';position:absolute;right:0;top:0;bottom:0;width:65%;background-image:url('/assets/rug-brand-editorial.webp');background-size:auto 200%;background-position:100% 0;background-repeat:no-repeat;z-index:-1}
+  .rg-client main[data-page="our-story"]>.banner::before{content:'';position:absolute;right:0;top:0;bottom:0;width:65%;background-image:url('/assets/fashion/brand-editorial.webp');background-size:auto 200%;background-position:100% 0;background-repeat:no-repeat;z-index:-1}
   .rg-client main[data-page="our-story"]>.banner .inner{padding-top:70px;padding-bottom:70px}
   .rg-client main[data-page="our-story"]>.banner h1{max-width:650px;line-height:1.07}
   .rg-client main[data-page="our-story"]>.banner p{max-width:470px;margin-top:26px;margin-bottom:30px;line-height:1.85}

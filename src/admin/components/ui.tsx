@@ -9,7 +9,7 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
   return (
     <div className="heading">
       <div>
-        <div className="eyebrow">RUGISTAN • STUDIO ADMIN</div>
+        <div className="eyebrow">KHADDAR VIRSA • STUDIO ADMIN</div>
         <h1>{title}</h1>
         {subtitle && <p className="sub">{subtitle}</p>}
       </div>

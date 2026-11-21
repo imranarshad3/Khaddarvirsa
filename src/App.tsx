@@ -50,8 +50,10 @@ export default function App() {
                   <Route index element={<Home />} />
                   <Route path="shop" element={<Shop />} />
                   <Route path="collections" element={<Collections />} />
+                  <Route path="product/:slug" element={<ProductDetail />} />
                   <Route path="rug/:slug" element={<ProductDetail />} />
                   <Route path="our-story" element={<OurStory />} />
+                  <Route path="fabric-care" element={<RugCare />} />
                   <Route path="rug-care" element={<RugCare />} />
                   <Route path="contact" element={<Contact />} />
                   <Route path="team/accept" element={<TeamAccept />} />

@@ -4,12 +4,12 @@ import { setCurrency } from '../lib/format'
 import type { Category, PaymentSettings, RugCareSettings, StoreSettings } from '../lib/types'
 
 const DEFAULT_STORE: StoreSettings = {
-  name: 'Rugistan',
-  tagline: 'HANDMADE RUGS',
-  email: '',
-  phone: '',
-  whatsapp: '',
-  location: '',
+  name: 'Khaddar Virsa',
+  tagline: 'FEEL THE FABRIC OF TRADITION',
+  email: 'info@khaddervirsa.com',
+  phone: '+92 342 4307737',
+  whatsapp: '+92 342 4307737',
+  location: '5 Jahangir Road, Ganj Mughalpura, Lahore, Punjab, Pakistan',
   currency: 'USD',
   currency_symbol: '$',
   timezone: 'Asia/Karachi',
@@ -70,7 +70,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [reload])
 
   useEffect(() => {
-    document.title = `${store.name} · Premium Handmade Rugs`
+    document.title = `${store.name} · Premium Khaddar, Shawls & Pakistani Fashion`
     if (store.favicon_url) {
       let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
       if (!link) {

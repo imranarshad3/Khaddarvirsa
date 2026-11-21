@@ -40,8 +40,8 @@ export function AccountLayout() {
       <PageBanner
         eyebrow="MY ACCOUNT"
         title={`Hello, ${profile?.first_name || 'there'}`}
-        description="Track your orders, revisit saved rugs and keep your details up to date."
-        image="/assets/rug_lifestyle_2.jpg"
+        description="Track your orders, revisit saved pieces and keep your details up to date."
+        image="/assets/fashion/story.jpg"
       />
       <section className="section wrap">
         <div className="account-layout">
@@ -97,9 +97,9 @@ export function AccountOverview() {
           <p>Showing your three most recent orders below.</p>
         </div>
         <div className="quote">
-          <div className="eyebrow">SAVED RUGS</div>
+          <div className="eyebrow">SAVED PIECES</div>
           <h3>{wishlist.count}</h3>
-          <p>Rugs you have added to your wishlist.</p>
+          <p>Pieces you have added to your wishlist.</p>
         </div>
         <div className="quote">
           <div className="eyebrow">RECENT SPEND</div>
@@ -115,7 +115,7 @@ export function AccountOverview() {
         <EmptyState
           title="No orders yet"
           message="When you place your first order it will appear here with live status updates."
-          actionLabel="Shop all rugs"
+          actionLabel="Shop the collection"
           actionTo="/shop"
         />
       ) : (
@@ -157,7 +157,7 @@ function OrderRow({ order }: { order: OrderFull }) {
         {(order.items ?? []).slice(0, 4).map((item) => (
           <img
             key={item.id}
-            src={item.image_url ?? '/assets/rug_lifestyle_1.jpg'}
+            src={item.image_url ?? '/assets/fashion/placeholder.jpg'}
             alt=""
             aria-hidden="true"
             style={{ width: 54, height: 54, objectFit: 'cover' }}
@@ -197,7 +197,7 @@ export function AccountOrders() {
         <EmptyState
           title="No orders yet"
           message="Your order history will appear here once you have made a purchase."
-          actionLabel="Shop all rugs"
+          actionLabel="Shop the collection"
           actionTo="/shop"
         />
       ) : (
@@ -264,7 +264,7 @@ export function AccountOrderDetail() {
         <h3 style={{ marginBottom: 16 }}>Items</h3>
         {(order.items ?? []).map((item) => (
           <div key={item.id} style={{ display: 'flex', gap: 16, alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--rg-line)' }}>
-            <img src={item.image_url ?? '/assets/rug_lifestyle_1.jpg'} alt="" aria-hidden="true" style={{ width: 64, height: 64, objectFit: 'cover' }} />
+            <img src={item.image_url ?? '/assets/fashion/placeholder.jpg'} alt="" aria-hidden="true" style={{ width: 64, height: 64, objectFit: 'cover' }} />
             <div style={{ flex: 1 }}>
               <strong>{item.product_name}</strong>
               <p className="subtle">
@@ -371,8 +371,8 @@ export function AccountWishlist() {
       ) : products.length === 0 ? (
         <EmptyState
           title="Nothing saved yet"
-          message="Tap the heart on any rug to keep it here for later."
-          actionLabel="Browse rugs"
+          message="Tap the heart on any piece to keep it here for later."
+          actionLabel="Browse the collection"
           actionTo="/shop"
         />
       ) : (

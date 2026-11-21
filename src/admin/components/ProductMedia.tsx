@@ -57,7 +57,7 @@ export default function ProductMedia({ items, onAdd, onRemove, onMove, onBusy }:
       <button className="media-remove" type="button" disabled={busy} onClick={() => onRemove(index)} aria-label={`Remove media ${index + 1}`}><X size={14} /></button>
       <div className="media-order"><button type="button" disabled={busy || index === 0} onClick={() => onMove(index, -1)} aria-label={`Move media ${index + 1} earlier`}><ArrowLeft size={14} /></button><span>{index + 1}</span><button type="button" disabled={busy || index === items.length - 1} onClick={() => onMove(index, 1)} aria-label={`Move media ${index + 1} later`}><ArrowRight size={14} /></button></div>
     </div>)}</div>}
-    <label className="checkline media-framing"><input type="checkbox" checked={cardReady} disabled={busy} onChange={e=>setCardReady(e.target.checked)} /> Prepare photos for product cards (4:5, keep the full rug)</label>
+    <label className="checkline media-framing"><input type="checkbox" checked={cardReady} disabled={busy} onChange={e=>setCardReady(e.target.checked)} /> Prepare photos for product cards (4:5, keep the full product)</label>
     <input hidden ref={input} type="file" multiple accept={PRODUCT_MEDIA_ACCEPT} onChange={e => void upload(e.target.files)} />
     <button type="button" className={`media-drop ${over ? 'over' : ''}`} disabled={busy} onClick={() => input.current?.click()}
       onDragOver={e => { e.preventDefault(); setOver(true) }} onDragLeave={() => setOver(false)} onDrop={e => { e.preventDefault(); setOver(false); void upload(e.dataTransfer.files) }}>

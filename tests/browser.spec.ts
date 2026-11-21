@@ -82,6 +82,7 @@ for (const width of [390, 768, 1440])
       '/shop',
       '/collections',
       '/our-story',
+      '/fabric-care',
       '/rug-care',
       '/contact',
       '/cart',
@@ -305,7 +306,7 @@ for(const width of [320,390,768,1440])test(`featured dashboard switches chart an
  await expect(page.getByRole('heading',{name:'Inventory watch'})).toBeVisible()
  await expect(page.getByText('Low stock',{exact:true})).toBeVisible()
  await expect(page.getByRole('link',{name:'RG-TEST-001'})).toHaveAttribute('href','/admin/orders/order-test')
- await expect(page.getByRole('link',{name:/Add a rug/})).toHaveAttribute('href','/admin/products/new')
+ await expect(page.getByRole('link',{name:/Add a product/})).toHaveAttribute('href','/admin/products/new')
  await page.getByRole('group',{name:'Chart metric'}).getByRole('button',{name:'Orders',exact:true}).click()
  await expect(page.getByRole('img',{name:'Orders over time'})).toBeVisible()
  const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download summary'}).click();const file=await download
