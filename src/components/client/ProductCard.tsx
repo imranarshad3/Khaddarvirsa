@@ -94,7 +94,7 @@ export default function ProductCard({ product }: { product: ProductFull }) {
           </button>
           {inStock && (
             <button type="button" className="btn prod-buy" onClick={() => handleAdd('checkout')} disabled={busy !== null} aria-label={`Buy ${product.name} now`}>
-              {busy === 'buy' ? <Spinner /> : 'Buy Now'}
+              {busy === 'buy' ? <Spinner /> : <><Icon name="bag" /> Buy Now</>}
             </button>
           )}
         </div>

@@ -48,3 +48,8 @@
   .rg-client .prod-actions{flex-direction:column}
   .rg-client .prod-actions .btn{width:100%}
 }
+
+/* button icons at every width (luxury.css hid them on narrow cards) */
+.rg-client .prod-actions .btn{gap:.375rem}
+.rg-client .prod-actions .btn svg,.rg-client .prod-actions .prod-add svg{display:inline-block;width:.9375rem;height:.9375rem;flex-shrink:0}
+@container prodcard (max-width:19rem){.rg-client .prod-actions .btn svg,.rg-client .prod-actions .prod-add svg{display:inline-block}}
