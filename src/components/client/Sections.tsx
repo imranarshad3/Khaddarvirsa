@@ -119,8 +119,8 @@ export function StoryBand({
 
   return (
     <div className="storyband">
-      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Handwoven khaddar fabrics for men" />}
-      {reverse ? <div className="craft-photo" role="img" aria-label="Handwoven khaddar fabrics for men" /> : copy}
+      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Hands weaving khaddar on a loom" />}
+      {reverse ? <div className="craft-photo" role="img" aria-label="Hands weaving khaddar on a loom" /> : copy}
     </div>
   )
 }

@@ -10,6 +10,9 @@ const TIPS = [
   ['Dry in the Shade', 'Dry khaddar in the shade, inside out. Strong sunlight fades deep browns, navies and greens over time.', 'leaf'],
   ['Ironing', 'Iron khaddar on a medium-hot cotton setting while slightly damp, or press inside out to keep the surface texture. Avoid wringing.', 'spark'],
 ] as const
+const TIP_PHOTOS = ['care-washing', 'care-stain', 'care-rotate', 'care-storing', 'care-drying', 'care-ironing']
+const GALLERY = [['men-blue', 'Blue khaddar shalwar kameez'], ['men-waistcoat', 'Khaddar suit with a brown waistcoat'], ['men-white', 'White shalwar kameez'], ['men-lahore', 'Cream shalwar kameez in Lahore'], ['men-brown', 'Brown khaddar kameez'], ['men-charcoal', 'Khaddar suit with a charcoal waistcoat']] as const
+const photo = (name: string) => ({ backgroundImage: `url('/assets/fashion/${name}.webp')` })
 const FAQS = [
   ['How should I wash my khaddar suit?', 'Our khaddar is 100% cotton. Wash in cold water with a mild detergent, by hand or on a gentle cycle, and dry in the shade.'],
   ['What’s the best way to remove stains?', 'Blot immediately with a clean, dry cloth. Do not rub. Test a mild cleaning solution on a hidden spot first, and ask a professional dry cleaner about persistent stains.'],
@@ -32,7 +35,7 @@ function CareIcon({ name }: { name: typeof TIPS[number][2] }) {
 export default function RugCare() {
   return <>
     <section className="care-hero">
-      <div className="care-hero-photo care-photo-2" />
+      <div className="care-hero-photo" role="img" aria-label="Khaddar drying on a line in the open air" />
       <div className="care-hero-copy">
         <div className="care-crumb"><Link to="/">Home</Link><span>/</span>Fabric Care</div>
         <h1>Fabric Care</h1>
@@ -45,7 +48,7 @@ export default function RugCare() {
       <h2>Care Essentials</h2>
       <p className="care-intro">Follow these simple steps to keep your Khaddar Virsa pieces looking beautiful for years to come.</p>
       <div className="care-grid">{TIPS.map(([title, body, icon], i) => <article className="care-card" key={title}>
-        <div role="img" aria-label={title} className={`care-card-photo care-photo-${i}`} />
+        <div role="img" aria-label={title} className="care-card-photo" style={photo(TIP_PHOTOS[i])} />
         <div className="care-card-body"><span className="care-icon"><CareIcon name={icon} /></span><h3>{i + 1}. {title}</h3><p>{body}</p></div>
       </article>)}</div>
     </section>
@@ -54,7 +57,7 @@ export default function RugCare() {
       <div className="care-faq-grid">{[FAQS.slice(0,4), FAQS.slice(4)].map((column,i)=><div key={i}>{column.map(([q,a])=><Accordion title={q} key={q}><p>{a}</p></Accordion>)}</div>)}</div>
       <div className="care-support"><svg width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M11 35v-5a21 21 0 0 1 42 0v9M11 27H8a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h7V27h-4Zm42 0h3a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5h-7V27h4ZM53 47c0 8-9 10-17 10" /><rect x="27" y="54" width="10" height="6" rx="3" /></svg><div><div className="eyebrow">WE’RE HERE TO HELP</div><h3>Need More Advice?</h3><p>Our team is happy to help with personalized care<br className="desktop-only" /> recommendations for your Khaddar Virsa pieces.</p></div><div className="care-support-action"><Link className="btn" to="/contact?topic=Fabric%20care"><Icon name="mail" /> Contact Support <Icon name="arrow" /></Link><small>Let’s find the right care for your pieces.</small></div></div>
       <h3 className="care-gallery-heading">More Inspiration for a Beautiful Wardrobe</h3>
-      <div className="care-gallery">{[4,2,0,5,3,2].map((position,i)=><Link to="/collections" aria-label="Explore our collections" className={`care-photo-${position}`} key={i} />)}</div>
+      <div className="care-gallery">{GALLERY.map(([name,alt])=><Link to="/collections" aria-label={`${alt}: explore our collections`} style={photo(name)} key={name} />)}</div>
     </section>
   </>
 }

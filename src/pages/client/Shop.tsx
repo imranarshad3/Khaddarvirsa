@@ -192,7 +192,7 @@ export default function Shop() {
         shop
         eyebrow="MEN'S KHADDAR SUITS"
         description="Handwoven khaddar and khaddi suit fabrics for men, crafted with care."
-        image="/assets/fashion/hero.webp"
+        image="/assets/fashion/shop-hero.webp"
       />
 
       {loadError && <div className="notice error" role="alert">Products could not be loaded. Please refresh and try again.</div>}

@@ -18,7 +18,7 @@ const EDITS = [
     to: '/shop?room=Office%20%26%20Eid',
     photo: 'edit-neutral',
     image: null as string | null,
-    alt: 'Khaddar fabrics in soft neutral tones',
+    alt: 'Man in a beige khaddar shalwar kameez',
     title: 'Office & Eid',
     body: 'Crisp, refined khaddar suits for the office, Friday prayers, weddings and Eid.',
     cta: 'Shop Office & Eid',
@@ -26,8 +26,8 @@ const EDITS = [
   {
     to: '/shop?category=handmade-khaddi',
     photo: '',
-    image: '/assets/fashion/lifestyle.jpg',
-    alt: 'Handwoven khaddar suit fabric',
+    image: '/assets/fashion/heritage-loom.webp',
+    alt: 'Khaddi fabric on a traditional handloom',
     title: 'Handmade Khaddi',
     body: 'Hand-loomed khaddi with a texture you can feel, for winter weddings and family events.',
     cta: 'Shop Handmade Khaddi',
@@ -65,7 +65,7 @@ export default function Collections() {
         cta="Explore Our Collections"
         ctaTo="#our-collections"
         description="Curated khaddar suits for men, combining Pakistani weaving tradition with a modern wardrobe."
-        image="/assets/fashion/hero.webp"
+        image="/assets/fashion/collections-hero.webp"
       />
 
       <section className="section wrap" id="our-collections">

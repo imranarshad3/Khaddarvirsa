@@ -80,7 +80,7 @@ export default function OurStory() {
             Thoughtful yarn selection, careful weaving and hand finishing define the character of each suit.
           </p>
         </div>
-        <div className="heritage-photo" role="img" aria-label="Handwoven khaddar fabrics on display" />
+        <div className="heritage-photo" role="img" aria-label="A traditional handloom strung with cotton thread" />
       </div>
 
       <section className="section wrap cream" id="process">
