@@ -11,7 +11,7 @@ const TIPS = [
   ['Ironing', 'Iron khaddar on a medium-hot cotton setting while slightly damp, or press inside out to keep the surface texture. Avoid wringing.', 'spark'],
 ] as const
 const TIP_PHOTOS = ['care-washing', 'care-stain', 'care-rotate', 'care-storing', 'care-drying', 'care-ironing']
-const GALLERY = [['men-blue', 'Blue khaddar shalwar kameez'], ['men-waistcoat', 'Khaddar suit with a brown waistcoat'], ['men-white', 'White shalwar kameez'], ['men-lahore', 'Cream shalwar kameez in Lahore'], ['men-brown', 'Brown khaddar kameez'], ['men-charcoal', 'Khaddar suit with a charcoal waistcoat']] as const
+const GALLERY = [['men-blue', 'Black kurta with a block-printed khaddar shawl'], ['men-waistcoat', 'Black khaddar kurta with a printed shawl and sunglasses'], ['men-white', 'Black kurta with a cream khaddar scarf'], ['men-lahore', 'Black khaddar shawl against a Lahore skyline'], ['men-brown', 'Black kurta with a draped printed shawl'], ['men-charcoal', 'Printed khaddar shawl over a black kurta, back view']] as const
 const photo = (name: string) => ({ backgroundImage: `url('/assets/fashion/${name}.webp')` })
 const FAQS = [
   ['How should I wash my khaddar suit?', 'Our khaddar is 100% cotton. Wash in cold water with a mild detergent, by hand or on a gentle cycle, and dry in the shade.'],
