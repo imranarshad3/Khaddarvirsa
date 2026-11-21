@@ -1,6 +1,6 @@
 export const TEAM_MODULES = [
   {id:'products',label:'Products',description:'Products, sizes, stock and product media',path:'/admin/products'},
-  {id:'categories',label:'Categories',description:'Shawl and clothing collections and category images',path:'/admin/categories'},
+  {id:'categories',label:'Categories',description:'Khaddar collections and category images',path:'/admin/categories'},
   {id:'orders',label:'Orders',description:'Orders, fulfilment and internal notes',path:'/admin/orders'},
   {id:'customers',label:'Customers',description:'Customer directory and purchase summaries',path:'/admin/customers'},
   {id:'content',label:'Website Content',description:'Pages and homepage banners',path:'/admin/pages'},

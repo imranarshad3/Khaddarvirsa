@@ -95,14 +95,14 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
           }}
         >
           <label className="sr-only" htmlFor="site-search">
-            Search shawls &amp; outfits
+            Search khaddar suits
           </label>
           <input
             id="site-search"
             ref={inputRef}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Search khaddar, shawls and outfits by name, colour or code…"
+            placeholder="Search khaddar suits by name, colour or code…"
             autoComplete="off"
             aria-controls="search-suggestions"
           />
@@ -208,7 +208,7 @@ function Nav() {
         </div>
         <Logo />
         <div className="navright">
-          <button type="button" className="header-action header-search" onClick={() => setSearchOpen(true)} aria-label="Search shawls and outfits">
+          <button type="button" className="header-action header-search" onClick={() => setSearchOpen(true)} aria-label="Search khaddar suits">
             <span>Search</span><Icon name="search" />
           </button>
           <Link to={user ? '/account' : '/login'} className="header-action header-account" aria-label={user ? 'My account' : 'Sign in'}>
@@ -256,7 +256,7 @@ function Newsletter() {
       <div>
         <span className="newsletter-kicker">LET’S STAY IN TOUCH</span>
         <h3>A little inspiration, stitched in.</h3>
-        <p>New collections, festive edits and exclusive updates.</p>
+        <p>New khaddar arrivals, winter weaves and exclusive updates.</p>
       </div>
       <form className="subscribe" onSubmit={subscribe}>
         <label className="sr-only" htmlFor="newsletter-email">

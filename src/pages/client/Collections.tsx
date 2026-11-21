@@ -15,22 +15,22 @@ import type { Banner, ProductFull } from '../../lib/types'
 /** Occasion edits sit beside the category cards and share their card design. */
 const EDITS = [
   {
-    to: '/shop?room=Formal',
+    to: '/shop?room=Office%20%26%20Eid',
     photo: 'edit-neutral',
     image: null as string | null,
-    alt: 'Shawls in soft neutral tones',
-    title: 'Formal Elegance',
-    body: 'Refined suits and graceful shawls for dinners, events and evenings out.',
-    cta: 'Shop Formal Wear',
+    alt: 'Khaddar fabrics in soft neutral tones',
+    title: 'Office & Eid',
+    body: 'Crisp, refined khaddar suits for the office, Friday prayers, weddings and Eid.',
+    cta: 'Shop Office & Eid',
   },
   {
-    to: '/shop?room=Festive',
+    to: '/shop?category=handmade-khaddi',
     photo: '',
     image: '/assets/fashion/lifestyle.jpg',
-    alt: 'Embroidered shawls on display',
-    title: 'Festive Statements',
-    body: 'Rich colours and detailed embroidery for weddings, Eid and celebrations.',
-    cta: 'Shop Festive Wear',
+    alt: 'Handwoven khaddar suit fabric',
+    title: 'Handmade Khaddi',
+    body: 'Hand-loomed khaddi with a texture you can feel, for winter weddings and family events.',
+    cta: 'Shop Handmade Khaddi',
   },
 ]
 
@@ -64,7 +64,7 @@ export default function Collections() {
         eyebrow="CURATED BY KHADDAR VIRSA"
         cta="Explore Our Collections"
         ctaTo="#our-collections"
-        description="Curated shawls and outfits combining Pakistani tradition and thoughtful contemporary design."
+        description="Curated khaddar suits for men, combining Pakistani weaving tradition with a modern wardrobe."
         image="/assets/fashion/hero.webp"
       />
 

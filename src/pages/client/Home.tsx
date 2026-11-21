@@ -55,11 +55,11 @@ export default function Home() {
       {loadError && <div className="notice error" role="alert">We could not load the latest collection. Please refresh and try again.</div>}
       <section className="home-hero" aria-labelledby="home-hero-title">
         <div className="home-hero-copy">
-          <div className="eyebrow">{hero?.eyebrow || 'Pakistani Fashion & Shawls'}</div>
+          <div className="eyebrow">{hero?.eyebrow || "Men's Khaddar Suits"}</div>
           <h1 id="home-hero-title">{heroTitle === HERO_TITLE ? <><span>Elegance</span>{' '}<span>Woven Into</span>{' '}<span>Every Thread.</span></> : heroTitle}</h1>
           <p className="home-hero-description">
             {hero?.subtitle ||
-              'Discover timeless Pakistani fashion, beautifully crafted shawls, and elegant outfits designed to make every moment special.'}
+              'Discover handwoven Pakistani khaddar for men, from everyday Kamalia cloth to hand-loomed designer khaddi.'}
           </p>
           <div className="home-hero-actions">
             <Link className="btn home-hero-cta" to={hero?.link_url || '/shop'}>
@@ -67,7 +67,7 @@ export default function Home() {
             </Link>
             <Link className="home-hero-story" to="/shop?category=handmade-khaddi">Shop Handmade Khaddi <span aria-hidden="true">↗</span></Link>
           </div>
-          <p className="home-hero-signature"><span aria-hidden="true" />Fine fabrics. Delicate embroidery. Made with care.</p>
+          <p className="home-hero-signature"><span aria-hidden="true" />Pure cotton. Handloom texture. Made with care.</p>
         </div>
         <figure className="home-hero-figure">
           <div className="home-hero-image">
@@ -95,7 +95,7 @@ export default function Home() {
         <SectionTitle
           eyebrow="BESTSELLERS"
           title="Best Sellers"
-          description="Our most-loved shawls and outfits, chosen for fabric, finish and fit."
+          description="Our most-loved khaddar suits, chosen for fabric, texture and finish."
           linkTo="/shop"
         />
         <div className="gridprod">

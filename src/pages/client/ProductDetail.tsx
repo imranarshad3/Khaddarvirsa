@@ -328,7 +328,7 @@ export default function ProductDetail() {
 
       <FeatureRow />
       <section className="section wrap product-editorial">
-        <div className="product-craft-visual"><div className="product-craft-caption"><div className="eyebrow">CRAFTED WITH CARE</div><h2>The Art of Pakistani Embroidery</h2><p>Fine fabrics, tradition and the beauty of patient work.</p><Link className="btn outline" to="/our-story">Discover Our Craft →</Link></div></div>
+        <div className="product-craft-visual"><div className="product-craft-caption"><div className="eyebrow">CRAFTED WITH CARE</div><h2>The Art of Pakistani Khaddar</h2><p>Fine fabrics, tradition and the beauty of patient work.</p><Link className="btn outline" to="/our-story">Discover Our Craft →</Link></div></div>
         <div>          <div className="product-information">
             <Accordion title="Product Details" defaultOpen>
               <p>{product.description || product.short_description}</p>
@@ -337,7 +337,7 @@ export default function ProductDetail() {
               <p>
                 {[
                   product.material && `Fabric: ${product.material}`,
-                  product.weave_technique && `Embroidery: ${product.weave_technique}`,
+                  product.weave_technique && `Weave: ${product.weave_technique}`,
                   product.dimensions && `Size: ${product.dimensions}`,
                   product.room && `Occasion: ${product.room}`,
                   product.style && `Season: ${product.style}`,

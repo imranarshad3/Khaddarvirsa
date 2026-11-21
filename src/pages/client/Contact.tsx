@@ -72,7 +72,7 @@ export default function Contact() {
       <PageBanner
         title="Contact Us"
         eyebrow="WE ARE HERE TO HELP"
-        description="Questions about shawls, sizing, or custom orders? Our team would love to hear from you."
+        description="Questions about fabrics, colours or your order? Our team would love to hear from you."
         cta="Send a Message"
         ctaTo="#inquiry-form"
         image="/assets/fashion/lifestyle.jpg"
@@ -157,7 +157,7 @@ export default function Contact() {
 
       <section className="contact-location">
         <div className="contact-location-copy"><div className="eyebrow">A MORE PERSONAL EXPERIENCE</div><h2>Let’s Find the Right Piece for You</h2><p>Visit our Lahore store for shopping and exchanges, open every day from 9 am to 5 pm, including Sunday.</p>{store.location && <p className="location-address"><Icon name="pin" />{store.location}</p>}<Link className="btn" to="/contact?topic=Product%20advice">Plan Your Inquiry <Icon name="arrow" /></Link></div>
-        <div className="contact-location-photo" role="img" aria-label="Shawls and embroidered outfits on display" />
+        <div className="contact-location-photo" role="img" aria-label="Handwoven khaddar fabrics for men" />
       </section>
 
       <section className="section cream">

@@ -77,7 +77,7 @@ export default function Cart() {
 
   return (
     <>
-      <PageBanner title="Your Cart" description="Beautiful shawls. Timeless style." image="/assets/fashion/lifestyle.jpg" />
+      <PageBanner title="Your Cart" description="Handwoven khaddar. Timeless style." image="/assets/fashion/lifestyle.jpg" />
 
       <section className="section wrap">
         {cart.error && <div className="notice error" role="alert">{cart.error} <button className="linkbtn" type="button" onClick={() => void cart.reload()}>Try again</button></div>}
@@ -90,7 +90,7 @@ export default function Cart() {
         ) : cart.lines.length === 0 ? (
           <EmptyState
             title="Your cart is empty"
-            message="Browse the collection and add a shawl or outfit to get started."
+            message="Browse the collection and add a khaddar suit to get started."
             actionLabel="Shop the collection"
             actionTo="/shop"
           />

@@ -3,22 +3,21 @@ import { Accordion } from '../../components/client/Primitives'
 import Icon from '../../components/client/Icon'
 
 const TIPS = [
-  ['Gentle Cleaning', 'Dry clean embroidered and luxury pieces. Hand wash everyday lawn and cotton gently in cold water with a mild detergent.', 'vacuum'],
+  ['Gentle Cleaning', 'Hand wash or machine wash your stitched khaddar on a gentle cycle in cold water with a mild detergent. Wash dark colours separately.', 'vacuum'],
   ['Stain Care', 'Blot spills immediately with a clean, dry cloth. Test a mild, pH-neutral soap on a hidden area first. Avoid harsh chemicals or rubbing.', 'drop'],
-  ['Rotate Your Shawls', 'Wear and air your shawls in turn so no single piece takes all the wear, and refold along different lines.', 'rotate'],
-  ['Storing Shawls', 'Make sure each piece is clean and dry. Fold loosely, wrap in a breathable cotton bag and keep in a cool, dry place away from moths.', 'box'],
-  ['Protect Fine Fabrics', 'Keep wool, pashmina and silk away from direct sunlight and damp to preserve their softness and colour.', 'leaf'],
-  ['Embroidery Care', 'Iron embroidered pieces inside out on low heat with a pressing cloth, and never wring or tumble dry them.', 'spark'],
+  ['Rotate Your Suits', 'Wear your suits in turn so no single one takes all the wear, and air them between wears.', 'rotate'],
+  ['Storing Khaddar', 'Make sure each piece is clean and dry. Fold loosely, wrap in a breathable cotton bag and keep in a cool, dry place away from moths.', 'box'],
+  ['Dry in the Shade', 'Dry khaddar in the shade, inside out. Strong sunlight fades deep browns, navies and greens over time.', 'leaf'],
+  ['Ironing', 'Iron khaddar on a medium-hot cotton setting while slightly damp, or press inside out to keep the surface texture. Avoid wringing.', 'spark'],
 ] as const
 const FAQS = [
-  ['How should I wash my shawl?', 'Dry cleaning is safest for wool, pashmina and embroidered shawls. If the care label allows, hand wash in cold water with a mild wool wash and dry flat in the shade.'],
+  ['How should I wash my khaddar suit?', 'Our khaddar is 100% cotton. Wash in cold water with a mild detergent, by hand or on a gentle cycle, and dry in the shade.'],
   ['What’s the best way to remove stains?', 'Blot immediately with a clean, dry cloth. Do not rub. Test a mild cleaning solution on a hidden spot first, and ask a professional dry cleaner about persistent stains.'],
-  ['Can I iron embroidered pieces?', 'Yes, inside out on a low setting with a pressing cloth. Avoid steaming directly over beadwork, sequins or zari.'],
-  ['How do I store my shawls?', 'Make sure they are clean and completely dry, fold loosely, and wrap in a breathable cotton bag. Natural moth repellents such as cedar help in storage.'],
-  ['Will my wool shawl shed?', 'A little shedding is normal with natural wool, particularly when a shawl is new. It settles after the first few wears.'],
+  ['Should I wash the fabric before stitching?', 'Many tailors prefer to soak or wash cotton khaddar once before cutting, since natural cotton can relax slightly in the first wash. Ask your tailor what they recommend.'],
+  ['How do I store my khaddar?', 'Make sure they are clean and completely dry, fold loosely, and wrap in a breathable cotton bag. Natural moth repellents such as cedar help in storage.'],
   ['Will the colours run?', 'Deep and bright dyes may release colour in the first wash. Wash dark pieces separately in cold water, or choose dry cleaning.'],
-  ['How often should I dry clean?', 'It depends on how often you wear a piece. Shawls usually need cleaning once or twice a season; formal wear after each event where it was worn for long.'],
-  ['What if my outfit gets wet?', 'Blot away moisture and dry flat or on a padded hanger with good airflow, away from direct heat and sunlight.'],
+  ['How often should I dry clean?', 'Cotton khaddar does not need dry cleaning for everyday care. A gentle wash at home keeps it fresh; dry clean only if your tailor added linings or trims that need it.'],
+  ['What if my suit gets soaked in the rain?', 'Blot away moisture and dry flat or on a padded hanger with good airflow, away from direct heat and sunlight.'],
 ]
 function CareIcon({ name }: { name: typeof TIPS[number][2] }) {
   if (name === 'leaf' || name === 'spark') return <Icon name={name} />
@@ -38,7 +37,7 @@ export default function RugCare() {
         <div className="care-crumb"><Link to="/">Home</Link><span>/</span>Fabric Care</div>
         <h1>Fabric Care</h1>
         <h2>Simple Care for a Longer, More Beautiful Life</h2>
-        <p>Our shawls and outfits are crafted to be worn and loved for years. With a little care, your Khaddar Virsa pieces will keep their softness, colour and beauty for seasons to come.</p>
+        <p>Our khaddar suits are woven to be worn and loved for years. With a little care, your Khaddar Virsa pieces will keep their softness, colour and beauty for seasons to come.</p>
         <Link className="btn" to="/shop">Shop the Collection <Icon name="arrow" /></Link>
       </div>
     </section>

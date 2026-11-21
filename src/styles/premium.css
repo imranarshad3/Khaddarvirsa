@@ -1102,3 +1102,11 @@
   .rg-client .acct-nav .acct-admin-link:hover{background:#d9e3d5}
   .rg-client .acct-admin-link:focus-visible{outline:2px solid #375344;outline-offset:3px}
 }
+
+/* Equal-height product cards: titles clamp to two lines and colour chips stay on one swipeable row. */
+.rg-client .prod h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:2.7em}
+.rg-client .prod .sizes{min-height:2.25rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.rg-client .prod .sizes::-webkit-scrollbar{display:none}
+.rg-client .prod .sizes button{flex:none;white-space:nowrap}
+.rg-client .prod .price{margin-top:auto}
+@media(max-width:700px){.rg-client .prod .sizes{min-height:2.75rem}}

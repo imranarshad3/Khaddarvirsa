@@ -47,7 +47,7 @@ export function PageBanner({
 export function FeatureRow() {
   const features = [
     ['leaf', 'Premium Fabrics', '100% chemical-free, soft on skin'],
-    ['heart', 'Handcrafted Embroidery', 'Finished with patience and care'],
+    ['heart', 'Handwoven Khaddar', 'Woven with patience and care'],
     ['spark', '15-Day Returns', 'Easy exchange or refund'],
     ['truck', 'Free Delivery', 'Cash on Delivery across Pakistan'],
   ] as const
@@ -110,7 +110,7 @@ export function StoryBand({
         {banner?.subtitle ||
           'Every Khaddar Virsa piece celebrates our rich heritage, redesigned for the contemporary wardrobe. Embrace your roots and elevate your everyday look.'}
       </p>
-      <div className="craft-values">{([['leaf','Fine fabrics'],['heart','Hand embroidery'],['spark','Individual character']] as const).map(([name,label])=><div className="craft-value" key={name}><Icon name={name}/><span>{label}</span></div>)}</div>
+      <div className="craft-values">{([['leaf','Fine fabrics'],['heart','Handloom weaving'],['spark','Individual character']] as const).map(([name,label])=><div className="craft-value" key={name}><Icon name={name}/><span>{label}</span></div>)}</div>
       <Link className="btn" to={banner?.link_url || '/our-story'}>
         {banner?.cta_label || 'Discover Our Story'} →
       </Link>
@@ -119,8 +119,8 @@ export function StoryBand({
 
   return (
     <div className="storyband">
-      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Shawls and embroidered outfits on display" />}
-      {reverse ? <div className="craft-photo" role="img" aria-label="Shawls and embroidered outfits on display" /> : copy}
+      {reverse ? copy : image ? <img src={image} alt="" aria-hidden="true" loading="lazy" /> : <div className="craft-photo" role="img" aria-label="Handwoven khaddar fabrics for men" />}
+      {reverse ? <div className="craft-photo" role="img" aria-label="Handwoven khaddar fabrics for men" /> : copy}
     </div>
   )
 }
@@ -131,7 +131,7 @@ export function LifestyleBand({ banner, fallbackImage = '/assets/fashion/lifesty
       <img src={banner?.image_url || fallbackImage} alt="" aria-hidden="true" loading="lazy" />
       <div className="text">
         {banner?.eyebrow && <div className="eyebrow">{banner.eyebrow}</div>}
-        <h2>{banner?.title || 'Shawls for Every Season'}</h2>
+        <h2>{banner?.title || 'Khaddar for Every Season'}</h2>
         {banner?.subtitle && <p>{banner.subtitle}</p>}
         <Link className="btn" to={banner?.link_url || '/shop'}>
           {banner?.cta_label || 'Shop Now'} →
@@ -155,7 +155,7 @@ export function PhilosophyBand() {
     <section className="section cream center philosophy">
       <div className="eyebrow">A CLOSER LOOK</div>
       <h2>Made to Feel Like You</h2>
-      <p className="subtitle">From quiet neutrals to festive embroidery, find a piece that fits the way you live.</p>
+      <p className="subtitle">From quiet neutrals to rich winter weaves, find a suit fabric that fits the way you live.</p>
       <div className="testimonials">
         {items.map(([title, body], index) => (
           <Reveal className="quote" key={title}>
@@ -263,7 +263,7 @@ export function InstagramStrip({ images, handle }: { images: string[]; handle?: 
       </div>
       <div className="gallery journal-cards" data-count={photos.length} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}>
         {order.map(index => <figure className="journal-card" data-photo={index} key={index}>
-          <img className="journal-current" src={photos[index]} alt={`Shawl and outfit styling inspiration ${index + 1}`} loading="lazy" decoding="async" />
+          <img className="journal-current" src={photos[index]} alt={`Men's khaddar suit fabric ${index + 1}`} loading="lazy" decoding="async" />
         </figure>)}
       </div>
     </section>

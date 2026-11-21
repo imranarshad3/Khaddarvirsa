@@ -77,13 +77,15 @@ export default function ProductCard({ product }: { product: ProductFull }) {
           <Stars rating={product.rating_count > 0 ? Number(product.rating_avg) : 0} />
           <span>{product.rating_count > 0 ? `(${product.rating_count})` : 'No reviews yet'}</span>
         </div>
-        {variants.length > 0 && (
-          <div className="sizes" aria-label="Available sizes">
-            <span className="size-caption">Available sizes</span>
-            {variants.slice(0, 3).map((v) => (
+        {variants.length > 0 ? (
+          <div className="sizes" aria-label="Available colours">
+            <span className="size-caption">Available colours</span>
+            {variants.map((v) => (
               <button type="button" key={v.id} aria-pressed={selectedVariant?.id === v.id} disabled={!v.is_active || v.stock_quantity <= 0} onClick={() => setVariantId(v.id)} aria-label={`Select ${v.label} for ${product.name}`}>{v.label}</button>
             ))}
           </div>
+        ) : (
+          <div className="sizes" aria-hidden="true" />
         )}
         <div className="price">{money(unitPrice)}</div>
         <div className="prod-actions">

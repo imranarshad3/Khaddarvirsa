@@ -12,7 +12,7 @@ import type { Banner, Page } from '../../lib/types'
 const PROCESS: [string, string, string][] = [
   ['01', 'Fabric Selection', 'Soft, lasting fabrics chosen for drape and character.'],
   ['02', 'Colour & Design', 'A considered palette brings the design together.'],
-  ['03', 'Embroidery', 'Patient work brings every motif to life.'],
+  ['03', 'Weaving', 'Patient handloom work gives every metre its texture.'],
   ['04', 'Finishing', 'Careful finishing and a final quality check.'],
   ['05', 'A Timeless Piece', 'Ready to be worn and treasured.'],
 ]
@@ -63,7 +63,7 @@ export default function OurStory() {
         <div className="foundation-grid">
           {[
             ['The Beauty of Fine Fabrics', 'Softness, warmth and drape begin with the fabric behind every piece.', 'foundation-wool', '/shop?category=handmade-khaddi'],
-            ['Time-Honored Craftsmanship', 'Patient hands bring embroidery to life, one considered stitch at a time.', 'foundation-hands', '/shop'],
+            ['Time-Honored Craftsmanship', 'Patient hands weave khaddar on the loom, one considered thread at a time.', 'foundation-hands', '/shop'],
             ['A Naturally Rich Palette', 'Quiet neutrals and jewel tones create a wardrobe for every occasion.', 'foundation-palette', '/collections'],
             ['Designed for Generations', 'Thoughtful design and gentle care help your favourite piece become part of your story.', 'foundation-rugs', '/fabric-care'],
           ].map(([title,body,photo,to])=><article key={title}><div className={`foundation-photo ${photo}`} role="img" aria-label={title}/><h3>{title}</h3><p>{body}</p><Link className="inline-link" to={to}>Discover More →</Link></article>)}
@@ -77,10 +77,10 @@ export default function OurStory() {
             A Legacy That Lives On
           </h2>
           <p>
-            Thoughtful fabric selection, careful embroidery and hand finishing define the character of each piece.
+            Thoughtful yarn selection, careful weaving and hand finishing define the character of each suit.
           </p>
         </div>
-        <div className="heritage-photo" role="img" aria-label="Embroidered shawls and fabrics on display" />
+        <div className="heritage-photo" role="img" aria-label="Handwoven khaddar fabrics on display" />
       </div>
 
       <section className="section wrap cream" id="process">

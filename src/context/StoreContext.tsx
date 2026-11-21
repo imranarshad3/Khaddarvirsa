@@ -70,7 +70,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [reload])
 
   useEffect(() => {
-    document.title = `${store.name} · Premium Khaddar, Shawls & Pakistani Fashion`
+    document.title = `${store.name} · Premium Men's Khaddar Suits`
     if (store.favicon_url) {
       let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
       if (!link) {
