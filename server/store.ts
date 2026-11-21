@@ -60,7 +60,7 @@ const defaults: Dependencies = {
   },
 }
 export function allowedOrigins(env: Env) {
-  const origins=['https://rugistan.vercel.app']
+  const origins=['https://khaddarvirsa.store','https://www.khaddarvirsa.store','https://rugistan.vercel.app']
   if(env.VERCEL_URL)origins.push('https://'+env.VERCEL_URL)
   if(!env.VERCEL)for(const port of [5173,5174,5175])origins.push(`http://localhost:${port}`,`http://127.0.0.1:${port}`)
   return origins
