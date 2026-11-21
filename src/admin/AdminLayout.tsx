@@ -91,6 +91,7 @@ export default function AdminLayout() {
         <aside id="admin-sidebar" aria-label="Studio navigation" inert={!sidebarVisible} className={`side ${sideOpen ? 'open' : ''}`.trim()}>
           <button type="button" className="sidebar-close" aria-label="Close sidebar" onClick={() => {setSideOpen(false); toggleRef.current?.focus()}}><X size={20} aria-hidden="true" /></button>
           <Link to="/admin" className="logo">
+            <span className="logo-mark" aria-hidden="true">{store.name.split(/\s+/).map(w => w[0]).join('').slice(0, 2)}</span>
             {store.name}
             <small>{store.tagline}</small>
           </Link>
