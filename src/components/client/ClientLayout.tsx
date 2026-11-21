@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Search, X } from 'lucide-react'
 import { storeWrite } from '../../lib/storeApi'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
@@ -102,15 +102,15 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             ref={inputRef}
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            placeholder="Search khaddar suits by name, colour or code…"
+            placeholder="Search by colour or code…"
             autoComplete="off"
             aria-controls="search-suggestions"
           />
-          <button className="btn" type="submit">
-            Search
+          <button className="btn search-submit" type="submit" aria-label="Search">
+            <Search size={18} aria-hidden="true" /><span>Search</span>
           </button>
-          <button className="btn outline search-close" type="button" onClick={onClose}>
-            Close
+          <button className="btn outline search-close" type="button" onClick={onClose} aria-label="Close search">
+            <X size={18} aria-hidden="true" /><span>Close</span>
           </button>
         </form>
         {q.length >= 2 && (

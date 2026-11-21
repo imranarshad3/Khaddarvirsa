@@ -462,9 +462,11 @@
    .rg-client .footer .newsletter {grid-column:1/-1}
    .rg-client .footer .footer-social {grid-column:1/-1}
    .rg-client .legal {gap:.75rem;flex-direction:column;padding:1.25rem;align-items:flex-start}
-   .rg-client .search-panel {padding:1.25rem}
-   .rg-client .search-panel form {grid-template-columns:minmax(0,1fr) auto}
-   .rg-client .search-panel .search-close {grid-column:1/-1;justify-self:end;min-height:2.75rem}
+   .rg-client .search-panel {padding:.875rem 1rem}
+   .rg-client .search-panel form {grid-template-columns:minmax(0,1fr) auto auto;gap:.5rem;align-items:stretch}
+   .rg-client .search-panel input {padding:.75rem .875rem;font-size:1rem;height:2.875rem}
+   .rg-client .search-panel .search-submit,.rg-client .search-panel .search-close {width:2.875rem;min-width:0;height:2.875rem;min-height:0;padding:0;display:grid;place-items:center}
+   .rg-client .search-panel .search-submit span,.rg-client .search-panel .search-close span {display:none}
    .rg-client .banner,.rg-client .banner.banner-editorial,.rg-client .banner.banner-editorial.shop-hero {grid-template-columns:minmax(0,1fr);min-height:0;display:flex;flex-direction:column}
    .rg-client .banner>img,.rg-client .banner.banner-editorial>img,.rg-client .banner.banner-editorial.shop-hero>img {position:static;inset:auto;order:2;width:100%;height:auto;aspect-ratio:16/10;max-height:22rem;object-position:center 65%}
    .rg-client .banner .inner,.rg-client .banner.banner-editorial .inner,.rg-client .banner.banner-editorial.shop-hero .inner {padding:2rem 1.25rem 2.5rem;order:1}
