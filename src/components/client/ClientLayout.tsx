@@ -10,6 +10,7 @@ import { useWishlist } from '../../context/WishlistContext'
 import { useToast } from '../../context/ToastContext'
 import { Logo, Spinner } from './Primitives'
 import Icon from './Icon'
+import AddedToCart from './AddedToCart'
 import CurrencySelector from './CurrencySelector'
 import { useCurrency, useMoney } from '../../lib/currency'
 import { fetchProducts } from '../../lib/api'
@@ -217,7 +218,7 @@ function Nav() {
             <Icon name="heart" /><span className="header-wishlist-count">{wishlist.count}</span>
           </Link>
           <Link to="/cart" className="header-action header-cart" aria-label={`Cart, ${cart.count} items`}>
-            <Icon name="cart" /><span className="header-cart-count">{cart.count}</span>
+            <Icon name="cart" /><span className="header-cart-count" key={cart.count}>{cart.count}</span>
           </Link>
         </div>
       </nav>
@@ -457,6 +458,7 @@ export default function ClientLayout() {
         <Outlet />
       </main>
       <Footer />
+      <AddedToCart />
     </div>
   )
 }

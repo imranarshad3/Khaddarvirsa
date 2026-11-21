@@ -1,4 +1,5 @@
 import { useMoney } from '../../lib/currency'
+import { showAddedToCart } from './AddedToCart'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useCart } from '../../context/CartContext'
@@ -43,7 +44,7 @@ export default function ProductCard({ product }: { product: ProductFull }) {
       return
     }
     if (then === 'checkout') navigate('/checkout')
-    else toast.success(`${product.name} added to your cart.`)
+    else showAddedToCart({ name: product.name, slug: product.slug, image: productCover(product), option: selectedVariant?.label, quantity: 1, unitPrice })
   }
 
   return (

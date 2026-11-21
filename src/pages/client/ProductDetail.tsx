@@ -12,7 +12,8 @@ import { useCart } from '../../context/CartContext'
 import { useWishlist } from '../../context/WishlistContext'
 import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../context/AuthContext'
-import ProductCard from '../../components/client/ProductCard'
+import ProductCard, { productCover } from '../../components/client/ProductCard'
+import { showAddedToCart } from '../../components/client/AddedToCart'
 import { FeatureRow, SectionTitle } from '../../components/client/Sections'
 import { Accordion, EmptyState, QuantityPicker, Spinner, Stars } from '../../components/client/Primitives'
 import type { ColorSwatch, ProductFull, Review } from '../../lib/types'
@@ -139,7 +140,7 @@ export default function ProductDetail() {
       return
     }
     if (then === 'checkout') navigate('/checkout')
-    else toast.success(`${product.name} added to your cart.`)
+    else showAddedToCart({ name: product.name, slug: product.slug, image: productCover(product), option: variant?.label, quantity, unitPrice })
   }
 
   if (loading) {
