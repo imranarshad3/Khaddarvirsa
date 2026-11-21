@@ -13,6 +13,7 @@ import './styles/admin-theme.css'
 import './styles/luxury.css'
 import './styles/admin-premium.css'
 import './styles/clerk.css'
+import './styles/carousel.css'
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 

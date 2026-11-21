@@ -1,0 +1,50 @@
+/* Swipe carousels (home best sellers, category strips, category circles) and the compact mobile product card. */
+.rg-client .carousel{position:relative;--per-view:4;--gap:1.5rem}
+.rg-client .carousel-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;padding-bottom:.25rem}
+.rg-client .carousel-track::-webkit-scrollbar{display:none}
+.rg-client .carousel-track>*{scroll-snap-align:start;min-width:0}
+.rg-client .carousel-btn{position:absolute;top:38%;z-index:3;width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid #e4d5c2;background:#fffaf2f2;color:var(--rg-ink,#352218);display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px #30251d1f;transition:opacity .2s}
+.rg-client .carousel-btn.prev{left:-.75rem}
+.rg-client .carousel-btn.next{right:-.75rem}
+.rg-client .carousel-btn:disabled{opacity:0;pointer-events:none}
+.rg-client .carousel-btn:focus-visible{outline:2px solid var(--rg-bronze,#9a6b3f);outline-offset:2px}
+
+/* category strip header bar, like a shelf label */
+.rg-client .cat-row{padding-top:1.5rem;padding-bottom:1.5rem}
+.rg-client .cat-row-head{display:flex;align-items:center;justify-content:space-between;background:#f2e7d6;padding:.75rem 1rem;margin-bottom:1rem;color:var(--rg-ink,#352218);text-decoration:none}
+.rg-client .cat-row-head h2{font-size:1.375rem;margin:0}
+.rg-client .cat-row-head span[aria-hidden]{font-size:1.25rem}
+
+/* round category tiles: mobile only, desktop keeps the large tiles */
+.rg-client .cat-circles{display:none;--per-view:3.6;--gap:.875rem}
+.rg-client .cat-circle{display:flex;flex-direction:column;align-items:center;gap:.5rem;text-decoration:none;color:var(--rg-ink,#352218);text-align:center;font-size:.8125rem;font-weight:500;line-height:1.25}
+.rg-client .cat-circle img{width:100%;aspect-ratio:1;border-radius:50%;object-fit:cover;border:2px solid #e9d9c0}
+.rg-client .cat-circles .carousel-btn{top:28%;width:2rem;height:2rem}
+
+@media(max-width:1000px){.rg-client .carousel{--per-view:3;--gap:1rem}}
+
+@media(max-width:700px){
+  .rg-client .carousel{--per-view:2;--gap:.75rem}
+  .rg-client .cat-circles{display:block;--per-view:3.6;--gap:.875rem}
+  .rg-client main[data-page=home] .tiles{display:none}
+  .rg-client .carousel-btn{width:2.125rem;height:2.125rem}
+  .rg-client .carousel-btn.prev{left:-.375rem}
+  .rg-client .carousel-btn.next{right:-.375rem}
+  .rg-client .cat-row-head h2{font-size:1.125rem}
+
+  /* compact card: drop the rating line and caption so two cards fit side by side */
+  .rg-client .prod .card-rating,.rg-client .prod .size-caption{display:none}
+  .rg-client .prod .prodbody{padding:.625rem}
+  .rg-client .prod .prodbody h3{font-size:.9375rem;line-height:1.3}
+  .rg-client .prod .price{font-size:.9375rem;margin:.25rem 0 .5rem}
+  .rg-client .prod .prod-actions{gap:.375rem}
+  .rg-client main .prod .sizes button{min-height:0;height:auto;padding:3px 6px;font-size:.625rem;white-space:nowrap}
+  .rg-client .prod .prod-actions .btn{min-height:2.375rem;padding:.5rem;font-size:.6875rem}
+}
+
+/* keep two columns even on the narrowest phones */
+@media(max-width:360px){
+  .rg-client .gridprod,.rg-client main[data-page=shop] .gridprod.three{grid-template-columns:repeat(2,minmax(0,1fr));gap:.625rem}
+  .rg-client .prod-actions{flex-direction:column}
+  .rg-client .prod-actions .btn{width:100%}
+}

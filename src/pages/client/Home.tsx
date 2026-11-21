@@ -6,6 +6,7 @@ import { fetchBanners, fetchProducts } from '../../lib/api'
 import { useStore } from '../../context/StoreContext'
 import ProductCard, { ProductCardSkeleton, productCover } from '../../components/client/ProductCard'
 import {
+  CategoryCircles,
   CategoryTiles,
   FeatureRow,
   InstagramStrip,
@@ -15,7 +16,8 @@ import {
   StoryBand,
 } from '../../components/client/Sections'
 import { Reveal } from '../../components/client/Primitives'
-import type { Banner, ProductFull } from '../../lib/types'
+import Carousel from '../../components/client/Carousel'
+import type { Banner, Category, ProductFull } from '../../lib/types'
 
 const HERO_TITLE = 'Elegance Woven Into Every Thread.'
 const HERO_FALLBACK = '/assets/fashion/hero.webp'
@@ -26,23 +28,32 @@ export default function Home() {
   const [featured, setFeatured] = useState<ProductFull[]>([])
   const [loadError, setLoadError] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [rows, setRows] = useState<{ category: Category; products: ProductFull[] }[]>([])
 
   useEffect(() => {
     let active = true
     ;(async () => {
       const [bannerMap, result] = await Promise.all([
         fetchBanners(),
-        fetchProducts({ featured: true, perPage: 4, sort: 'featured' }),
+        fetchProducts({ featured: true, perPage: 8, sort: 'featured' }),
       ])
       if (!active) return
       setBanners(bannerMap)
-      setFeatured(result.products.length ? result.products : (await fetchProducts({ perPage: 4 })).products)
+      setFeatured(result.products.length ? result.products : (await fetchProducts({ perPage: 8 })).products)
       setLoading(false)
     })().catch(() => { if (active) { setLoadError(true); setLoading(false) } })
     return () => {
       active = false
     }
   }, [])
+
+  useEffect(() => {
+    let active = true
+    Promise.all(categories.map(async (category) => ({ category, products: (await fetchProducts({ categories: [category.slug], perPage: 8 })).products })))
+      .then((list) => { if (active) setRows(list.filter((r) => r.products.length)) })
+      .catch(() => { /* category strips are optional; best sellers still render */ })
+    return () => { active = false }
+  }, [categories])
 
   const hero = banners.home_hero
   const heroTitle = hero?.title || HERO_TITLE
@@ -87,6 +98,7 @@ export default function Home() {
             description="Handwoven khaddar suit fabrics for men, for every season."
             linkTo="/collections"
           />
+          <CategoryCircles categories={categories} />
           <CategoryTiles categories={categories} />
         </Reveal>
       )}
@@ -98,12 +110,25 @@ export default function Home() {
           description="Our most-loved khaddar suits, chosen for fabric, texture and finish."
           linkTo="/shop"
         />
-        <div className="gridprod">
+        <Carousel label="best sellers" className="prod-carousel">
           {loading
             ? Array.from({ length: 4 }, (_, i) => <ProductCardSkeleton key={i} />)
             : featured.map((p) => <ProductCard key={p.id} product={p} />)}
-        </div>
+        </Carousel>
       </section>
+
+      {rows.map(({ category, products }) => (
+        <section className="section wrap cat-row" key={category.id}>
+          <Link className="cat-row-head" to={`/shop?category=${category.slug}`}>
+            <h2>{category.name}</h2>
+            <span aria-hidden="true">→</span>
+            <span className="sr-only">View all {category.name}</span>
+          </Link>
+          <Carousel label={category.name} className="prod-carousel">
+            {products.map((p) => <ProductCard key={p.id} product={p} />)}
+          </Carousel>
+        </section>
+      ))}
 
       <StoryBand banner={banners.home_story} />
 

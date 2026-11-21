@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowDownRight, Sparkles, Pause, Play } from 'lucide-react'
 import Icon from './Icon'
+import Carousel from './Carousel'
 import { Link } from 'react-router-dom'
 import { Reveal, SectionTitle } from './Primitives'
 import type { Banner, Category } from '../../lib/types'
@@ -89,6 +90,20 @@ export function CategoryTiles({ categories, three = false }: { categories: Categ
         </article>
       ))}
     </div>
+  )
+}
+
+export function CategoryCircles({ categories }: { categories: Category[] }) {
+  if (!categories.length) return null
+  return (
+    <Carousel label="categories" className="cat-circles">
+      {categories.map((c) => (
+        <Link className="cat-circle" key={c.id} to={`/shop?category=${c.slug}`}>
+          <img src={c.image_url || FALLBACK} alt="" loading="lazy" />
+          <span>{c.name}</span>
+        </Link>
+      ))}
+    </Carousel>
   )
 }
 
