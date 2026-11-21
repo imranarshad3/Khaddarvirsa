@@ -62,7 +62,7 @@ export default function OurStory() {
       <section className="section wrap story-foundations">
         <div className="foundation-grid">
           {[
-            ['The Beauty of Fine Fabrics', 'Softness, warmth and drape begin with the fabric behind every piece.', 'foundation-wool', '/shop?category=premium-shawls'],
+            ['The Beauty of Fine Fabrics', 'Softness, warmth and drape begin with the fabric behind every piece.', 'foundation-wool', '/shop?category=handmade-khaddi'],
             ['Time-Honored Craftsmanship', 'Patient hands bring embroidery to life, one considered stitch at a time.', 'foundation-hands', '/shop'],
             ['A Naturally Rich Palette', 'Quiet neutrals and jewel tones create a wardrobe for every occasion.', 'foundation-palette', '/collections'],
             ['Designed for Generations', 'Thoughtful design and gentle care help your favourite piece become part of your story.', 'foundation-rugs', '/fabric-care'],

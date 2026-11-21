@@ -65,13 +65,13 @@ export default function Home() {
             <Link className="btn home-hero-cta" to={hero?.link_url || '/shop'}>
               {hero?.cta_label || 'Explore Collection'} <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
-            <Link className="home-hero-story" to="/shop?category=premium-shawls">Shop Shawls <span aria-hidden="true">↗</span></Link>
+            <Link className="home-hero-story" to="/shop?category=handmade-khaddi">Shop Handmade Khaddi <span aria-hidden="true">↗</span></Link>
           </div>
           <p className="home-hero-signature"><span aria-hidden="true" />Fine fabrics. Delicate embroidery. Made with care.</p>
         </div>
         <figure className="home-hero-figure">
           <div className="home-hero-image">
-            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1672w, /assets/fashion/hero-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={941} fetchPriority="high" alt="A model in a royal-blue embroidered organza outfit with a sheer dupatta" />
+            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1672w, /assets/fashion/hero-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={941} fetchPriority="high" alt="Folded handwoven khaddar suit fabrics for men in cream, camel, brown, charcoal and black" />
           </div>
           <figcaption><span>The art of dressing well</span><span>Khaddar Virsa · Feel the Fabric of Tradition</span></figcaption>
         </figure>
@@ -84,7 +84,7 @@ export default function Home() {
           <SectionTitle
             eyebrow="EXPLORE BY STYLE"
             title="Shop by Category"
-            description="Shawls, suits and festive wear for every occasion."
+            description="Handwoven khaddar suit fabrics for men, for every season."
             linkTo="/collections"
           />
           <CategoryTiles categories={categories} />

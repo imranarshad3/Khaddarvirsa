@@ -192,8 +192,8 @@ export default function Shop() {
         title="Shop All"
         editorial
         shop
-        eyebrow="SHAWLS & WOMEN'S CLOTHING"
-        description="Premium shawls, embroidered suits and festive wear, crafted with care."
+        eyebrow="MEN'S KHADDAR SUITS"
+        description="Handwoven khaddar and khaddi suit fabrics for men, crafted with care."
         image="/assets/fashion/hero.webp"
       />
 
