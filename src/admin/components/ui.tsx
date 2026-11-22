@@ -258,9 +258,11 @@ export function ImageUploader({
   multiple = false,
   className = 'btn soft',
   onError,
+  prepare,
 }: {
   folder: string
   onUploaded: (urls: string[]) => void
+  prepare?: (file: File) => Promise<File>
   label?: string
   multiple?: boolean
   className?: string
@@ -276,7 +278,7 @@ export function ImageUploader({
       const urls: string[] = []
       for (const file of Array.from(files)) {
         if (file.size > 8 * 1024 * 1024) throw new Error(`${file.name} is larger than 8 MB.`)
-        urls.push(await uploadMedia(file, folder))
+        urls.push(await uploadMedia(prepare ? await prepare(file) : file, folder))
       }
       onUploaded(urls)
     } catch (err) {

@@ -16,3 +16,19 @@ export async function prepareCardPhoto(file: File): Promise<File> {
     return new File([blob],file.name.replace(/\.[^.]+$/,'')+'-card.webp',{type:'image/webp'})
   } finally {image.close()}
 }
+
+/** Banner uploads: keep the whole photo, cap the long edge so pages stay light, store as WebP. */
+export async function prepareBannerPhoto(file: File): Promise<File> {
+  if(!file.type.startsWith('image/')||file.type==='image/svg+xml'||file.type==='image/gif')return file
+  const image=await createImageBitmap(file,{imageOrientation:'from-image'})
+  try {
+    const scale=Math.min(1,2400/Math.max(image.width,image.height))
+    const canvas=document.createElement('canvas');canvas.width=Math.round(image.width*scale);canvas.height=Math.round(image.height*scale)
+    const context=canvas.getContext('2d')
+    if(!context)return file
+    context.imageSmoothingQuality='high'
+    context.drawImage(image,0,0,canvas.width,canvas.height)
+    const blob=await new Promise<Blob>((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Could not prepare this photo.')),'image/webp',.88))
+    return blob.size<file.size?new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'}):file
+  } finally {image.close()}
+}

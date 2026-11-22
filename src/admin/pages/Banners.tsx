@@ -1,4 +1,5 @@
 import ContentNavigation from '../components/ContentNavigation'
+import { prepareBannerPhoto } from '../../lib/cardPhoto'
 import Select from '../../components/ui/Select'
 import { Plus, ArrowUp, ArrowDown } from 'lucide-react'
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
@@ -248,6 +249,7 @@ export default function Banners() {
               {form.image_url && <img className="image-preview" src={form.image_url} alt="" style={{ marginBottom: 12 }} />}
               <ImageUploader
                 folder="banners"
+                prepare={prepareBannerPhoto}
                 label={form.image_url ? 'Replace Image' : '＋ Upload Image'}
                 onError={(m) => toast.error(m)}
                 onUploaded={([url]) => setForm((f) => ({ ...f, image_url: url }))}

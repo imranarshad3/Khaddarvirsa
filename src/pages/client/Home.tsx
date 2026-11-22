@@ -21,6 +21,8 @@ import type { Banner, Category, ProductFull } from '../../lib/types'
 
 const HERO_TITLE = 'Elegance Woven Into Every Thread.'
 const HERO_FALLBACK = '/assets/fashion/hero.webp'
+const HERO_CACHE = 'kv-home-hero'
+const readHeroCache = () => { try { return localStorage.getItem(HERO_CACHE) } catch { return null } }
 
 export default function Home() {
   const { categories, store } = useStore()
@@ -28,6 +30,8 @@ export default function Home() {
   const [featured, setFeatured] = useState<ProductFull[]>([])
   const [loadError, setLoadError] = useState(false)
   const [loading, setLoading] = useState(true)
+  // Admin's hero image, remembered so repeat visits paint at once and never download two hero photos.
+  const [heroSrc, setHeroSrc] = useState<string | null>(readHeroCache)
   const [rows, setRows] = useState<{ category: Category; products: ProductFull[] }[]>([])
 
   useEffect(() => {
@@ -39,9 +43,12 @@ export default function Home() {
       ])
       if (!active) return
       setBanners(bannerMap)
+      const heroUrl = bannerMap.home_hero?.image_url || HERO_FALLBACK
+      setHeroSrc(heroUrl)
+      try { localStorage.setItem(HERO_CACHE, heroUrl) } catch { /* private mode */ }
       setFeatured(result.products.length ? result.products : (await fetchProducts({ perPage: 8 })).products)
       setLoading(false)
-    })().catch(() => { if (active) { setLoadError(true); setLoading(false) } })
+    })().catch(() => { if (active) { setLoadError(true); setLoading(false); setHeroSrc((s) => s || HERO_FALLBACK) } })
     return () => {
       active = false
     }
@@ -82,7 +89,9 @@ export default function Home() {
         </div>
         <figure className="home-hero-figure">
           <div className="home-hero-image">
-            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1300w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1300} height={1000} fetchPriority="high" alt="Two men in teal and maroon khaddar kameez with handwoven shawls" />
+            {heroSrc && (heroSrc === HERO_FALLBACK
+              ? <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1300w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1300} height={1000} fetchPriority="high" alt="Two men in teal and maroon khaddar kameez with handwoven shawls" />
+              : <img src={heroSrc} fetchPriority="high" decoding="async" alt="" />)}
           </div>
           <figcaption><span>The art of dressing well</span><span>Khaddar Virsa · Feel the Fabric of Tradition</span></figcaption>
         </figure>

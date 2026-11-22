@@ -549,7 +549,7 @@
   .rg-client .hero .cover-text{padding-top:80px;padding-bottom:100px}
   .rg-client .cover>img{object-fit:contain;object-position:right center;background:#efe6d8}
   .rg-client .banner{min-height:clamp(360px,34vw,510px)}
-  .rg-client .banner>img{object-fit:contain;object-position:right center;background:#f2e8da}
+  .rg-client .banner>img{object-fit:cover;object-position:right center;background:#f2e8da}
   .rg-client .banner .inner{padding-top:50px;padding-bottom:50px}
   .rg-client .banner p{line-height:1.75;margin-top:22px;margin-bottom:26px}
   .rg-client .feature-row{padding-top:36px;padding-bottom:36px}
@@ -568,13 +568,13 @@
   .rg-client .prod .price{margin-bottom:22px}
   .rg-client .prod .btn{min-height:44px}
   .rg-client .storyband{margin-top:24px;margin-bottom:24px;min-height:500px}
-  .rg-client .storyband>img{min-height:0;height:100%;max-height:none;object-fit:contain;background:#ede2d2}
+  .rg-client .storyband>img{min-height:0;height:100%;max-height:none;object-fit:cover;background:#ede2d2}
   .rg-client .storycopy{padding:70px 10%}
   .rg-client .storycopy p{margin-top:24px;margin-bottom:32px}
   .rg-client .craft-values{margin:8px 0 30px;gap:26px}
   .rg-client .craft-photo{min-height:500px;background-size:auto 200%;background-position:0 0;background-repeat:no-repeat;background-color:#eaddcb}
   .rg-client .storyband+.lifestyle,.rg-client .lifestyle{margin-top:var(--section-space);margin-bottom:var(--section-space);min-height:430px}
-  .rg-client .lifestyle>img{object-fit:contain;object-position:right center;background:#eee2d2}
+  .rg-client .lifestyle>img{object-fit:cover;object-position:right center;background:#eee2d2}
   .rg-client .lifestyle .text{padding-top:64px;padding-bottom:64px;gap:22px}
   .rg-client .philosophy .testimonials{margin-top:44px;gap:28px}
   .rg-client .quote{padding:36px 30px}
@@ -676,7 +676,7 @@
    .rg-client .hero-footnote{margin-top:22px}
    .rg-client .hero-edition{display:none}
    .rg-client .banner{min-height:400px;display:block;padding-bottom:175px}
-   .rg-client .banner>img{top:auto;bottom:0;height:190px;object-fit:contain;object-position:center bottom;background:#f2e8da}
+   .rg-client .banner>img{top:auto;bottom:0;height:190px;object-fit:cover;object-position:center bottom;background:#f2e8da}
    .rg-client .banner .shade{background:linear-gradient(180deg,#fbf5ea 0%,#fbf5ea 48%,#fbf5ea00 72%)}
    .rg-client .banner .inner{width:100%;padding:28px 20px 18px}
    .rg-client .banner h1{font-size:2.625rem}
@@ -689,12 +689,12 @@
    .rg-client .prod .sizes{margin:14px 0}
    .rg-client .prod .price{margin-bottom:16px}
    .rg-client .storyband{margin-top:18px;margin-bottom:18px}
-   .rg-client .storyband>img{height:auto;aspect-ratio:1.45;object-fit:contain;min-height:0}
+   .rg-client .storyband>img{height:auto;aspect-ratio:1.45;object-fit:cover;min-height:0}
    .rg-client .craft-photo{min-height:290px;height:auto;aspect-ratio:1.5;background-size:200% 200%}
    .rg-client .storycopy{padding:42px 24px}
    .rg-client .storycopy p{margin:20px 0 26px}
    .rg-client .lifestyle{min-height:440px;padding-bottom:190px;margin-top:52px;margin-bottom:52px}
-   .rg-client .lifestyle>img{top:auto;bottom:0;height:200px;object-fit:contain;object-position:center bottom}
+   .rg-client .lifestyle>img{top:auto;bottom:0;height:200px;object-fit:cover;object-position:center bottom}
    .rg-client .lifestyle .text{padding:36px 24px 28px;background:#f6eddf;gap:18px}
    .rg-client main[data-page="shop"] .section.sidebar-layout{padding-top:38px;padding-bottom:52px}
    .rg-client main[data-page="shop"] .gridprod.three{gap:24px 14px}
