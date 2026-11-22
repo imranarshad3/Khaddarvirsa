@@ -9,7 +9,7 @@ const PAGES: Record<string, [string, string]> = {
   '/shop': [`Shop Men's Khaddar Suits · ${BRAND}`, 'Browse unstitched men\'s khaddar suits in every colour. Chemical-free Kamalia khaddar, free delivery and Cash on Delivery across Pakistan.'],
   '/collections': [`Khaddar Collections · ${BRAND}`, 'Explore Khaddar Virsa collections of premium winter khaddar suit fabric for men, woven in Kamalia.'],
   '/our-story': [`Our Story · ${BRAND}`, 'How Khaddar Virsa brings handwoven, chemical-free Kamalia khaddar from the loom to your wardrobe.'],
-  '/fabric-care': [`Khaddar Fabric Care Guide · ${BRAND}`, 'How to wash, dry and store khaddar so your suit stays soft and keeps its colour for years.'],
+  '/khaddar-guide': [`Khaddar Guide: Kamalia Handloom Khaddar Explained · ${BRAND}`, 'What khaddar is, why Kamalia handloom khaddar is special, our Pure, Winter, Desi and Designer ranges, stitching tips and how to care for it.'],
   '/contact': [`Contact Us · ${BRAND}`, 'Call +92 342 4307737 or visit us at 5 Jahangir Road, Ganj Mughalpura, Lahore. Open every day 9am to 5pm.'],
   '/track-order': [`Track Your Order · ${BRAND}`, 'Check the delivery status of your Khaddar Virsa order with your order number.'],
 }

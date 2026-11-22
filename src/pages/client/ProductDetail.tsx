@@ -359,7 +359,7 @@ export default function ProductDetail() {
             <Accordion title="Care Instructions">
               <p>
                 Dry clean or hand wash gently in cold water, dry in the shade and store folded in a breathable cotton bag.
-                Full guidance is on our <Link className="inline-link" to="/fabric-care">fabric care page</Link>.
+                Full guidance is on our <Link className="inline-link" to="/khaddar-guide">Khaddar Guide</Link>.
               </p>
             </Accordion>
             <Accordion title="Delivery & Returns">

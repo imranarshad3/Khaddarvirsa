@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { createClient } from '@supabase/supabase-js'
 
 export const SITE = 'https://www.khaddarvirsa.store'
-const STATIC_PATHS = ['/', '/shop', '/collections', '/our-story', '/fabric-care', '/contact', '/track-order']
+const STATIC_PATHS = ['/', '/shop', '/collections', '/our-story', '/khaddar-guide', '/contact', '/track-order']
 type Entry = { path: string; lastmod?: string }
 
 const escapeXml = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[c]!)

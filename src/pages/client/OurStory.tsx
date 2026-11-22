@@ -65,7 +65,7 @@ export default function OurStory() {
             ['The Beauty of Fine Fabrics', 'Softness, warmth and drape begin with the fabric behind every piece.', 'foundation-wool', '/shop?category=handmade-khaddi'],
             ['Time-Honored Craftsmanship', 'Patient hands weave khaddar on the loom, one considered thread at a time.', 'foundation-hands', '/shop'],
             ['A Naturally Rich Palette', 'Quiet neutrals and jewel tones create a wardrobe for every occasion.', 'foundation-palette', '/collections'],
-            ['Designed for Generations', 'Thoughtful design and gentle care help your favourite piece become part of your story.', 'foundation-rugs', '/fabric-care'],
+            ['Designed for Generations', 'Thoughtful design and gentle care help your favourite piece become part of your story.', 'foundation-rugs', '/khaddar-guide'],
           ].map(([title,body,photo,to])=><article key={title}><div className={`foundation-photo ${photo}`} role="img" aria-label={title}/><h3>{title}</h3><p>{body}</p><Link className="inline-link" to={to}>Discover More →</Link></article>)}
         </div>
       </section>

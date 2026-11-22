@@ -24,7 +24,7 @@ const PRIMARY = [
   { to: '/our-story', label: 'About' },
 ]
 const SECONDARY = [
-  { to: '/fabric-care', label: 'Fabric Care' },
+  { to: '/khaddar-guide', label: 'Khaddar Guide' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -348,7 +348,7 @@ function Footer() {
               <Link to="/page/shipping-and-returns">Delivery &amp; Returns</Link>
             </li>
             <li>
-              <Link to="/fabric-care">Fabric Care</Link>
+              <Link to="/khaddar-guide">Khaddar Guide</Link>
             </li>
             <li>
               <Link to="/track-order">Track Order</Link>

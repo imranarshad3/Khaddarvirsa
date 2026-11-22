@@ -166,8 +166,8 @@ export default function Contact() {
           <ProcessSteps steps={HELP} />
           <p className="subtitle" style={{ marginTop: 22 }}>
             Looking for care advice? Visit our{' '}
-            <Link className="inline-link" to="/fabric-care">
-              fabric care guide
+            <Link className="inline-link" to="/khaddar-guide">
+              Khaddar Guide
             </Link>
             .
           </p>

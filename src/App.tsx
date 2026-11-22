@@ -1,6 +1,6 @@
 import LoadingScreen from './components/LoadingScreen'
 import { Suspense, lazy } from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { StoreProvider } from './context/StoreContext'
 import { CartProvider } from './context/CartContext'
@@ -14,7 +14,7 @@ const Shop = lazy(() => import('./pages/client/Shop'))
 const Collections = lazy(() => import('./pages/client/Collections'))
 const ProductDetail = lazy(() => import('./pages/client/ProductDetail'))
 const OurStory = lazy(() => import('./pages/client/OurStory'))
-const RugCare = lazy(() => import('./pages/client/RugCare'))
+const KhaddarGuide = lazy(() => import('./pages/client/KhaddarGuide'))
 const Contact = lazy(() => import('./pages/client/Contact'))
 const Cart = lazy(() => import('./pages/client/Cart'))
 const Checkout = lazy(() => import('./pages/client/Checkout'))
@@ -54,8 +54,9 @@ export default function App() {
                   <Route path="product/:slug" element={<ProductDetail />} />
                   <Route path="rug/:slug" element={<ProductDetail />} />
                   <Route path="our-story" element={<OurStory />} />
-                  <Route path="fabric-care" element={<RugCare />} />
-                  <Route path="rug-care" element={<RugCare />} />
+                  <Route path="khaddar-guide" element={<KhaddarGuide />} />
+                  <Route path="fabric-care" element={<Navigate to="/khaddar-guide" replace />} />
+                  <Route path="rug-care" element={<Navigate to="/khaddar-guide" replace />} />
                   <Route path="contact" element={<Contact />} />
                   <Route path="team/accept" element={<TeamAccept />} />
                   <Route path="cart" element={<Cart />} />
