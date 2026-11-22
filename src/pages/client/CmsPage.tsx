@@ -28,7 +28,9 @@ export default function CmsPage() {
 
   useEffect(() => {
     if (page?.meta_title) document.title = page.meta_title
-  }, [page?.meta_title])
+    const description = document.head.querySelector<HTMLMetaElement>('meta[name="description"]')
+    if (page?.meta_description && description) description.content = page.meta_description
+  }, [page?.meta_title, page?.meta_description])
 
   if (loading) {
     return (

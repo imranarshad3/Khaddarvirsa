@@ -17,3 +17,10 @@ test('cart normalization is bounded and merge retries cannot duplicate a line', 
   assert.deepEqual(normaliseCart([{productId:id,variantId:variant,quantity:2},{productId:id,variantId:variant,quantity:3}]),[{productId:id,variantId:variant,quantity:3}])
   assert.equal(normaliseCart([{productId:id,quantity:1000000}])[0].quantity,10)
 })
+test('sitemap lists static pages and escaped product URLs', async () => {
+  const { sitemapXml } = await import('../server/sitemap.ts')
+  const xml = sitemapXml([{ slug: 'black & tan', updated_at: '2026-11-01T10:00:00Z' }, { slug: '' }])
+  assert.match(xml, /<loc>https:\/\/www\.khaddarvirsa\.store\/shop<\/loc>/)
+  assert.match(xml, /<loc>https:\/\/www\.khaddarvirsa\.store\/product\/black%20%26%20tan<\/loc><lastmod>2026-11-01<\/lastmod>/)
+  assert.equal((xml.match(/<url>/g) || []).length, 8)
+})

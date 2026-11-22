@@ -8,6 +8,7 @@ import { WishlistProvider } from './context/WishlistContext'
 import { ToastProvider } from './context/ToastContext'
 
 import ClientLayout from './components/client/ClientLayout'
+import SeoHead from './components/SeoHead'
 const Home = lazy(() => import('./pages/client/Home'))
 const Shop = lazy(() => import('./pages/client/Shop'))
 const Collections = lazy(() => import('./pages/client/Collections'))
@@ -45,7 +46,7 @@ export default function App() {
         <StoreProvider>
           <WishlistProvider>
             <CartProvider>
-              <Suspense fallback={<Booting />}><Routes>
+              <SeoHead /><Suspense fallback={<Booting />}><Routes>
                 <Route path="/" element={<ClientLayout />}>
                   <Route index element={<Home />} />
                   <Route path="shop" element={<Shop />} />

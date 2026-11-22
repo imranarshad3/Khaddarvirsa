@@ -58,6 +58,10 @@ export default function ProductDetail() {
     if (!product) return
     const previousTitle = document.title
     document.title = `${product.name} · Khaddar Virsa`
+    const description = document.head.querySelector<HTMLMetaElement>('meta[name="description"]')
+    const previousDescription = description?.content
+    const summary = (product.short_description || product.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160)
+    if (description && summary) description.content = summary
     const ld = document.createElement('script')
     ld.type = 'application/ld+json'
     ld.text = JSON.stringify({
@@ -66,6 +70,8 @@ export default function ProductDetail() {
       name: product.name,
       description: product.short_description || product.description,
       sku: product.sku,
+      url: `https://www.khaddarvirsa.store/product/${product.slug}`,
+      brand: { '@type': 'Brand', name: 'Khaddar Virsa' },
       image: product.images.map((i) => new URL(i.url, location.origin).href),
       material: product.material || undefined,
       color: product.color || undefined,
@@ -73,12 +79,14 @@ export default function ProductDetail() {
         '@type': 'Offer',
         price: product.price,
         priceCurrency: 'PKR',
+        url: `https://www.khaddarvirsa.store/product/${product.slug}`,
         availability: `https://schema.org/${product.stock_quantity > 0 ? 'InStock' : 'OutOfStock'}`,
       },
     })
     document.head.appendChild(ld)
     return () => {
       document.title = previousTitle
+      if (description && previousDescription !== undefined) description.content = previousDescription
       ld.remove()
     }
   }, [product])
