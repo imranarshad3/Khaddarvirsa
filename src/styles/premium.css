@@ -516,7 +516,7 @@
   .rg-client .foundation-photo,.rg-client .edit-neutral,.rg-client .heritage-photo,.rg-client .craft-photo{background-size:200% auto}
   .rg-client .foundation-wool,.rg-client .foundation-palette{background-size:300% auto}
   .rg-client .contact-location-photo{background-size:300% auto;background-position:100% 84%}
-  .rg-client .product-craft-visual{background-size:100% 100%,200% auto}
+  .rg-client .product-craft-visual{background-size:100% 100%,cover;background-position:0 0,center 20%}
   @media(max-width:700px){
    .rg-client .care-hero-photo{background-size:300% auto;background-position:100% 21%}
    .rg-client main[data-page="our-story"]>.banner{background-size:auto 200%;background-position:100% 0}
@@ -805,7 +805,7 @@
    .rg-client .header-cart-count{top:0;right:-6px}
    .rg-client .burger{width:28px;padding:3px}
   }
-  .rg-client .product-craft-visual{background-size:100% 100%,auto 200%;background-position:0 0,0 0}
+  .rg-client .product-craft-visual{background-size:100% 100%,cover;background-position:0 0,center 20%}
   .rg-client .heritage-photo{background-size:auto 200%;background-position:100% 0;background-repeat:no-repeat}
   .rg-client .foundation-photo{background-size:auto 200%}
   .rg-client .foundation-wool,.rg-client .foundation-palette{background-size:300% auto}
