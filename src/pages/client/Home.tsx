@@ -82,7 +82,7 @@ export default function Home() {
         </div>
         <figure className="home-hero-figure">
           <div className="home-hero-image">
-            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1672w, /assets/fashion/hero-2400.webp 2400w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={1353} fetchPriority="high" alt="Model in a black khaddar kurta with a handwoven cream shawl" />
+            <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1672w, /assets/fashion/hero-2400.webp 2000w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1672} height={1353} fetchPriority="high" alt="Model in a black khaddar kurta with a handwoven cream shawl" />
           </div>
           <figcaption><span>The art of dressing well</span><span>Khaddar Virsa · Feel the Fabric of Tradition</span></figcaption>
         </figure>

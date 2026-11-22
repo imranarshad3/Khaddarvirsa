@@ -468,7 +468,8 @@
    .rg-client .search-panel .search-submit,.rg-client .search-panel .search-close {width:2.875rem;min-width:0;height:2.875rem;min-height:0;padding:0;display:grid;place-items:center}
    .rg-client .search-panel .search-submit span,.rg-client .search-panel .search-close span {display:none}
    .rg-client .banner,.rg-client .banner.banner-editorial,.rg-client .banner.banner-editorial.shop-hero {grid-template-columns:minmax(0,1fr);min-height:0;display:flex;flex-direction:column}
-   .rg-client .banner>img,.rg-client .banner.banner-editorial>img,.rg-client .banner.banner-editorial.shop-hero>img {position:static;inset:auto;order:2;width:100%;height:auto;aspect-ratio:16/10;max-height:22rem;object-position:center 65%}
+   .rg-client .banner>img,.rg-client .banner.banner-editorial>img,.rg-client .banner.banner-editorial.shop-hero>img {position:static;inset:auto;order:2;width:100%;height:auto;aspect-ratio:16/10;max-height:22rem;object-position:center 30%}
+   .rg-client .banner .shade,.rg-client .banner.banner-editorial .shade,.rg-client .banner.banner-editorial.shop-hero .shade {display:none}
    .rg-client .banner .inner,.rg-client .banner.banner-editorial .inner,.rg-client .banner.banner-editorial.shop-hero .inner {padding:2rem 1.25rem 2.5rem;order:1}
    .rg-client .banner h1,.rg-client .banner.banner-editorial h1 {font-size:2.75rem;max-width:15ch}
    .rg-client .banner-crumb {margin-bottom:1.25rem}
