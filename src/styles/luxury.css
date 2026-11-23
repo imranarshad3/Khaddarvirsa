@@ -5626,3 +5626,32 @@
   background-size: 100% 100%, cover;
   background-position: 0 0, 75% 30%;
 }
+/* Text-only page header (image={null}), e.g. the cart: a calm cream band, no photo. */
+.rg-client .banner.banner-plain {
+  min-height: 0;
+  aspect-ratio: auto;
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4.5rem);
+  background:
+    radial-gradient(circle at 92% 20%, rgba(176, 132, 82, 0.14), transparent 42%),
+    linear-gradient(120deg, #f7f0e5 0%, #f1e6d6 100%);
+  border: 1px solid rgba(120, 86, 50, 0.12);
+}
+.rg-client .banner.banner-plain::before,
+.rg-client .banner.banner-plain::after,
+.rg-client .banner.banner-plain .shade {
+  display: none;
+}
+.rg-client .banner.banner-plain .inner {
+  position: relative;
+  padding: 0;
+  max-width: none;
+}
+.rg-client .banner.banner-plain h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+/* Phones: the story photo becomes a wide strip, so keep the top (faces) in frame. */
+@media (max-width: 700px) {
+  .rg-client .storyband img {
+    object-position: center top;
+  }
+}

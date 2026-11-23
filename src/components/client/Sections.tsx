@@ -32,8 +32,8 @@ export function PageBanner({
   className?: string
 }) {
   return (
-    <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}${className ? ` ${className}` : ''}`}>
-      <img src={image || FALLBACK} srcSet={imageSrcSet} sizes={imageSrcSet ? '(max-width: 1520px) 100vw, 1440px' : undefined} alt="" aria-hidden="true" fetchPriority={imageSrcSet ? 'high' : undefined} />
+    <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}${image === null ? ' banner-plain' : ''}${className ? ` ${className}` : ''}`}>
+      {image !== null && <img src={image || FALLBACK} srcSet={imageSrcSet} sizes={imageSrcSet ? '(max-width: 1520px) 100vw, 1440px' : undefined} alt="" aria-hidden="true" fetchPriority={imageSrcSet ? 'high' : undefined} />}
       <div className="shade" />
       <div className="inner">
         <nav className="banner-crumb" aria-label="Breadcrumb"><Link to="/">Home</Link><span>›</span><span aria-current="page">{title}</span></nav>

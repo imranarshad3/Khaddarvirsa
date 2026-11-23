@@ -20,7 +20,7 @@ import Carousel from '../../components/client/Carousel'
 import type { Banner, Category, ProductFull } from '../../lib/types'
 
 const HERO_TITLE = 'Elegance Woven Into Every Thread.'
-const HERO_FALLBACK = '/assets/fashion/hero.webp'
+const HERO_FALLBACK = '/assets/fashion/home-hero-duo.webp'
 const HERO_CACHE = 'kv-home-hero'
 const readHeroCache = () => { try { return localStorage.getItem(HERO_CACHE) } catch { return null } }
 
@@ -90,7 +90,7 @@ export default function Home() {
         <figure className="home-hero-figure">
           <div className="home-hero-image">
             {heroSrc && (heroSrc === HERO_FALLBACK
-              ? <img src={HERO_FALLBACK} srcSet="/assets/fashion/hero-640.webp 640w, /assets/fashion/hero-960.webp 960w, /assets/fashion/hero.webp 1300w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1300} height={1000} fetchPriority="high" alt="Two men in teal and maroon khaddar kameez with handwoven shawls" />
+              ? <img src={HERO_FALLBACK} srcSet="/assets/fashion/home-hero-duo-900.webp 900w, /assets/fashion/home-hero-duo.webp 1331w" sizes="(max-width: 700px) calc(100vw - 2.5rem), (max-width: 1000px) 44vw, (max-width: 1792px) 54vw, 58rem" width={1331} height={1024} fetchPriority="high" alt="Two men in black and beige khaddar kurtas" />
               : <img src={heroSrc} fetchPriority="high" decoding="async" alt="" />)}
           </div>
           <figcaption><span>The art of dressing well</span><span>Khaddar Virsa · Feel the Fabric of Tradition</span></figcaption>
@@ -139,9 +139,9 @@ export default function Home() {
         </section>
       ))}
 
-      <StoryBand banner={banners.home_story} />
+      <StoryBand banner={banners.home_story} fallbackImage="/assets/fashion/home-story-waistcoat.webp" />
 
-      <LifestyleBand banner={banners.home_lifestyle} />
+      <LifestyleBand banner={banners.home_lifestyle} fallbackImage="/assets/fashion/home-lifestyle-seated.webp" />
 
       <PhilosophyBand />
 
