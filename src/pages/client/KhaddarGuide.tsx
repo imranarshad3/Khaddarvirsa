@@ -10,15 +10,15 @@ const RANGES = [
   ['Designer', 'HK', 'Two-tone streaked yarn, so the fabric looks rich up close and stays smart from a distance.', 'khaddar/handmade-khaddar-suit-for-men-mustard-gold-designer-hk-24-1'],
 ] as const
 const WHY = [
-  ['Woven on a khaddi', 'Every suit is woven on a traditional hand loom in Kamalia, Punjab. The small irregularities in the weave are the mark of real handloom khaddar.', 'weaving-hands'],
-  ['100% cotton, chemical-free', 'Non-chemicalized cotton that breathes, feels soft on the skin and keeps its lustre. Colour and fabric are guaranteed.', 'cotton-texture'],
-  ['Warm, yet breathable', 'The thick, open weave holds warmth on winter days without feeling heavy or trapping heat indoors.', 'craft-loom'],
-  ['Softer with every wash', 'Khaddar starts with a crisp hand and relaxes into a softer, more comfortable fabric the more you wear and wash it.', 'heritage-loom'],
+  ['Woven on a khaddi', 'Every suit is woven on a traditional hand loom in Kamalia, Punjab. The small irregularities in the weave are the mark of real handloom khaddar.', 'guide-woven'],
+  ['100% cotton, chemical-free', 'Non-chemicalized cotton that breathes, feels soft on the skin and keeps its lustre. Colour and fabric are guaranteed.', 'guide-cotton'],
+  ['Warm, yet breathable', 'The thick, open weave holds warmth on winter days without feeling heavy or trapping heat indoors.', 'guide-warm'],
+  ['Softer with every wash', 'Khaddar starts with a crisp hand and relaxes into a softer, more comfortable fabric the more you wear and wash it.', 'guide-softer'],
 ] as const
 const STITCH = [
-  ['Unstitched, cut to you', 'Every suit arrives as unstitched fabric with matching buttons, so your tailor can cut a kameez shalwar exactly to your size and style.', 'tailor-measure'],
-  ['Pre-wash before cutting', 'Natural cotton can relax slightly in its first wash. Many tailors soak khaddar once before cutting. Ask yours what they prefer.', 'tailor-chalk'],
-  ['Choose your style', 'Khaddar suits a classic kameez shalwar, a kurta pajama or a waistcoat set. Its body holds collars, cuffs and pleats well.', 'tailor-workshop'],
+  ['Unstitched, cut to you', 'Every suit arrives as unstitched fabric with matching buttons, so your tailor can cut a kameez shalwar exactly to your size and style.', 'guide-unstitched'],
+  ['Pre-wash before cutting', 'Natural cotton can relax slightly in its first wash. Many tailors soak khaddar once before cutting. Ask yours what they prefer.', 'guide-prewash'],
+  ['Choose your style', 'Khaddar suits a classic kameez shalwar, a kurta pajama or a waistcoat set. Its body holds collars, cuffs and pleats well.', 'guide-style'],
 ] as const
 const CARE = [
   ['Wash cold, separately', 'Hand wash or use a gentle cycle in cold water with a mild detergent. Wash dark colours on their own for the first few washes.'],
@@ -40,7 +40,7 @@ const FAQS = [
 export default function KhaddarGuide() {
   return <>
     <section className="care-hero">
-      <div className="care-hero-photo" style={photo('craft-loom')} role="img" aria-label="Khaddar being woven on a traditional hand loom" />
+      <div className="care-hero-photo" style={photo('guide-hero')} role="img" aria-label="Khaddar being woven on a traditional hand loom" />
       <div className="care-hero-copy">
         <div className="care-crumb"><Link to="/">Home</Link><span>/</span>Khaddar Guide</div>
         <h1>The Khaddar Guide</h1>

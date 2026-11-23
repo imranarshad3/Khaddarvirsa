@@ -436,13 +436,13 @@
   .rg-client main[data-page="our-story"]>.banner{background-image:url('/assets/fashion/story.jpg');background-size:cover;background-position:center;min-height:390px}
   .rg-client .foundation-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
   .rg-client .foundation-photo{aspect-ratio:1.5;background-size:cover;background-position:center;margin-bottom:16px}
-  .rg-client .foundation-wool{background-image:url('/assets/fashion/cotton-texture.webp')}
-  .rg-client .foundation-hands{background-image:url('/assets/fashion/weaving-hands.webp')}
-  .rg-client .foundation-palette{background-image:url('/assets/fashion/suiting-stack.webp')}
-  .rg-client .foundation-rugs{background-image:url('/assets/fashion/tailor-measure.webp');background-position:center 30%}
+  .rg-client .foundation-wool{background-image:url('/assets/fashion/about-foundation-fabric.webp')}
+  .rg-client .foundation-hands{background-image:url('/assets/fashion/about-foundation-craft.webp')}
+  .rg-client .foundation-palette{background-image:url('/assets/fashion/about-foundation-palette.webp')}
+  .rg-client .foundation-rugs{background-image:url('/assets/fashion/about-foundation-generations.webp')}
   .rg-client .foundation-grid h3{font-size:1.375rem;line-height:1.2;margin-bottom:10px}
   .rg-client .foundation-grid p{font-size:.875rem;line-height:1.65;margin-bottom:15px}
-  .rg-client .heritage-photo{min-height:400px;background-image:url('/assets/fashion/heritage-loom.webp');background-size:cover;background-position:center}
+  .rg-client .heritage-photo{min-height:400px;background-image:url('/assets/fashion/about-heritage.webp');background-size:cover;background-position:center}
   .rg-client main[data-page="our-story"] #process .steps{grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
   .rg-client main[data-page="our-story"] #process .step{display:flex;flex-direction:column;gap:15px;text-align:center;border:0;align-items:center;padding:15px 4px}
   .rg-client main[data-page="our-story"] #process .step b{width:84px;height:84px;border:1px solid #b08a59;border-radius:50%;display:grid;place-items:center;background:#f8efdf;font-size:2rem;box-shadow:inset 0 0 0 5px #fcf8f1}
@@ -458,10 +458,10 @@
   .rg-client .contact-location{display:grid;grid-template-columns:1fr 1fr;background:#f0e5d4;max-width:1440px;margin:auto}
   .rg-client .contact-location-copy{padding:45px var(--page-gutter)}
   .rg-client .contact-location-copy p{font-size:.9375rem;line-height:1.6;margin:18px 0 22px}
-  .rg-client .contact-location-photo{min-height:340px;background-image:url('/assets/fashion/fabric-seller.webp');background-size:cover;background-position:center 35%}
+  .rg-client .contact-location-photo{min-height:340px;background-image:url('/assets/fashion/contact-location.webp');background-size:cover;background-position:center 35%}
   .rg-client .location-address{display:flex;gap:10px;align-items:center}
   .rg-client .product-editorial{display:grid;grid-template-columns:1.1fr 1fr;gap:30px}
-  .rg-client .product-craft-visual{position:relative;min-height:570px;background-image:linear-gradient(0deg,#241809d9,transparent 65%),url('/assets/fashion/product-craft.webp');background-size:100% 100%,cover;background-position:0 0,center;border-radius:3px;overflow:hidden;display:flex;align-items:flex-end}
+  .rg-client .product-craft-visual{position:relative;min-height:570px;background-image:linear-gradient(0deg,#241809d9,transparent 65%),url('/assets/fashion/product-craft-courtyard.webp');background-size:100% 100%,cover;background-position:0 0,center;border-radius:3px;overflow:hidden;display:flex;align-items:flex-end}
   .rg-client .product-craft-caption{padding:32px;color:#fff8ed}
   .rg-client .product-craft-caption h2{font-size:2.5rem;max-width:360px}
   .rg-client .product-craft-caption p{color:#edddc5;margin:14px 0 20px;font-size:.875rem}
@@ -1078,8 +1078,6 @@
   .rg-client .shop-hero-cta{gap:1.75rem;min-height:3.1rem}
   .rg-client .shop-hero-note{display:flex;align-items:center;gap:.6rem;margin-top:1.8rem;font-size:.6875rem;color:#806950;letter-spacing:.02em}
   .rg-client .shop-hero-note svg{color:#a27646;flex-shrink:0}
-  .rg-client .shop-hero-caption{position:absolute;right:2rem;bottom:1.6rem;padding:.8rem 1rem;border:1px solid #fff8e94d;background:#34271b80;backdrop-filter:blur(12px);color:#fff7eb;font-size:.5625rem;letter-spacing:.18em;display:flex;gap:1.5rem;z-index:1}
-  .rg-client .shop-hero-caption>span{opacity:.75}
   .rg-client #rug-catalogue{scroll-margin-top:7rem}
   @media(max-width:900px) and (min-width:701px){
    .rg-client .banner.banner-editorial.shop-hero .inner{width:57%}
@@ -1092,8 +1090,6 @@
    .rg-client .banner.banner-editorial.shop-hero .inner{width:100%;padding:1.75rem 1.5rem 2rem}
    .rg-client .shop-hero .banner-crumb{margin-bottom:2rem}
    .rg-client .banner.banner-editorial.shop-hero h1{font-size:clamp(2.875rem,12vw,4rem)}
-   .rg-client .shop-hero-caption{right:1rem;bottom:1rem;font-size:.5rem;padding:.65rem .75rem}
-   .rg-client .shop-hero-caption>span{display:none}
    .rg-client .shop-hero-note{margin-top:1.5rem}
   }
 

@@ -65,7 +65,9 @@ export default function Collections() {
         cta="Explore Our Collections"
         ctaTo="#our-collections"
         description="Curated khaddar suits for men, combining Pakistani weaving tradition with a modern wardrobe."
-        image="/assets/fashion/collections-hero.webp"
+        className="photo-hero"
+        image="/assets/fashion/collections-hero-wide.webp"
+        imageSrcSet="/assets/fashion/collections-hero-wide-800.webp 800w, /assets/fashion/collections-hero-wide-1280.webp 1280w, /assets/fashion/collections-hero-wide.webp 1855w"
       />
 
       <section className="section wrap" id="our-collections">

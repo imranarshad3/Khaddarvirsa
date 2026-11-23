@@ -13,25 +13,28 @@ export function PageBanner({
   title,
   description,
   image = FALLBACK,
+  imageSrcSet,
   cta,
   ctaTo,
   editorial = false,
   shop = false,
+  className,
 }: {
   eyebrow?: string
   title: string
   description?: string
   image?: string | null
+  imageSrcSet?: string
   cta?: string
   ctaTo?: string
   editorial?: boolean
   shop?: boolean
+  className?: string
 }) {
   return (
-    <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}`}>
-      <img src={image || FALLBACK} alt="" aria-hidden="true" />
+    <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}${className ? ` ${className}` : ''}`}>
+      <img src={image || FALLBACK} srcSet={imageSrcSet} sizes={imageSrcSet ? '(max-width: 1520px) 100vw, 1440px' : undefined} alt="" aria-hidden="true" fetchPriority={imageSrcSet ? 'high' : undefined} />
       <div className="shade" />
-      {shop && <span className="shop-hero-caption">THE ART OF DRESSING WELL <span>KHADDAR VIRSA / COLLECTION</span></span>}
       <div className="inner">
         <nav className="banner-crumb" aria-label="Breadcrumb"><Link to="/">Home</Link><span>›</span><span aria-current="page">{title}</span></nav>
         <div className="eyebrow">{eyebrow}</div>

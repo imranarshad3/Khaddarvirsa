@@ -1,13 +1,13 @@
 import { sanitizeHtml } from '../../lib/html'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchBanners, fetchPage } from '../../lib/api'
+import { fetchPage } from '../../lib/api'
 import {
   PageBanner,
   PhilosophyBand,
   ProcessSteps,
 } from '../../components/client/Sections'
-import type { Banner, Page } from '../../lib/types'
+import type { Page } from '../../lib/types'
 
 const PROCESS: [string, string, string][] = [
   ['01', 'Fabric Selection', 'Soft, lasting fabrics chosen for drape and character.'],
@@ -19,14 +19,10 @@ const PROCESS: [string, string, string][] = [
 
 export default function OurStory() {
   const [page, setPage] = useState<Page | null>(null)
-  const [banners, setBanners] = useState<Record<string, Banner>>({})
 
   useEffect(() => {
     void fetchPage('our-story').then(setPage).catch(() => setPage(null))
-    void fetchBanners().then(setBanners)
   }, [])
-
-  const heroImage = page?.hero_image_url || '/assets/fashion/story.jpg'
 
   return (
     <>
@@ -35,11 +31,14 @@ export default function OurStory() {
         cta="Our Philosophy"
         ctaTo="#our-philosophy"
         description="More than beautiful clothes: a celebration of Pakistani craftsmanship and timeless design."
-        image={heroImage}
+        editorial
+        className="photo-hero about-hero"
+        image="/assets/fashion/about-hero-wide.webp"
+        imageSrcSet="/assets/fashion/about-hero-wide-800.webp 800w, /assets/fashion/about-hero-wide-1280.webp 1280w, /assets/fashion/about-hero-wide.webp 1855w"
       />
 
       <div className="storyband" id="our-philosophy">
-        <img src={banners.home_hero?.image_url || '/assets/fashion/hero.webp'} alt="" aria-hidden="true" />
+        <img src="/assets/fashion/about-story.webp" alt="A man in a charcoal khaddar suit and sand waistcoat in a carved wooden doorway" loading="lazy" />
         <div className="storycopy">
           <div className="eyebrow">OUR STORY</div>
           {page?.content ? (
