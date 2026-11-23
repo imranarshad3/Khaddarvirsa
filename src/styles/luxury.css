@@ -5469,6 +5469,11 @@
 .rg-client .footer-inner {
   max-width: none;
 }
+/* Tinted sections fill the width like the bands around them; content stays on the column. */
+.rg-client .section.wrap:is(.cream, .paper) {
+  max-width: none;
+  padding-inline: var(--rg-bleed);
+}
 /* Framed plates (page intros, story bands, location) are the column itself. */
 .rg-client main > :is(.banner, .care-hero, .storyband, .lifestyle, .contact-location) {
   width: calc(100% - 2 * var(--page-gutter));
