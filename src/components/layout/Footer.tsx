@@ -47,6 +47,7 @@ export default async function Footer() {
           <h2 className={h}>Customer Care</h2>
           <ul className="space-y-2">
             <li><Link className={a} href="/contact">Contact</Link></li>
+            <li><Link className={a} href="/track-order">Track order</Link></li>
             <li><Link className={a} href="/faq">FAQs</Link></li>
             <li><Link className={a} href="/return-policy">Delivery &amp; Returns</Link></li>
             <li><Link className={a} href="/terms">Terms &amp; Conditions</Link></li>

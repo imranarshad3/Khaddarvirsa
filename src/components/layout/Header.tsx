@@ -43,6 +43,8 @@ export default async function Header() {
     ? ((await db().prepare(`SELECT slug, title FROM pages WHERE slug IN (${s.menu_pages.map(() => '?').join(',')})`).all(...s.menu_pages)) as { slug: string; title: string }[])
       .sort((a, b) => s.menu_pages.indexOf(a.slug) - s.menu_pages.indexOf(b.slug))
     : [];
+  const quick = (await navigation()).map((c) => ({ name: c.name, href: `/main-category/${c.alias}` }));
+  if (s.sale_enabled) quick.unshift({ name: s.sale_title, href: '/today-sale' });
   const nav: NavItem[] = (await navigation()).map((c) => ({ name: c.name, alias: c.alias, subs: c.subs.map((x) => ({ name: x.name, alias: x.alias })) }));
 
   return (
@@ -51,7 +53,7 @@ export default async function Header() {
       <div className="border-b border-line bg-paper/90 backdrop-blur-md transition-shadow duration-300 group-data-[scrolled]/hdr:shadow-[0_12px_32px_-20px_rgba(53,34,24,.45)]">
         {/* Desktop */}
         <div className="container-kk hidden grid-cols-[1fr_auto_1fr] items-center gap-6 py-4 transition-[padding] duration-300 group-data-[scrolled]/hdr:py-2 md:grid">
-          <div className="max-w-[280px]"><SearchOverlay /></div>
+          <div className="max-w-[280px]"><SearchOverlay quick={quick} /></div>
           <Wordmark name={s.store_name} />
           <div className="flex items-center justify-end gap-1">
             {s.whatsapp_number && (
@@ -108,7 +110,7 @@ export default async function Header() {
             <Wordmark name={s.store_name} small />
             <div className="flex justify-end"><WishlistLink /><CartButton /></div>
           </div>
-          <div className="px-4 pb-3"><SearchOverlay dark /></div>
+          <div className="px-4 pb-3"><SearchOverlay dark quick={quick} /></div>
         </div>
       </div>
     </HeaderShell>

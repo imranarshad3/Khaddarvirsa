@@ -6,48 +6,47 @@ import type { Quote } from './useQuote';
 import { rs } from '@/lib/pricing';
 import { CloseIcon } from '@/components/icons';
 
-export function CartTable({ quote, editable = true }: { quote: Quote | null; editable?: boolean }) {
+export function CartTable({ quote }: { quote: Quote | null }) {
   const { items, setQty, remove } = useCart();
   const unavailable = new Set(quote?.lines.filter((l) => !l.available).map((l) => l.id));
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[520px] border border-[#ddd] text-[15px]">
-        <thead className="bg-soft text-ink-2">
-          <tr>{editable && <th className="p-2"><span className="sr-only">Remove</span></th>}<th className="p-2">Image</th><th className="p-2 text-left">Product Name</th><th className="p-2">Quantity</th><th className="p-2">Unit Price</th><th className="p-2">Total</th></tr>
-        </thead>
-        <tbody>
-          {items.map((i) => (
-            <tr key={i.id} className="border-t border-[#ddd] text-center">
-              {editable && <td className="p-2"><button type="button" onClick={() => remove(i.id)} aria-label={`Remove ${i.title}`} className="text-sale"><CloseIcon /></button></td>}
-              <td className="p-2"><img src={i.img} alt="" width={56} height={56} className="mx-auto h-14 w-14 rounded object-cover" /></td>
-              <td className="p-2 text-left leading-tight">
-                <Link href={`/product/${i.alias}`} className="font-bold text-ink hover:text-hover">{i.title}</Link>
-                <div className="text-muted">{i.code}</div>
-                {unavailable.has(i.id) && <div className="font-bold text-sale">Out of stock — please remove</div>}
-              </td>
-              <td className="p-2">{editable ? <QuantitySelector value={i.qty} onChange={(q) => setQty(i.id, q)} /> : i.qty}</td>
-              <td className="p-2">{rs(i.price)}</td>
-              <td className="p-2 font-bold text-ink">{rs(i.price * i.qty)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ul className="divide-y divide-line rounded-[24px] border border-line bg-white px-4 md:px-6">
+      {items.map((i) => (
+        <li key={i.id} className="flex gap-4 py-5">
+          <Link href={`/product/${i.alias}`} className="shrink-0"><img src={i.img} alt="" width={88} height={110} className="h-[110px] w-[88px] rounded-2xl object-cover" /></Link>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1 leading-tight">
+                <Link href={`/product/${i.alias}`} className="line-clamp-2 text-[15px] font-semibold text-ink hover:text-gold-dark">{i.title}</Link>
+                <p className="mt-1 text-[12px] text-muted">{i.code}</p>
+              </div>
+              <button type="button" onClick={() => remove(i.id)} aria-label={`Remove ${i.title}`} className="-mr-2 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted transition hover:bg-soft hover:text-sale"><CloseIcon className="h-4 w-4" /></button>
+            </div>
+            {unavailable.has(i.id) && <p className="mt-2 text-[13px] font-semibold text-sale">Sold out. Please remove it to continue.</p>}
+            <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+              <QuantitySelector value={i.qty} onChange={(q) => setQty(i.id, q)} />
+              <div className="text-right leading-tight">
+                <p className="text-[16px] font-semibold text-ink">{rs(i.price * i.qty)}</p>
+                {i.qty > 1 && <p className="text-[12px] text-muted">{rs(i.price)} each</p>}
+              </div>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }
 
 export function TotalsTable({ quote }: { quote: Quote | null }) {
-  if (!quote) return <p className="py-4 text-center">Calculating…</p>;
-  const row = 'flex justify-between border-b border-[#ddd] px-3 py-2';
+  if (!quote) return <div className="space-y-3 py-2" aria-label="Calculating">{[0, 1, 2].map((k) => <div key={k} className="h-4 animate-pulse rounded bg-soft" />)}</div>;
+  const left = quote.freeShippingOver > 0 && quote.shipping > 0 ? quote.freeShippingOver - quote.subtotal : 0;
   return (
-    <div className="border border-[#ddd] text-[16px]">
-      <div className={row}><span>Total Bill</span><span>{rs(quote.subtotal)}</span></div>
-      {quote.discount > 0 && <div className={`${row} text-green-700`}><span>Discount</span><span>− {rs(quote.discount)}</span></div>}
-      <div className={row}>
-        <span>Shipping Charges{quote.freeShippingOver > 0 && <small className="block text-[14px] text-sale">*Free Shipping on orders above {rs(quote.freeShippingOver)}!</small>}</span>
-        <span>{quote.shipping ? rs(quote.shipping) : 'Free'}</span>
-      </div>
-      <div className="flex justify-between bg-soft px-3 py-2 font-bold text-ink"><span>Final Bill</span><span>{rs(quote.total)}</span></div>
-    </div>
+    <dl className="space-y-2.5 text-[14px]">
+      <div className="flex justify-between"><dt className="text-muted">Subtotal</dt><dd>{rs(quote.subtotal)}</dd></div>
+      {quote.discount > 0 && <div className="flex justify-between text-sale"><dt>Discount</dt><dd>− {rs(quote.discount)}</dd></div>}
+      <div className="flex justify-between"><dt className="text-muted">Shipping</dt><dd>{quote.shipping ? rs(quote.shipping) : 'Free'}</dd></div>
+      {left > 0 && <p className="rounded-xl bg-gold/10 px-3 py-2 text-[13px] text-gold-dark">Add {rs(left)} more for free shipping.</p>}
+      <div className="flex items-baseline justify-between border-t border-line pt-3"><dt className="font-semibold text-ink">Total</dt><dd className="font-display text-[24px] text-ink">{rs(quote.total)}</dd></div>
+    </dl>
   );
 }

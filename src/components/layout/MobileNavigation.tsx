@@ -93,6 +93,7 @@ export default function MobileNavigation({ nav, sale, pages, whatsapp }: { nav: 
                 {pages.map((p) => <Link key={p.slug} href={`/${p.slug}`} className={small}>{p.title}</Link>)}
                 <Link href="/contact" className={small}>Contact</Link>
                 <Link href="/wishlist" className={small}>Wishlist</Link>
+                <Link href="/track-order" className={small}>Track order</Link>
               </div>
             </div>
 

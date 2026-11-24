@@ -1,6 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { db } from './db';
+import { searchWords } from './search';
 
 export type Category = { id: number; name: string; alias: string; meta_title: string | null; meta_description: string | null; status: number; order_no: number };
 export type SubCategory = {
@@ -89,13 +90,22 @@ export async function saleProducts() {
   return (await db().prepare(`${PRODUCT_SELECT} WHERE p.on_sale = 1 AND p.hidden = 0 ORDER BY ${AVAILABLE_FIRST}`).all()) as ProductRow[];
 }
 
-export async function searchProducts(q: string, limit = 60) {
-  // Every word must match the title, code (with or without "-") or category, so "kl 333" or "coco brown live" find products.
-  const words = q.toLowerCase().replace(/[%_]/g, '').split(/[\s\-]+/).filter(Boolean).slice(0, 6);
-  if (!words.length) return [];
-  const cond = words.map(() => `(LOWER(p.title || ' ' || REPLACE(IFNULL(p.code, ''), '-', ' ') || ' ' || REPLACE(IFNULL(p.code, ''), '-', '') || ' ' || s.name) LIKE ?)`).join(' AND ');
-  return (await db().prepare(`${PRODUCT_SELECT} WHERE p.hidden = 0 AND ${cond} ORDER BY ${AVAILABLE_FIRST} LIMIT ?`)
-    .all(...words.map((w) => `%${w}%`), limit)) as ProductRow[];
+/**
+ * Products whose title, code (with or without "-"), sub-category or category contain every word.
+ * If nothing matches all words, falls back to products matching the most words (partial: true).
+ */
+export async function searchProducts(q: string, limit = 60): Promise<{ products: ProductRow[]; partial: boolean }> {
+  const words = searchWords(q);
+  if (!words.length) return { products: [], partial: false };
+  const hay = `LOWER(p.title || ' ' || REPLACE(IFNULL(p.code, ''), '-', ' ') || ' ' || REPLACE(IFNULL(p.code, ''), '-', '') || ' ' || s.name || ' ' || c.name)`;
+  const likes = words.map(() => `(${hay} LIKE ?)`);
+  const args = words.map((w) => `%${w}%`);
+  const all = (await db().prepare(`${PRODUCT_SELECT} WHERE p.hidden = 0 AND ${likes.join(' AND ')} ORDER BY ${AVAILABLE_FIRST} LIMIT ?`)
+    .all(...args, limit)) as ProductRow[];
+  if (all.length || words.length < 2) return { products: all, partial: false };
+  const some = (await db().prepare(`${PRODUCT_SELECT} WHERE p.hidden = 0 AND (${likes.join(' OR ')}) ORDER BY (${likes.join(' + ')}) DESC, ${AVAILABLE_FIRST} LIMIT ?`)
+    .all(...args, ...args, limit)) as ProductRow[];
+  return { products: some, partial: some.length > 0 };
 }
 
 export async function productsByIds(ids: number[]) {

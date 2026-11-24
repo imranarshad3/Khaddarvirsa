@@ -4,7 +4,8 @@ import { getSettings } from '@/lib/settings';
 import { totals, unitPrice } from '@/lib/pricing';
 import { imageUrl, searchProducts, type Product } from '@/lib/catalog';
 import { clientIp, hit } from '@/lib/rateLimit';
-import { findDiscount, OrderError, placeOrder, type OrderInput } from '@/lib/orders';
+import { findDiscount, normalizePhone, orderByNumber, OrderError, placeOrder, type OrderInput } from '@/lib/orders';
+import { redirect } from 'next/navigation';
 
 /** Current server prices and totals for the cart, so the customer never sees stale prices at checkout. */
 export async function quoteCart(items: { id: number; qty: number }[], code?: string) {
@@ -44,10 +45,15 @@ export async function submitOrder(input: OrderInput): Promise<{ ok: true; number
 }
 
 export async function searchSuggest(q: string) {
-  if (typeof q !== 'string' || q.trim().length < 2) return [];
-  return (await searchProducts(q.trim().slice(0, 60), 8)).map((p) => ({
-    alias: p.alias, title: p.title, code: p.code, img: imageUrl(p.img, 'product', '100x100_cover'),
-  }));
+  if (typeof q !== 'string' || q.trim().length < 2) return { partial: false, hits: [] };
+  const { products, partial } = await searchProducts(q.trim().slice(0, 60), 6);
+  return {
+    partial,
+    hits: products.map((p) => ({
+      alias: p.alias, title: p.title, code: p.code, img: imageUrl(p.img, 'product', '100x100_cover'),
+      price: unitPrice(p), was: unitPrice(p) < p.price ? p.price : null, inStock: Boolean(p.in_stock),
+    })),
+  };
 }
 
 export async function subscribe(_: unknown, form: FormData): Promise<{ ok: boolean; message: string }> {
@@ -56,4 +62,17 @@ export async function subscribe(_: unknown, form: FormData): Promise<{ ok: boole
   if ((await hit(`subscribe:${await clientIp()}`, 60 * 60)) > 10) return { ok: false, message: 'Too many attempts. Please try again later.' };
   await db().prepare('INSERT OR IGNORE INTO subscribers (email) VALUES (?)').run(email);
   return { ok: true, message: 'Thank you for subscribing!' };
+}
+
+/** Order tracking: needs the order number and the phone it was placed with, so numbers alone reveal nothing. */
+export async function trackOrder(_: unknown, form: FormData): Promise<{ error: string }> {
+  const raw = String(form.get('number') ?? '').toUpperCase().replace(/[^0-9A-Z]/g, '');
+  const number = raw.startsWith('KK') ? raw : `KK${raw}`;
+  const phone = normalizePhone(String(form.get('phone') ?? ''));
+  if (!/^KK[0-9A-F]{10}$/.test(number)) return { error: 'Please enter the order number from your confirmation, for example KK1A2B3C4D5E.' };
+  if (!phone) return { error: 'Please enter the mobile number you ordered with, for example 03001234567.' };
+  if ((await hit(`track:${await clientIp()}`, 10 * 60)) > 20) return { error: 'Too many attempts. Please wait a few minutes or ask us on WhatsApp.' };
+  const o = await orderByNumber(number);
+  if (!o || normalizePhone(o.phone) !== phone) return { error: 'We could not find an order with that number and mobile number. Please check both and try again.' };
+  redirect(`/order/${o.number}`);
 }
