@@ -1,3 +1,5 @@
+import { LangSwitch, T } from '@/components/i18n/LangProvider';
+import { getT } from '@/lib/lang';
 import Link from 'next/link';
 import { navigation } from '@/lib/catalog';
 import { db } from '@/lib/db';
@@ -9,6 +11,8 @@ import { CartButton } from '@/components/cart/CartDrawer';
 import WishlistLink from './WishlistLink';
 import NavLink from './NavLink';
 import HeaderShell from './HeaderShell';
+
+const langBtn = 'flex h-11 items-center rounded-full px-3 text-[14px] font-semibold text-ink transition-colors hover:bg-soft hover:text-gold-dark';
 
 export type NavItem = { name: string; alias: string; subs: { name: string; alias: string }[] };
 
@@ -34,7 +38,7 @@ export function Wordmark({ name, small = false }: { name: string; small?: boolea
         ? <img src="/brand/khaddar-virsa-logo-hq.png" alt={name} width={1188} height={864} className="h-[46px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[38px]" />
         : <span className="flex flex-col items-center">
             <img src="/brand/khaddar-virsa-logo-hq.png" alt={name} width={1188} height={864} className="h-[62px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[46px]" />
-            <span className="mt-1 whitespace-nowrap font-[Georgia,'Times_New_Roman',serif] text-[11px] leading-none tracking-[0.06em] text-ink transition-all duration-300 group-data-[scrolled]/hdr:mt-0 group-data-[scrolled]/hdr:h-0 group-data-[scrolled]/hdr:opacity-0">Feel the Fabric of Tradition</span>
+            <span className="mt-1 whitespace-nowrap font-[Georgia,'Times_New_Roman',serif] text-[11px] leading-none tracking-[0.06em] text-ink transition-all duration-300 group-data-[scrolled]/hdr:mt-0 group-data-[scrolled]/hdr:h-0 group-data-[scrolled]/hdr:opacity-0"><T>Feel the Fabric of Tradition</T></span>
           </span>}
     </Link>
   );
@@ -42,6 +46,7 @@ export function Wordmark({ name, small = false }: { name: string; small?: boolea
 
 export default async function Header() {
   const s = (await getSettings());
+  const t = await getT();
   const menuPages = s.menu_pages.length
     ? ((await db().prepare(`SELECT slug, title FROM pages WHERE slug IN (${s.menu_pages.map(() => '?').join(',')})`).all(...s.menu_pages)) as { slug: string; title: string }[])
       .sort((a, b) => s.menu_pages.indexOf(a.slug) - s.menu_pages.indexOf(b.slug))
@@ -61,9 +66,10 @@ export default async function Header() {
           <div className="flex items-center justify-end gap-1">
             {s.whatsapp_number && (
               <a href={whatsappLink(s.whatsapp_number)} target="_blank" rel="noopener" className="mr-3 hidden items-center gap-2 rounded-full border border-gold/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-dark transition-colors hover:border-ink hover:bg-ink hover:text-sand lg:inline-flex">
-                <WhatsappIcon className="h-4 w-4" /> Order on WhatsApp
+                <WhatsappIcon className="h-4 w-4" /> {t('Order on WhatsApp')}
               </a>
             )}
+            <LangSwitch className={langBtn} />
             <WishlistLink />
             <CartButton />
           </div>
@@ -71,7 +77,7 @@ export default async function Header() {
         <nav aria-label="Main" className="hidden border-b border-gold/40 bg-ink shadow-[inset_0_1px_0_rgba(212,178,137,.25)] md:block">
           {/* Small gold diamonds sit between the items. */}
           <ul className="container-kk flex flex-wrap items-center justify-center gap-x-6 text-[12px] font-semibold uppercase tracking-[0.24em] text-sand [&>li+li]:before:mr-6 [&>li+li]:before:inline-block [&>li+li]:before:h-1 [&>li+li]:before:w-1 [&>li+li]:before:rotate-45 [&>li+li]:before:bg-gold [&>li+li]:before:align-middle [&>li+li]:before:content-[''] lg:gap-x-9 lg:[&>li+li]:before:mr-9">
-            <li><NavLink href="/">Home</NavLink></li>
+            <li><NavLink href="/">{t('Home')}</NavLink></li>
             {nav.map((c) => (
               <li key={c.alias} className="group relative">
                 <NavLink href={`/main-category/${c.alias}`} also={c.subs.map((x) => `/product-category/${x.alias}`)}>
@@ -88,7 +94,7 @@ export default async function Header() {
                         </li>
                       ))}
                       <li className="mx-6 mt-3 border-t border-line pt-3">
-                        <Link href={`/main-category/${c.alias}`} className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-dark hover:text-ink">View all {c.name} →</Link>
+                        <Link href={`/main-category/${c.alias}`} className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-dark hover:text-ink">{t('View all')} {c.name} →</Link>
                       </li>
                     </ul>
                   </div>
@@ -104,7 +110,7 @@ export default async function Header() {
               </NavLink>
             </li>}
             {menuPages.map((p) => <li key={p.slug}><NavLink href={`/${p.slug}`}>{p.title}</NavLink></li>)}
-            <li><NavLink href="/contact">Contact</NavLink></li>
+            <li><NavLink href="/contact">{t('Contact')}</NavLink></li>
           </ul>
         </nav>
 

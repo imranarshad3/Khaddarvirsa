@@ -1,3 +1,4 @@
+import { T } from '@/components/i18n/LangProvider';
 import Link from 'next/link';
 import { ArrowRight } from '@/components/icons';
 
@@ -15,14 +16,14 @@ export default function PageBanner({ title, crumbs, subtitle }: { title: string;
             {all.map((c, i) => (
               <li key={i} className="flex gap-1">
                 {i > 0 && <span aria-hidden="true">/</span>}
-                {c.href && i < all.length - 1 ? <Link href={c.href} className="hover:underline">{c.name}</Link> : <span aria-current={i === all.length - 1 ? 'page' : undefined}>{c.name}</span>}
+                {c.href && i < all.length - 1 ? <Link href={c.href} className="hover:underline"><T>{c.name}</T></Link> : <span aria-current={i === all.length - 1 ? 'page' : undefined}><T>{c.name}</T></span>}
               </li>
             ))}
           </ol>
         </nav>
-        <h1 className="font-display text-[34px] text-white md:text-[46px]">{title}</h1>
+        <h1 className="font-display text-[34px] text-white md:text-[46px]"><T>{title}</T></h1>
         <span aria-hidden="true" className="flex items-center gap-3 text-sand/70"><span className="h-px w-10 bg-sand/40" /><span className="h-1.5 w-1.5 rotate-45 bg-sand" /><span className="h-px w-10 bg-sand/40" /></span>
-        {subtitle && <p className="max-w-[560px] text-[15px] leading-relaxed text-sand/80">{subtitle}</p>}
+        {subtitle && <p className="max-w-[560px] text-[15px] leading-relaxed text-sand/80"><T>{subtitle}</T></p>}
       </div>
     </div>
   );
@@ -32,8 +33,8 @@ export default function PageBanner({ title, crumbs, subtitle }: { title: string;
 export function SectionBar({ title, href, as: Tag = 'h2' }: { title: string; href?: string; as?: 'h2' | 'h3' }) {
   return (
     <div className="section-bar mb-8 flex items-end justify-between gap-4 border-b border-line pb-4">
-      <Tag className="font-display text-[26px] text-ink md:text-[34px]">{href ? <Link href={href} className="hover:text-gold">{title}</Link> : title}</Tag>
-      {href && <Link href={href} aria-label={`View all ${title}`} className="inline-flex shrink-0 items-center gap-2 pb-1.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-ink hover:text-gold">View all <ArrowRight className="h-4 w-4" /></Link>}
+      <Tag className="font-display text-[26px] text-ink md:text-[34px]">{href ? <Link href={href} className="hover:text-gold"><T>{title}</T></Link> : <T>{title}</T>}</Tag>
+      {href && <Link href={href} className="inline-flex shrink-0 items-center gap-2 pb-1.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-ink hover:text-gold"><T>View all</T><span className="sr-only"> {title}</span> <ArrowRight className="h-4 w-4" /></Link>}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { T } from '@/components/i18n/LangProvider';
 import Link from 'next/link';
 import { ArrowRight } from '@/components/icons';
 
@@ -15,7 +16,7 @@ export const HELP_PAGES = [
 export default function HelpNav({ current }: { current: string }) {
   return (
     <nav aria-label="Customer care" className="rounded-[22px] border border-line bg-white p-3 shadow-[0_20px_50px_-40px_rgba(53,34,24,.5)]">
-      <p className="px-3 pb-2 pt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold">Customer care</p>
+      <p className="px-3 pb-2 pt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-gold"><T>Customer care</T></p>
       <ul>
         {HELP_PAGES.map((p) => {
           const on = p.href === current;
@@ -24,8 +25,8 @@ export default function HelpNav({ current }: { current: string }) {
               <Link href={p.href} aria-current={on ? 'page' : undefined}
                 className={`group flex items-center justify-between gap-3 rounded-2xl px-3 py-2.5 transition ${on ? 'bg-ink text-white' : 'text-ink hover:bg-soft'}`}>
                 <span>
-                  <span className="block text-[15px] font-medium">{p.name}</span>
-                  <span className={`block text-[12.5px] ${on ? 'text-sand' : 'text-muted'}`}>{p.note}</span>
+                  <span className="block text-[15px] font-medium"><T>{p.name}</T></span>
+                  <span className={`block text-[12.5px] ${on ? 'text-sand' : 'text-muted'}`}><T>{p.note}</T></span>
                 </span>
                 <ArrowRight className={`h-4 w-4 shrink-0 transition group-hover:translate-x-0.5 ${on ? 'text-sand' : 'text-gold'}`} />
               </Link>

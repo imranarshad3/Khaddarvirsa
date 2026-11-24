@@ -38,7 +38,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { e, out } = await searchParams;
   const useClerk = clerkConfigured();
   return (
-    <main className="grid min-h-screen bg-paper lg:grid-cols-[1.1fr_1fr]">
+    <main lang="en" dir="ltr" className="grid min-h-screen bg-paper lg:grid-cols-[1.1fr_1fr]">
       <div className="relative hidden overflow-hidden bg-ink lg:block">
         <img src="/hero/product-craft-courtyard.webp" alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />

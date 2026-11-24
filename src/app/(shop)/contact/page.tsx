@@ -1,3 +1,4 @@
+import { getT } from '@/lib/lang';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
@@ -12,10 +13,11 @@ type Way = { icon: ReactNode; label: string; value: string; action: string; href
 
 export default async function ContactPage() {
   const s = await getSettings();
+  const t = await getT();
   const ways: Way[] = [
-    ...(s.whatsapp_number ? [{ icon: <WhatsappIcon className="h-6 w-6 text-[#25D366]" />, label: 'WhatsApp', value: s.whatsapp_number, action: 'Chat now', href: whatsappLink(s.whatsapp_number), external: true }] : []),
-    ...s.contact.phone.map((x) => ({ icon: <PhoneIcon className="h-6 w-6 text-gold" />, label: 'Call us', value: x, action: 'Call now', href: `tel:+${x.replace(/\D/g, '')}` })),
-    ...s.contact.email.map((x) => ({ icon: <MailIcon className="h-6 w-6 text-gold" />, label: 'Email', value: x, action: 'Send email', href: `mailto:${x}` })),
+    ...(s.whatsapp_number ? [{ icon: <WhatsappIcon className="h-6 w-6 text-[#25D366]" />, label: 'WhatsApp', value: s.whatsapp_number, action: t('Chat now'), href: whatsappLink(s.whatsapp_number), external: true }] : []),
+    ...s.contact.phone.map((x) => ({ icon: <PhoneIcon className="h-6 w-6 text-gold" />, label: t('Call us'), value: x, action: t('Call now'), href: `tel:+${x.replace(/\D/g, '')}` })),
+    ...s.contact.email.map((x) => ({ icon: <MailIcon className="h-6 w-6 text-gold" />, label: t('Email'), value: x, action: t('Send email'), href: `mailto:${x}` })),
   ];
   return (
     <>
@@ -40,7 +42,7 @@ export default async function ContactPage() {
             <div className="mt-4 flex items-start gap-4 rounded-[22px] border border-line bg-white p-6">
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-soft"><PinIcon className="h-6 w-6 text-gold" /></span>
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold">Visit us</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-gold">{t('Visit us')}</p>
                 {s.contact.address.map((x) => <p key={x} className="mt-1 text-[16px] text-ink">{x}</p>)}
               </div>
             </div>
@@ -49,8 +51,8 @@ export default async function ContactPage() {
           <Link href="/track-order" className="mt-4 flex items-center gap-4 rounded-[22px] bg-ink p-6 text-sand transition hover:bg-ink-2">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand/10"><TruckIcon className="h-6 w-6" /></span>
             <span className="flex-1">
-              <span className="block font-display text-[22px] text-white">Already ordered?</span>
-              <span className="block text-[14px] text-sand/80">Track your parcel with your order number.</span>
+              <span className="block font-display text-[22px] text-white">{t('Already ordered?')}</span>
+              <span className="block text-[14px] text-sand/80">{t('Track your parcel with your order number.')}</span>
             </span>
             <ArrowRight className="h-5 w-5 shrink-0" />
           </Link>

@@ -1,3 +1,4 @@
+import { T } from '@/components/i18n/LangProvider';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { imageUrl, subCategoryByAlias, subCategoryProducts, type Sort } from '@/lib/catalog';
@@ -33,7 +34,7 @@ export default async function SubCategoryPage({ params, searchParams }: Props) {
       <div className="container-kk mt-6">
         <FilterBar count={products.length} sort={sort} inStockOnly={stock === 'in'} />
         {products.length ? <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} eager={4} />
-          : <p className="py-10 text-center">No products found.</p>}
+          : <p className="py-10 text-center"><T>No products found.</T></p>}
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { T } from '@/components/i18n/LangProvider';
 import Link from 'next/link';
 import { imageUrl, type ProductRow } from '@/lib/catalog';
 import { discountPercent, unitPrice } from '@/lib/pricing';
@@ -41,7 +42,7 @@ export default function ProductCard({ p, sale, priority = false }: { p: ProductR
           <img src={imageUrl(p.img, 'product', '600x600_cover')} alt={`${p.title} ${p.code ?? ''}`.trim()} width={600} height={600}
             loading={priority ? 'eager' : 'lazy'} decoding="async" className={`h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06] ${p.in_stock ? '' : 'opacity-50 grayscale'}`} />
           {!p.in_stock && (
-            <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 bg-ink/85 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white">Sold Out</span>
+            <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 bg-ink/85 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.24em] text-white"><T>Sold Out</T></span>
           )}
         </Link>
         {p.in_stock === 1 && <div className="absolute bottom-2 right-2 z-[1] sm:bottom-3 sm:right-3"><AddToBag item={item} /></div>}

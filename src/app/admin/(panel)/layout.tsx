@@ -11,7 +11,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   await requireAdmin();
   const s = (await getSettings());
   return (
-    <div className="admin min-h-screen bg-[#f7f2ea] print:bg-white text-[14px] text-ink-2 md:flex">
+    <div lang="en" dir="ltr" className="admin min-h-screen bg-[#f7f2ea] print:bg-white text-[14px] text-ink-2 md:flex">
       <aside className="relative bg-ink print:hidden text-white md:sticky md:top-0 md:h-screen md:w-[256px] md:shrink-0 md:overflow-y-auto">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_60%_at_0%_0%,rgba(212,178,137,.18),transparent_60%)]" />
         <div className="relative flex flex-wrap items-center gap-3 px-5 py-5 md:block md:px-6 md:py-7">

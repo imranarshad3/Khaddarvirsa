@@ -1,3 +1,4 @@
+import { getT } from '@/lib/lang';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
@@ -24,6 +25,7 @@ export default async function ContentPage({ params }: Props) {
   const p = await getPage((await params).page);
   if (!p) notFound();
   const s = (await getSettings());
+  const t = await getT();
   return (
     <>
       <PageBanner title={p.title} crumbs={[{ name: p.title }]} />
@@ -32,13 +34,13 @@ export default async function ContentPage({ params }: Props) {
           {p.body ? <div className="prose-kk">{renderBody(p.body)}</div> : (
             // No text yet: say so honestly and offer the fastest ways to get an answer.
             <div className="py-6 text-center">
-              <p className="font-display text-[28px] text-ink">This page is coming soon</p>
-              <p className="mx-auto mt-3 max-w-[460px] text-[16px]">We are writing it now. Until then, our team will happily answer any question directly.</p>
+              <p className="font-display text-[28px] text-ink">{t('This page is coming soon')}</p>
+              <p className="mx-auto mt-3 max-w-[460px] text-[16px]">{t('We are writing it now. Until then, our team will happily answer any question directly.')}</p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
-                {s.whatsapp_number && <a href={whatsappLink(s.whatsapp_number)} target="_blank" rel="noopener" className="btn-dark rounded-full"><WhatsappIcon className="h-4 w-4" /> WhatsApp us</a>}
-                {s.contact.phone[0] && <a href={`tel:+${s.contact.phone[0].replace(/\D/g, '')}`} className="btn-line rounded-full"><PhoneIcon className="h-4 w-4" /> Call {s.contact.phone[0]}</a>}
+                {s.whatsapp_number && <a href={whatsappLink(s.whatsapp_number)} target="_blank" rel="noopener" className="btn-dark rounded-full"><WhatsappIcon className="h-4 w-4" /> {t('WhatsApp us')}</a>}
+                {s.contact.phone[0] && <a href={`tel:+${s.contact.phone[0].replace(/\D/g, '')}`} className="btn-line rounded-full"><PhoneIcon className="h-4 w-4" /> {t('Call')} {s.contact.phone[0]}</a>}
               </div>
-              <Link href="/contact" className="mt-6 inline-block text-[14px] text-gold underline-offset-4 hover:underline">All contact options</Link>
+              <Link href="/contact" className="mt-6 inline-block text-[14px] text-gold underline-offset-4 hover:underline">{t('All contact options')}</Link>
             </div>
           )}
         </article>

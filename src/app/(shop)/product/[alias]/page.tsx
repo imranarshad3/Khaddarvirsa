@@ -1,3 +1,4 @@
+import { getT } from '@/lib/lang';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -32,6 +33,7 @@ export default async function ProductPage({ params }: Props) {
   const p = (await productByAlias((await params).alias));
   if (!p) notFound();
   const s = (await getSettings());
+  const t = await getT();
   const price = unitPrice(p);
   const off = discountPercent(p);
   const freeShip = s.free_shipping_over > 0 && price >= s.free_shipping_over;
@@ -58,9 +60,9 @@ export default async function ProductPage({ params }: Props) {
         },
       }} />
       <JsonLd data={breadcrumbJsonLd(base, crumbs.slice(0, 2))} />
-      <nav aria-label="Breadcrumb" className="border-b border-line bg-paper">
+      <nav aria-label={t('Breadcrumb')} className="border-b border-line bg-paper">
         <ol className="container-kk flex flex-wrap items-center gap-2 py-4 text-[12px] uppercase tracking-[0.18em] text-muted">
-          {[{ name: 'Home', href: '/' }, ...crumbs].map((c, i, all) => (
+          {[{ name: t('Home'), href: '/' }, ...crumbs].map((c, i, all) => (
             <li key={i} className="flex items-center gap-2">
               {i > 0 && <span aria-hidden className="text-line">/</span>}
               {'href' in c && c.href && i < all.length - 1
@@ -79,36 +81,36 @@ export default async function ProductPage({ params }: Props) {
         <div>
           <Link href={`/product-category/${p.sub_alias}`} className="eyebrow hover:text-ink">{p.sub_name}</Link>
           <h1 className="font-display mt-3 text-[36px] leading-[1.1] text-ink sm:text-[46px]">{p.title}</h1>
-          {p.code && <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-muted">Code · <span className="text-ink-2">{p.code}</span></p>}
+          {p.code && <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-muted">{t('Code')} · <span className="text-ink-2">{p.code}</span></p>}
 
           <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-y border-line py-5">
             <span className="font-display text-[34px] leading-none text-ink">Rs {price.toLocaleString()}</span>
             {off > 0 && <del className="text-[18px] text-muted">Rs {p.price.toLocaleString()}</del>}
-            {off > 0 && <span className="rounded-full bg-sale/10 px-3 py-1 text-[13px] font-semibold uppercase tracking-[0.12em] text-sale">Save Rs {(p.price - price).toLocaleString()} · {off}%</span>}
+            {off > 0 && <span className="rounded-full bg-sale/10 px-3 py-1 text-[13px] font-semibold uppercase tracking-[0.12em] text-sale">{t('Save')} Rs {(p.price - price).toLocaleString()} · {off}%</span>}
           </div>
 
           <p className="mt-5 flex items-center gap-2.5 text-[15px]">
             <span aria-hidden className={`h-2.5 w-2.5 rounded-full ${p.in_stock ? 'bg-green-600 shadow-[0_0_0_4px_rgba(22,163,74,.15)]' : 'bg-sale'}`} />
-            {p.in_stock ? <span className="font-medium text-green-800">In stock, ready to ship</span> : <span className="font-medium text-sale">Out of stock</span>}
+            {p.in_stock ? <span className="font-medium text-green-800">{t('In stock, ready to ship')}</span> : <span className="font-medium text-sale">{t('Out of stock')}</span>}
           </p>
 
           <div className="mt-6">
             {p.in_stock ? <ProductActions item={cartItemOf(p)} />
-              : <p className="rounded-full border border-line py-4 text-center text-[13px] font-semibold uppercase tracking-[0.2em] text-muted">Currently unavailable</p>}
+              : <p className="rounded-full border border-line py-4 text-center text-[13px] font-semibold uppercase tracking-[0.2em] text-muted">{t('Currently unavailable')}</p>}
           </div>
 
           <ul className="mt-8 grid gap-3 rounded-2xl bg-soft p-5 text-[15px] text-ink-2 sm:grid-cols-2">
-            <li className="flex items-start gap-3"><CheckIcon className="mt-1 h-4 w-4 shrink-0 text-gold-dark" /> Cash on Delivery across Pakistan</li>
+            <li className="flex items-start gap-3"><CheckIcon className="mt-1 h-4 w-4 shrink-0 text-gold-dark" /> {t('Cash on Delivery across Pakistan')}</li>
             <li className="flex items-start gap-3"><TruckIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-dark" />
-              {freeShip ? 'Free delivery on this piece'
-                : s.free_shipping_over > 0 ? `Free delivery on orders over Rs ${s.free_shipping_over.toLocaleString()}`
-                : s.shipping_charges > 0 ? `Delivery Rs ${s.shipping_charges.toLocaleString()}` : 'Delivered to your door'}
+              {freeShip ? t('Free delivery on this piece')
+                : s.free_shipping_over > 0 ? `${t('Free delivery on orders above')} Rs ${s.free_shipping_over.toLocaleString()}`
+                : s.shipping_charges > 0 ? `${t('Delivery')} Rs ${s.shipping_charges.toLocaleString()}` : t('Delivered to your door')}
             </li>
           </ul>
 
           <details open className="group mt-8 border-t border-line">
             <summary className="flex cursor-pointer list-none items-center justify-between py-5 text-[13px] font-semibold uppercase tracking-[0.22em] text-ink">
-              Description <ChevronDown className="h-4 w-4 text-gold-dark transition-transform group-open:rotate-180" />
+              {t('Description')} <ChevronDown className="h-4 w-4 text-gold-dark transition-transform group-open:rotate-180" />
             </summary>
             <div className="pb-6">
               {prose.map((l, i) => <p key={i} className="mb-3 text-[16px] leading-[1.8] text-body">{l}</p>)}

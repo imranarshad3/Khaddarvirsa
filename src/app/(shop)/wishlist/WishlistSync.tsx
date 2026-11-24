@@ -1,4 +1,5 @@
 'use client';
+import { T } from '@/components/i18n/LangProvider';
 import { useEffect, useState, type ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { readWishlist, WISH_EVENT } from '@/components/product/CartButtons';
@@ -19,6 +20,6 @@ export default function WishlistSync({ ids, children }: { ids: number[]; childre
     window.addEventListener(WISH_EVENT, sync);
     return () => window.removeEventListener(WISH_EVENT, sync);
   }, [ids, path, router]);
-  if (!synced && !ids.length) return <p className="py-16 text-center text-muted">Loading your wishlist…</p>;
+  if (!synced && !ids.length) return <p className="py-16 text-center text-muted"><T>Loading your wishlist…</T></p>;
   return <>{children}</>;
 }

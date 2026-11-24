@@ -1,3 +1,4 @@
+import { T } from '@/components/i18n/LangProvider';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { categoryByAlias, categorySections } from '@/lib/catalog';
@@ -26,7 +27,7 @@ export default async function MainCategoryPage({ params }: Props) {
       <JsonLd data={breadcrumbJsonLd(siteUrl(), crumbs)} />
       <PageBanner title={c.name} crumbs={crumbs} />
       <div className="container-kk mt-8">
-        {sections.length === 0 && <p className="py-10 text-center">No products in this category yet.</p>}
+        {sections.length === 0 && <p className="py-10 text-center"><T>No products in this category yet.</T></p>}
         {sections.map(({ sub, products }, i) => (
           <section key={sub.id} className="mb-10">
             <SectionBar title={sub.name} href={`/product-category/${sub.alias}`} />
