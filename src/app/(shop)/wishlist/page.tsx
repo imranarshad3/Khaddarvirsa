@@ -5,6 +5,7 @@ import { getSettings } from '@/lib/settings';
 import PageBanner from '@/components/layout/PageBanner';
 import { ProductGrid } from '@/components/product/ProductCard';
 import WishlistSync from './WishlistSync';
+import { HeartIcon } from '@/components/icons';
 
 export const metadata: Metadata = { title: 'Wishlist', robots: { index: false } };
 
@@ -15,7 +16,7 @@ export default async function WishlistPage({ searchParams }: { searchParams: Pro
   const products = (await productsByIds(ids));
   return (
     <>
-      <PageBanner title="Wishlist" crumbs={[{ name: 'Wishlist' }]} />
+      <PageBanner title="Wishlist" crumbs={[{ name: 'Wishlist' }]} subtitle="Pieces you have saved for later, all in one place." />
       <div className="container-kk mt-10">
         <WishlistSync ids={ids}>
           {products.length ? (
@@ -24,10 +25,14 @@ export default async function WishlistPage({ searchParams }: { searchParams: Pro
               <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} />
             </>
           ) : (
-            <div className="py-16 text-center">
-              <p className="font-display text-[28px] text-ink">Your wishlist is empty</p>
+            <div className="mx-auto max-w-[520px] rounded-[28px] border border-line bg-white px-6 py-12 text-center shadow-[0_24px_60px_-44px_rgba(53,34,24,.5)]">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-soft text-gold"><HeartIcon className="h-6 w-6" /></span>
+              <p className="font-display mt-5 text-[28px] text-ink">Your wishlist is empty</p>
               <p className="mt-2 text-[16px]">Tap the heart on any product to save it here.</p>
-              <Link href="/today-sale" className="btn-dark mt-8">Explore the sale</Link>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link href="/search?q=khaddar" className="btn-dark rounded-full">Shop all</Link>
+                <Link href="/today-sale" className="btn-line rounded-full">Explore the sale</Link>
+              </div>
             </div>
           )}
         </WishlistSync>

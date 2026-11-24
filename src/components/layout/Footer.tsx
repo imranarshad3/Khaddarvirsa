@@ -40,6 +40,7 @@ export default async function Footer() {
             <li><Link className={a} href="/today-sale">{s.sale_title}</Link></li>
             <li><Link className={a} href="/search?q=khaddar">Shop All</Link></li>
             <li><Link className={a} href="/cart-detail">Shopping Bag</Link></li>
+            <li><Link className={a} href="/wishlist">Wishlist</Link></li>
             <li><Link className={a} href="/about-us">Our Story</Link></li>
           </ul>
         </section>

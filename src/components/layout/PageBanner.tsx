@@ -4,11 +4,12 @@ import { ArrowRight } from '@/components/icons';
 export type Crumb = { name: string; href?: string };
 
 /** Gradient title band with breadcrumbs, used on every inner page (CategoryBanner + Breadcrumbs on the reference). */
-export default function PageBanner({ title, crumbs }: { title: string; crumbs: Crumb[] }) {
+export default function PageBanner({ title, crumbs, subtitle }: { title: string; crumbs: Crumb[]; subtitle?: string }) {
   const all: Crumb[] = [{ name: 'Home', href: '/' }, ...crumbs];
   return (
-    <div className="page-banner text-sand">
-      <div className="container-kk flex flex-col items-center gap-3 py-10 text-center md:py-14">
+    <div className="page-banner relative overflow-hidden text-sand">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:radial-gradient(circle_at_1px_1px,#d4b289_1px,transparent_0)] [background-size:22px_22px]" />
+      <div className="container-kk relative flex flex-col items-center gap-3 py-10 text-center md:py-14">
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap justify-center gap-1.5 text-[12px] uppercase tracking-[0.2em]">
             {all.map((c, i) => (
@@ -20,6 +21,8 @@ export default function PageBanner({ title, crumbs }: { title: string; crumbs: C
           </ol>
         </nav>
         <h1 className="font-display text-[34px] text-white md:text-[46px]">{title}</h1>
+        <span aria-hidden="true" className="flex items-center gap-3 text-sand/70"><span className="h-px w-10 bg-sand/40" /><span className="h-1.5 w-1.5 rotate-45 bg-sand" /><span className="h-px w-10 bg-sand/40" /></span>
+        {subtitle && <p className="max-w-[560px] text-[15px] leading-relaxed text-sand/80">{subtitle}</p>}
       </div>
     </div>
   );
