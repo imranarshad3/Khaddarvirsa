@@ -33,6 +33,8 @@ export default function ProductCard({ product }: { product: ProductFull }) {
   const isNew = age >= 0 && age < 30 * 24 * 60 * 60 * 1000
   const low = inStock && product.stock_quantity <= product.low_stock_at
   const saved = wishlist.has(product.id)
+  const was = Number(product.compare_at_price ?? 0) + Number(selectedVariant?.price_delta ?? 0)
+  const off = was > unitPrice ? Math.round((1 - unitPrice / was) * 100) : 0
 
   async function handleAdd(then: 'stay' | 'checkout') {
     if (busy) return
@@ -53,6 +55,7 @@ export default function ProductCard({ product }: { product: ProductFull }) {
         {!inStock && <span className="stockflag">Out of stock</span>}
         {low && <span className="stockflag low">Only {product.stock_quantity} left</span>}
         {inStock && !low && isNew && <span className="stockflag new">New</span>}
+        {off > 0 && <span className="salebadge">-{off}%</span>}
         <button
           type="button"
           className={`wishbtn ${saved ? 'on' : ''}`}
@@ -87,7 +90,7 @@ export default function ProductCard({ product }: { product: ProductFull }) {
         ) : (
           <div className="sizes" aria-hidden="true" />
         )}
-        <div className="price">{money(unitPrice)}</div>
+        <div className="price">{off > 0 && <del>{money(was)}</del>}{money(unitPrice)}</div>
         <div className="prod-actions">
           <button type="button" className="btn prod-add" onClick={() => handleAdd('stay')} disabled={!inStock || busy !== null}>
             {busy === 'cart' ? <Spinner label="Adding" /> : !inStock ? 'Out of Stock' : <><Icon name="cart" /> Add to Cart</>}

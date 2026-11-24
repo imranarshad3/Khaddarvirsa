@@ -27,6 +27,7 @@ export default function OurStory() {
   return (
     <>
       <PageBanner
+        placement="story_hero"
         title={page?.hero_heading || 'A Story Woven With Grace'}
         cta="Our Philosophy"
         ctaTo="#our-philosophy"

@@ -8,6 +8,7 @@ import { useToast } from '../../context/ToastContext'
 import { PageBanner, ProcessSteps, SectionTitle } from '../../components/client/Sections'
 import Icon from '../../components/client/Icon'
 import { Spinner } from '../../components/client/Primitives'
+import { useBanner } from '../../lib/useBanner'
 
 const TOPICS = ['Order enquiry', 'Product advice', 'Custom sizing', 'Fabric care', 'Delivery & returns', 'Something else']
 
@@ -18,6 +19,7 @@ const HELP: [string, string, string][] = [
 ]
 
 export default function Contact() {
+  const visit = useBanner('contact_visit')
   const { store, contactNotes } = useStore()
   const toast = useToast()
   const [params] = useSearchParams()
@@ -70,6 +72,7 @@ export default function Contact() {
   return (
     <>
       <PageBanner
+        placement="contact_hero"
         title="Contact Us"
         eyebrow="WE ARE HERE TO HELP"
         description="Questions about fabrics, colours or your order? Our team would love to hear from you."
@@ -159,8 +162,8 @@ export default function Contact() {
       </section>
 
       <section className="contact-location">
-        <div className="contact-location-copy"><div className="eyebrow">A MORE PERSONAL EXPERIENCE</div><h2>Let’s Find the Right Piece for You</h2><p>Visit our Lahore store for shopping and exchanges, open every day from 9 am to 5 pm, including Sunday.</p>{store.location && <p className="location-address"><Icon name="pin" />{store.location}</p>}<Link className="btn" to="/contact?topic=Product%20advice">Plan Your Inquiry <Icon name="arrow" /></Link></div>
-        <div className="contact-location-photo" role="img" aria-label="Man in a khaddar suit in a haveli courtyard beside stacks of folded khaddar fabric" />
+        <div className="contact-location-copy"><div className="eyebrow">{visit?.eyebrow || 'A MORE PERSONAL EXPERIENCE'}</div><h2>{visit?.title || 'Let’s Find the Right Piece for You'}</h2><p>{visit?.subtitle || 'Visit our Lahore store for shopping and exchanges, open every day from 9 am to 5 pm, including Sunday.'}</p>{store.location && <p className="location-address"><Icon name="pin" />{store.location}</p>}<Link className="btn" to={(visit?.cta_label && visit.link_url) || '/contact?topic=Product%20advice'}>{(visit?.link_url && visit.cta_label) || 'Plan Your Inquiry'} <Icon name="arrow" /></Link></div>
+        <div className="contact-location-photo" style={visit?.image_url ? { backgroundImage: `url('${visit.image_url}')` } : undefined} role="img" aria-label="Man in a khaddar suit in a haveli courtyard beside stacks of folded khaddar fabric" />
       </section>
 
       <section className="section cream">

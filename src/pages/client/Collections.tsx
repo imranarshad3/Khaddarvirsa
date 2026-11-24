@@ -59,6 +59,7 @@ export default function Collections() {
     <>
       {loadError && <div className="notice error" role="alert">We could not load the latest collection. Please refresh and try again.</div>}
       <PageBanner
+        placement="collections_hero"
         title="Collections"
         editorial
         eyebrow="CURATED BY KHADDAR VIRSA"

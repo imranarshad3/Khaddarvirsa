@@ -59,6 +59,7 @@ export default function TrackOrder() {
   return (
     <>
       <PageBanner
+        placement="track_hero"
         title="Track Your Order"
         description="Enter your order number, email address and private tracking key to see where your order is."
         image="/assets/fashion/suiting-stack.webp"

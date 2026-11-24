@@ -5,6 +5,7 @@ import Carousel from './Carousel'
 import { Link } from 'react-router-dom'
 import { Reveal, SectionTitle } from './Primitives'
 import type { Banner, Category } from '../../lib/types'
+import { useBanner } from '../../lib/useBanner'
 
 const FALLBACK = '/assets/fashion/hero.webp'
 
@@ -19,6 +20,7 @@ export function PageBanner({
   editorial = false,
   shop = false,
   className,
+  placement,
 }: {
   eyebrow?: string
   title: string
@@ -30,7 +32,17 @@ export function PageBanner({
   editorial?: boolean
   shop?: boolean
   className?: string
+  /** Banners CMS slot whose text and photo replace these defaults when the admin sets them. */
+  placement?: string
 }) {
+  const banner = useBanner(placement)
+  if (banner) {
+    eyebrow = banner.eyebrow || eyebrow
+    title = banner.title || title
+    description = banner.subtitle || description
+    if (banner.image_url) { image = banner.image_url; imageSrcSet = undefined }
+    if (banner.cta_label && banner.link_url) { cta = banner.cta_label; ctaTo = banner.link_url }
+  }
   return (
     <div className={`banner${editorial ? ' banner-editorial' : ''}${shop ? ' shop-hero' : ''}${image === null ? ' banner-plain' : ''}${className ? ` ${className}` : ''}`}>
       {image !== null && <img src={image || FALLBACK} srcSet={imageSrcSet} sizes={imageSrcSet ? '(max-width: 1520px) 100vw, 1440px' : undefined} alt="" aria-hidden="true" fetchPriority={imageSrcSet ? 'high' : undefined} />}

@@ -33,9 +33,31 @@ function Announcement() {
   return (
     <div className="announcement reference-announcement">
       <span className="announcement-shipping"><Icon name="truck" />{store.announcement?.[0] || 'Free Delivery in Pakistan'}</span>
-      <span>100% Chemical-Free Fabrics</span>
+      <span lang="ur" dir="rtl" className="announcement-urdu">کیمیکل سے پاک خالص کھدر · ادائیگی ڈیلیوری پر</span>
       <span>Guaranteed Premium Quality</span>
       <CurrencySelector />
+    </div>
+  )
+}
+
+function QuickButtons() {
+  const { store } = useStore()
+  const [up, setUp] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setUp(window.scrollY > 600)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  const wa = (store.whatsapp || store.phone || '').replace(/\D/g, '')
+  return (
+    <div className="quick-buttons">
+      {up && <button type="button" className="quick-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Back to top">↑</button>}
+      {wa && (
+        <a className="quick-wa" href={`https://wa.me/${wa}?text=${encodeURIComponent('Assalam o Alaikum, I want to order khaddar.')}`} target="_blank" rel="noopener noreferrer" aria-label="Order on WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+      )}
     </div>
   )
 }
@@ -179,6 +201,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
 function Nav() {
   const { user } = useAuth()
   const cart = useCart()
+  const money = useMoney()
   const wishlist = useWishlist()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -219,6 +242,7 @@ function Nav() {
           </Link>
           <Link to="/cart" className="header-action header-cart" aria-label={`Cart, ${cart.count} items`}>
             <Icon name="cart" /><span className="header-cart-count" key={cart.count}>{cart.count}</span>
+            {cart.count > 0 && <span className="header-cart-total">{money(cart.subtotal)}</span>}
           </Link>
         </div>
       </nav>
@@ -459,6 +483,7 @@ export default function ClientLayout() {
       </main>
       <Footer />
       <AddedToCart />
+      <QuickButtons />
     </div>
   )
 }

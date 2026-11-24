@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Accordion } from '../../components/client/Primitives'
 import Icon from '../../components/client/Icon'
+import { useBanner } from '../../lib/useBanner'
 
 const photo = (path: string) => ({ backgroundImage: `url('/assets/fashion/${path}.webp')` })
 const RANGES = [
@@ -38,15 +39,16 @@ const FAQS = [
 ]
 
 export default function KhaddarGuide() {
+  const hero = useBanner('guide_hero')
   return <>
     <section className="care-hero">
-      <div className="care-hero-photo" style={photo('guide-hero')} role="img" aria-label="Khaddar being woven on a traditional hand loom" />
+      <div className="care-hero-photo" style={hero?.image_url ? { backgroundImage: `url('${hero.image_url}')` } : photo('guide-hero')} role="img" aria-label="Khaddar being woven on a traditional hand loom" />
       <div className="care-hero-copy">
         <div className="care-crumb"><Link to="/">Home</Link><span>/</span>Khaddar Guide</div>
-        <h1>The Khaddar Guide</h1>
-        <h2>From the Kamalia Loom to Your Wardrobe</h2>
-        <p>Everything you need to know about handwoven khaddar: what it is, how our four ranges differ, how to have it stitched, and how to care for it so it lasts for years.</p>
-        <Link className="btn" to="/shop">Shop Khaddar Suits <Icon name="arrow" /></Link>
+        <h1>{hero?.title || 'The Khaddar Guide'}</h1>
+        <h2>{hero?.eyebrow || 'From the Kamalia Loom to Your Wardrobe'}</h2>
+        <p>{hero?.subtitle || 'Everything you need to know about handwoven khaddar: what it is, how our four ranges differ, how to have it stitched, and how to care for it so it lasts for years.'}</p>
+        <Link className="btn" to={(hero?.cta_label && hero.link_url) || '/shop'}>{(hero?.link_url && hero.cta_label) || 'Shop Khaddar Suits'} <Icon name="arrow" /></Link>
       </div>
     </section>
 

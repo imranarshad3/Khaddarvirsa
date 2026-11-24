@@ -3,10 +3,12 @@ import { Link, Navigate, useSearchParams } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Logo } from '../../components/client/Primitives'
+import { useBanner } from '../../lib/useBanner'
 
 function AuthShell({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
+  const b = useBanner('login_photo')
   return <div className="auth-screen">
-    <div className="auth-photo"><img src="/assets/fashion/about-story.webp" alt="" aria-hidden="true" /><div><div className="eyebrow">KHADDAR VIRSA · FEEL THE FABRIC OF TRADITION</div><h2>Elegance woven into every thread.</h2><p className="auth-caption">Fine fabrics. Thoughtful design. Style that feels like you.</p></div></div>
+    <div className="auth-photo"><img src={b?.image_url || '/assets/fashion/about-story.webp'} alt="" aria-hidden="true" /><div><div className="eyebrow">{b?.eyebrow || 'KHADDAR VIRSA · FEEL THE FABRIC OF TRADITION'}</div><h2>{b?.title || 'Elegance woven into every thread.'}</h2><p className="auth-caption">{b?.subtitle || 'Fine fabrics. Thoughtful design. Style that feels like you.'}</p></div></div>
     <div className="auth-body"><div className="auth-card"><Logo /><div className="eyebrow">YOUR KHADDAR VIRSA ACCOUNT</div><h1>{title}</h1><p className="subtitle" style={{ marginBottom: 26 }}>{intro}</p><div className="clerk-auth-panel">{children}</div></div></div>
   </div>
 }

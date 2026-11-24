@@ -17,9 +17,11 @@ import { showAddedToCart } from '../../components/client/AddedToCart'
 import { FeatureRow, SectionTitle } from '../../components/client/Sections'
 import { Accordion, EmptyState, QuantityPicker, Spinner, Stars } from '../../components/client/Primitives'
 import type { ColorSwatch, ProductFull, Review } from '../../lib/types'
+import { useBanner } from '../../lib/useBanner'
 
 export default function ProductDetail() {
   const money = useMoney()
+  const craft = useBanner('product_craft')
   const { slug = '' } = useParams()
   const navigate = useNavigate()
   const { add } = useCart()
@@ -336,7 +338,7 @@ export default function ProductDetail() {
 
       <FeatureRow />
       <section className="section wrap product-editorial">
-        <div className="product-craft-visual"><div className="product-craft-caption"><div className="eyebrow">CRAFTED WITH CARE</div><h2>The Art of Pakistani Khaddar</h2><p>Fine fabrics, tradition and the beauty of patient work.</p><Link className="btn outline" to="/our-story">Discover Our Craft →</Link></div></div>
+        <div className="product-craft-visual" style={craft?.image_url ? { backgroundImage: `linear-gradient(0deg,#241809d9,transparent 65%),url('${craft.image_url}')` } : undefined}><div className="product-craft-caption"><div className="eyebrow">{craft?.eyebrow || 'CRAFTED WITH CARE'}</div><h2>{craft?.title || 'The Art of Pakistani Khaddar'}</h2><p>{craft?.subtitle || 'Fine fabrics, tradition and the beauty of patient work.'}</p><Link className="btn outline" to={(craft?.cta_label && craft.link_url) || '/our-story'}>{(craft?.link_url && craft.cta_label) || 'Discover Our Craft'} →</Link></div></div>
         <div>          <div className="product-information">
             <Accordion title="Product Details" defaultOpen>
               <p>{product.description || product.short_description}</p>

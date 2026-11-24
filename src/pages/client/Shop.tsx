@@ -187,6 +187,7 @@ export default function Shop() {
   return (
     <>
       <PageBanner
+        placement="shop_hero"
         title="Shop All"
         editorial
         shop

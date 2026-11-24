@@ -77,7 +77,7 @@ export default function Cart() {
 
   return (
     <>
-      <PageBanner title="Your Cart" description="Handwoven khaddar. Timeless style." image={null} />
+      <PageBanner placement="cart_hero" title="Your Cart" description="Handwoven khaddar. Timeless style." image={null} />
 
       <section className="section wrap">
         {cart.error && <div className="notice error" role="alert">{cart.error} <button className="linkbtn" type="button" onClick={() => void cart.reload()}>Try again</button></div>}

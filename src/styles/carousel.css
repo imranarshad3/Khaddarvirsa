@@ -53,3 +53,16 @@
 .rg-client .prod-actions .btn{gap:.375rem}
 .rg-client .prod-actions .btn svg,.rg-client .prod-actions .prod-add svg{display:inline-block;width:.9375rem;height:.9375rem;flex-shrink:0}
 @container prodcard (max-width:19rem){.rg-client .prod-actions .btn svg,.rg-client .prod-actions .prod-add svg{display:inline-block}}
+
+/* Sale badge, struck price, header cart total, floating WhatsApp / back-to-top */
+.rg-client .salebadge{position:absolute;left:12px;bottom:12px;z-index:2;background:#b3261e;color:#fff;font-weight:700;font-size:.9375rem;padding:5px 10px;border-radius:6px}
+.rg-client .prod .price del{color:#9a8574;font-size:.7em;margin-right:.5em;font-weight:400}
+.rg-client .header-cart-total{font-size:.8125rem;font-weight:600;margin-left:.375rem;white-space:nowrap}
+@media (max-width:700px){.rg-client .header-cart-total{display:none}}
+.rg-client .quick-buttons{position:fixed;right:16px;bottom:16px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.rg-client .quick-wa{display:flex;align-items:center;gap:8px;background:#25d366;color:#fff;font-weight:700;font-size:1rem;padding:12px 18px 12px 14px;border-radius:999px;box-shadow:0 6px 18px #0003;text-decoration:none}
+.rg-client .quick-wa svg{width:28px;height:28px}
+.rg-client .quick-top{width:46px;height:46px;border-radius:50%;border:1px solid #d9c9b0;background:#fffcf5;color:#351b10;font-size:1.375rem;cursor:pointer;box-shadow:0 3px 10px #0002}
+@media (max-width:600px){.rg-client .quick-wa span{display:none}.rg-client .quick-wa{padding:12px}}
+.rg-client .reference-announcement .announcement-urdu{letter-spacing:0;font-size:.8125rem;text-transform:none}
+@media (max-width:700px){.rg-client .reference-announcement .announcement-shipping{display:none}.rg-client .reference-announcement>span.announcement-urdu{display:flex;font-size:.75rem}}

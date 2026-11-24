@@ -8,11 +8,22 @@ import { useToast } from '../../context/ToastContext'
 import { ConfirmDialog, Field, ImageUploader, Modal, Notice, PageHeader, Spinner, Toggle } from '../components/ui'
 import type { Banner } from '../../lib/types'
 
+// Every storefront slot that reads a banner. Empty fields keep the page's built-in text and photo.
 const PLACEMENTS = [
   { id: 'home_hero', label: 'Homepage • Hero section' },
   { id: 'home_lifestyle', label: 'Homepage • Shop-by-occasion band' },
   { id: 'home_story', label: 'Homepage • Our story band' },
+  { id: 'shop_hero', label: 'Shop • Page hero' },
   { id: 'shop_lifestyle', label: 'Shop • Lifestyle band' },
+  { id: 'collections_hero', label: 'Collections • Page hero' },
+  { id: 'story_hero', label: 'Our Story • Page hero' },
+  { id: 'guide_hero', label: 'Khaddar Guide • Page hero (eyebrow shows as the sub-heading)' },
+  { id: 'contact_hero', label: 'Contact • Page hero' },
+  { id: 'contact_visit', label: 'Contact • Visit our store section' },
+  { id: 'product_craft', label: 'Product page • Craft panel' },
+  { id: 'cart_hero', label: 'Cart • Page header (text only unless you add an image)' },
+  { id: 'track_hero', label: 'Track Order • Page hero' },
+  { id: 'login_photo', label: 'Login & sign-up • Side photo' },
 ]
 
 const BLANK = {
@@ -147,8 +158,8 @@ export default function Banners() {
       <ContentNavigation />
       {loadError && <div className="notice error" role="alert">{loadError} <button type="button" className="action" onClick={() => void load()}>Try again</button></div>}
       <PageHeader
-        title="Homepage Banners"
-        subtitle="Manage your storefront’s visual stories and promotional imagery."
+        title="Page Photos & Text"
+        subtitle="Change the photo and wording of each storefront page section. Leave a field empty to keep the built-in version."
         actions={
           <button type="button" className="btn" onClick={() => open('new')}>
             <Plus size={16} aria-hidden="true" /> Add Banner
@@ -165,7 +176,7 @@ export default function Banners() {
         {loading ? (
           <div className="skeleton" style={{ height: 260 }} />
         ) : rows.length === 0 ? (
-          <p className="tiny">No banners yet. Add one to control the homepage hero and feature bands.</p>
+          <p className="tiny">No banners yet. Add one to change a page hero or section photo.</p>
         ) : (
           rows.map((b, i) => (
             <div className="bannerrow" key={b.id}>
