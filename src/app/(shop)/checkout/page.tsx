@@ -5,8 +5,8 @@ import CheckoutForm from './CheckoutForm';
 
 export const metadata: Metadata = { title: 'Checkout', robots: { index: false } };
 
-export default function CheckoutPage() {
-  const s = getSettings();
+export default async function CheckoutPage() {
+  const s = (await getSettings());
   return (
     <>
       <PageBanner title="Checkout" crumbs={[{ name: 'Cart', href: '/cart-detail' }, { name: 'Checkout' }]} />

@@ -9,7 +9,7 @@ import { H1, Notice, type SP } from '../../ui';
 export const metadata = { title: 'Edit product' };
 
 export default async function EditProduct({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: SP }) {
-  const p = db().prepare('SELECT * FROM products WHERE id = ?').get(Number((await params).id)) as Product | undefined;
+  const p = (await db().prepare('SELECT * FROM products WHERE id = ?').get(Number((await params).id))) as Product | undefined;
   if (!p) notFound();
   return (
     <>

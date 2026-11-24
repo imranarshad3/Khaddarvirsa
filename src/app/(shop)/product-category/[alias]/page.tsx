@@ -9,7 +9,7 @@ import FilterBar from '@/components/product/FilterBar';
 type Props = { params: Promise<{ alias: string }>; searchParams: Promise<{ sort?: string; stock?: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const sc = subCategoryByAlias((await params).alias);
+  const sc = (await subCategoryByAlias((await params).alias));
   if (!sc) return {};
   return {
     title: sc.meta_title || sc.name,
@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SubCategoryPage({ params, searchParams }: Props) {
-  const sc = subCategoryByAlias((await params).alias);
+  const sc = (await subCategoryByAlias((await params).alias));
   if (!sc) notFound();
   const { sort = 'price-asc', stock } = await searchParams;
-  const s = getSettings();
-  const products = subCategoryProducts(sc.id, sort as Sort, stock === 'in');
+  const s = (await getSettings());
+  const products = (await subCategoryProducts(sc.id, sort as Sort, stock === 'in'));
   const crumbs = [{ name: sc.cat_name, href: `/main-category/${sc.cat_alias}` }, { name: sc.name, href: `/product-category/${sc.alias}` }];
   return (
     <>

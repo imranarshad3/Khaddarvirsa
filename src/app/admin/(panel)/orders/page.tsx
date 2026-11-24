@@ -11,7 +11,7 @@ export default async function Orders({ searchParams }: { searchParams: SP }) {
   const args: string[] = [];
   if ((ORDER_STATUSES as readonly string[]).includes(status)) { where.push('status = ?'); args.push(status); }
   if (q.trim()) { where.push('(number LIKE ? OR name LIKE ? OR phone LIKE ? OR city LIKE ?)'); args.push(...Array(4).fill(`%${q.trim()}%`)); }
-  const orders = db().prepare(`SELECT * FROM orders ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY id DESC LIMIT 200`).all(...args) as Order[];
+  const orders = (await db().prepare(`SELECT * FROM orders ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY id DESC LIMIT 200`).all(...args)) as Order[];
   return (
     <>
       <H1>Orders <a download href="/admin/export/orders" className="ml-auto rounded-full border border-line bg-white px-4 py-2 font-sans text-[12px] font-semibold uppercase tracking-[0.14em] text-ink-2 hover:border-gold">Download CSV</a></H1>

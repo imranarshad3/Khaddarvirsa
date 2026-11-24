@@ -1,6 +1,6 @@
 import 'server-only';
 import crypto from 'node:crypto';
-import { db } from './db';
+import { db, tx, type Db } from './db';
 import { getSettings } from './settings';
 import { totals, unitPrice, type Discount } from './pricing';
 import { imageUrl, type Product } from './catalog';
@@ -23,14 +23,14 @@ export function normalizePhone(raw: string) {
   return m ? '0' + m[1] : null;
 }
 
-export function findDiscount(code: string | undefined | null): Discount | null {
+export async function findDiscount(code: string | undefined | null, d: Db = db()): Promise<Discount | null> {
   if (!code?.trim()) return null;
-  const row = db().prepare(`SELECT code, type, value, min_subtotal FROM discounts
-    WHERE code = ? AND active = 1 AND (expires_at IS NULL OR expires_at = '' OR expires_at >= date('now'))`).get(code.trim()) as Discount | undefined;
+  const row = (await d.prepare(`SELECT code, type, value, min_subtotal FROM discounts
+    WHERE code = ? AND active = 1 AND (expires_at IS NULL OR expires_at = '' OR expires_at >= date('now'))`).get(code.trim())) as Discount | undefined;
   return row ?? null;
 }
 
-export function placeOrder(input: OrderInput) {
+export async function placeOrder(input: OrderInput) {
   const name = input.name?.trim().slice(0, 100);
   const phone = normalizePhone(input.phone ?? '');
   const email = input.email?.trim().slice(0, 150) || null;
@@ -52,39 +52,37 @@ export function placeOrder(input: OrderInput) {
   }
   if (!qtyById.size) throw new OrderError('Your cart is empty.');
 
-  const d = db();
-  const s = getSettings();
-  const getProduct = d.prepare('SELECT * FROM products WHERE id = ? AND hidden = 0');
-  const insOrder = d.prepare(`INSERT INTO orders (number,name,phone,email,city,address,remarks,payment_method,subtotal,discount,discount_code,shipping,total)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`);
-  const insItem = d.prepare('INSERT INTO order_items (order_id,product_id,title,code,img,unit_price,qty) VALUES (?,?,?,?,?,?,?)');
-  const takeStock = d.prepare(`UPDATE products SET stock = stock - ?, in_stock = CASE WHEN stock - ? <= 0 THEN 0 ELSE in_stock END,
-    updated_at = datetime('now') WHERE id = ? AND stock IS NOT NULL`);
-
+  const s = await getSettings();
   // One transaction: prices and stock are read and written together, so two buyers cannot take the last piece twice.
-  return d.transaction(() => {
+  return tx(async (d) => {
+    const getProduct = d.prepare('SELECT * FROM products WHERE id = ? AND hidden = 0');
+    const insOrder = d.prepare(`INSERT INTO orders (number,name,phone,email,city,address,remarks,payment_method,subtotal,discount,discount_code,shipping,total)
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+    const insItem = d.prepare('INSERT INTO order_items (order_id,product_id,title,code,img,unit_price,qty) VALUES (?,?,?,?,?,?,?)');
+    const takeStock = d.prepare(`UPDATE products SET stock = stock - ?, in_stock = CASE WHEN stock - ? <= 0 THEN 0 ELSE in_stock END,
+      updated_at = datetime('now') WHERE id = ? AND stock IS NOT NULL`);
     const lines: { p: Product; qty: number; price: number }[] = [];
     for (const [id, qty] of qtyById) {
-      const p = getProduct.get(id) as Product | undefined;
+      const p = (await getProduct.get(id)) as Product | undefined;
       if (!p) throw new OrderError('A product in your cart is no longer available. Please remove it and try again.');
       if (!p.in_stock) throw new OrderError(`${p.title} (${p.code}) is out of stock. Please remove it from your cart.`);
       if (p.stock !== null && p.stock < qty) throw new OrderError(`Only ${p.stock} left of ${p.title} (${p.code}).`);
       lines.push({ p, qty, price: unitPrice(p) });
     }
     const subtotal = lines.reduce((a, l) => a + l.price * l.qty, 0);
-    const discount = findDiscount(input.discount_code);
+    const discount = await findDiscount(input.discount_code, d);
     if (input.discount_code?.trim() && !discount) throw new OrderError('That discount code is not valid.');
     const t = totals(subtotal, { charges: s.shipping_charges, freeOver: s.free_shipping_over }, discount);
     const number = 'KK' + crypto.randomBytes(5).toString('hex').toUpperCase();
-    const { lastInsertRowid } = insOrder.run(number, name, phone, email, city, address, remarks, input.payment_method,
-      t.subtotal, t.discount, t.discount ? discount!.code : null, t.shipping, t.total);
+    const { lastInsertRowid } = (await insOrder.run(number, name, phone, email, city, address, remarks, input.payment_method,
+      t.subtotal, t.discount, t.discount ? discount!.code : null, t.shipping, t.total));
     for (const l of lines) {
-      insItem.run(lastInsertRowid, l.p.id, l.p.title, l.p.code, imageUrl(l.p.img, 'product', '100x100_cover'), l.price, l.qty);
-      takeStock.run(l.qty, l.qty, l.p.id);
+      await insItem.run(lastInsertRowid, l.p.id, l.p.title, l.p.code, imageUrl(l.p.img, 'product', '100x100_cover'), l.price, l.qty);
+      await takeStock.run(l.qty, l.qty, l.p.id);
     }
-    if (t.discount) d.prepare('UPDATE discounts SET used_count = used_count + 1 WHERE code = ?').run(discount!.code);
+    if (t.discount) (await d.prepare('UPDATE discounts SET used_count = used_count + 1 WHERE code = ?').run(discount!.code));
     return number;
-  })();
+  });
 }
 
 export type Order = {
@@ -94,8 +92,8 @@ export type Order = {
 };
 export type OrderItem = { id: number; product_id: number | null; title: string; code: string | null; img: string | null; unit_price: number; qty: number };
 
-export function orderByNumber(number: string) {
-  const o = db().prepare('SELECT * FROM orders WHERE number = ?').get(number) as Order | undefined;
+export async function orderByNumber(number: string) {
+  const o = (await db().prepare('SELECT * FROM orders WHERE number = ?').get(number)) as Order | undefined;
   if (!o) return null;
-  return { ...o, items: db().prepare('SELECT * FROM order_items WHERE order_id = ?').all(o.id) as OrderItem[] };
+  return { ...o, items: (await db().prepare('SELECT * FROM order_items WHERE order_id = ?').all(o.id)) as OrderItem[] };
 }

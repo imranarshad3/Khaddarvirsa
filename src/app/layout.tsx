@@ -9,7 +9,7 @@ const serif = DM_Serif_Display({ subsets: ["latin"], weight: "400", variable: "-
 export const dynamic = "force-dynamic"; // catalogue, prices and settings are edited live from the admin panel
 
 export async function generateMetadata(): Promise<Metadata> {
-  const s = getSettings();
+  const s = (await getSettings());
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: s.seo_title, template: `%s | ${s.store_name}` },

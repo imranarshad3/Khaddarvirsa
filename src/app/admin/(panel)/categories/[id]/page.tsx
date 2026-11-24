@@ -10,9 +10,9 @@ import SubForm from '../SubForm';
 export const metadata = { title: 'Edit collection' };
 
 export default async function EditSub({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: SP }) {
-  const s = db().prepare('SELECT * FROM sub_categories WHERE id = ?').get(Number((await params).id)) as SubCategory | undefined;
+  const s = (await db().prepare('SELECT * FROM sub_categories WHERE id = ?').get(Number((await params).id))) as SubCategory | undefined;
   if (!s) notFound();
-  const cats = db().prepare('SELECT * FROM categories ORDER BY order_no').all() as Category[];
+  const cats = (await db().prepare('SELECT * FROM categories ORDER BY order_no').all()) as Category[];
   return (
     <>
       <Link href="/admin/categories" className="text-primary">← Categories</Link>

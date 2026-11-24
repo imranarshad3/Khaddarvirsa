@@ -6,7 +6,7 @@ import ConfirmButton from '../ConfirmButton';
 export const metadata = { title: 'Subscribers' };
 
 export default async function Subscribers({ searchParams }: { searchParams: SP }) {
-  const rows = db().prepare('SELECT id, email, created_at FROM subscribers ORDER BY id DESC').all() as { id: number; email: string; created_at: string }[];
+  const rows = (await db().prepare('SELECT id, email, created_at FROM subscribers ORDER BY id DESC').all()) as { id: number; email: string; created_at: string }[];
   return (
     <>
       <H1>Newsletter subscribers ({rows.length})

@@ -9,7 +9,7 @@ type P = { slug: string; title: string; body: string; meta_description: string |
 
 export default async function Pages({ searchParams }: { searchParams: SP }) {
   const sp = await searchParams;
-  const pages = db().prepare('SELECT * FROM pages ORDER BY title').all() as P[];
+  const pages = (await db().prepare('SELECT * FROM pages ORDER BY title').all()) as P[];
   const edit = pages.find((p) => p.slug === sp.edit);
   return (
     <>

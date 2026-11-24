@@ -30,9 +30,9 @@ export function Wordmark({ name, small = false }: { name: string; small?: boolea
   );
 }
 
-export default function Header() {
-  const s = getSettings();
-  const nav: NavItem[] = navigation().map((c) => ({ name: c.name, alias: c.alias, subs: c.subs.map((x) => ({ name: x.name, alias: x.alias })) }));
+export default async function Header() {
+  const s = (await getSettings());
+  const nav: NavItem[] = (await navigation()).map((c) => ({ name: c.name, alias: c.alias, subs: c.subs.map((x) => ({ name: x.name, alias: x.alias })) }));
 
   return (
     <header className="sticky top-0 z-40">

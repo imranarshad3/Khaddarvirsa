@@ -5,10 +5,10 @@ import { db } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl();
-  const { categories, subs, products } = sitemapEntries();
-  const pages = db().prepare("SELECT slug, updated_at FROM pages WHERE body != ''").all() as { slug: string; updated_at: string }[];
+  const { categories, subs, products } = (await sitemapEntries());
+  const pages = (await db().prepare("SELECT slug, updated_at FROM pages WHERE body != ''").all()) as { slug: string; updated_at: string }[];
   return [
     { url: base, changeFrequency: 'daily', priority: 1 },
     { url: `${base}/today-sale`, changeFrequency: 'daily', priority: 0.8 },

@@ -4,8 +4,8 @@ import { MailIcon, PhoneIcon, PinIcon, SocialIcon, WhatsappIcon } from '@/compon
 import PaymentLogos from '@/components/PaymentLogos';
 import Newsletter from './Newsletter';
 
-export default function Footer() {
-  const s = getSettings();
+export default async function Footer() {
+  const s = (await getSettings());
   const h = 'mb-5 text-[12px] font-semibold uppercase tracking-[0.22em] text-sand';
   const a = 'text-[#e8dfd2]/75 hover:text-sand';
   return (

@@ -8,8 +8,8 @@ export const metadata: Metadata = { title: 'Search', robots: { index: false } };
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const q = ((await searchParams).q ?? '').trim().slice(0, 60);
-  const s = getSettings();
-  const products = q ? searchProducts(q) : [];
+  const s = (await getSettings());
+  const products = q ? (await searchProducts(q)) : [];
   return (
     <>
       <PageBanner title={q ? `Search: ${q}` : 'Search'} crumbs={[{ name: 'Search' }]} />

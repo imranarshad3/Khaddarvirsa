@@ -26,7 +26,7 @@ async function photo(form: FormData): Promise<string | null> {
   }
   // Otherwise the saved product photo, looked up by id: the browser never chooses which URL the server fetches.
   const id = Number(form.get('id'));
-  const img = Number.isInteger(id) && id > 0 ? (db().prepare('SELECT img FROM products WHERE id = ?').get(id) as { img: string | null } | undefined)?.img : null;
+  const img = Number.isInteger(id) && id > 0 ? ((await db().prepare('SELECT img FROM products WHERE id = ?').get(id)) as { img: string | null } | undefined)?.img : null;
   if (!img) return null;
   if (img.startsWith('/uploads/')) {
     const buf = await fs.readFile(path.join(UPLOAD_DIR, path.basename(img)));

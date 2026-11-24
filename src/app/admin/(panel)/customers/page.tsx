@@ -9,10 +9,10 @@ export const metadata = { title: 'Customers' };
 export default async function Customers({ searchParams }: { searchParams: SP }) {
   const { q = '' } = await searchParams;
   const like = `%${q.trim()}%`;
-  const rows = db().prepare(`SELECT phone, MAX(name) name, MAX(email) email, MAX(city) city, COUNT(*) orders,
+  const rows = (await db().prepare(`SELECT phone, MAX(name) name, MAX(email) email, MAX(city) city, COUNT(*) orders,
       SUM(CASE WHEN status != 'cancelled' THEN total ELSE 0 END) spent, MAX(created_at) last
     FROM orders WHERE phone LIKE ? OR name LIKE ? OR email LIKE ? GROUP BY phone ORDER BY last DESC LIMIT 300`)
-    .all(like, like, like) as { phone: string; name: string; email: string | null; city: string; orders: number; spent: number; last: string }[];
+    .all(like, like, like)) as { phone: string; name: string; email: string | null; city: string; orders: number; spent: number; last: string }[];
   return (
     <>
       <H1>Customers</H1>

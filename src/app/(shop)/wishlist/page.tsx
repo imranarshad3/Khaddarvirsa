@@ -11,8 +11,8 @@ export const metadata: Metadata = { title: 'Wishlist', robots: { index: false } 
 // The saved IDs live in the browser (localStorage); WishlistSync mirrors them into ?ids= so the server can render the cards.
 export default async function WishlistPage({ searchParams }: { searchParams: Promise<{ ids?: string }> }) {
   const ids = ((await searchParams).ids ?? '').split(',').map(Number).filter((n) => Number.isInteger(n) && n > 0);
-  const s = getSettings();
-  const products = productsByIds(ids);
+  const s = (await getSettings());
+  const products = (await productsByIds(ids));
   return (
     <>
       <PageBanner title="Wishlist" crumbs={[{ name: 'Wishlist' }]} />

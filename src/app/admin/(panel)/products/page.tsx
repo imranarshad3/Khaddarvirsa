@@ -19,10 +19,10 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
   if (stock === 'hidden') where.push('p.hidden = 1');
   if (stock === 'low') where.push('p.stock BETWEEN 1 AND 3');
   const w = where.length ? 'WHERE ' + where.join(' AND ') : '';
-  const total = (db().prepare(`SELECT COUNT(*) n FROM products p ${w}`).get(...args) as { n: number }).n;
-  const rows = db().prepare(`SELECT p.*, s.name sub_name FROM products p JOIN sub_categories s ON s.id = p.sub_category_id ${w} ORDER BY p.id DESC LIMIT ? OFFSET ?`)
-    .all(...args, PER, (page - 1) * PER) as (Product & { sub_name: string })[];
-  const subs = db().prepare('SELECT id, name FROM sub_categories ORDER BY name').all() as { id: number; name: string }[];
+  const total = ((await db().prepare(`SELECT COUNT(*) n FROM products p ${w}`).get(...args)) as { n: number }).n;
+  const rows = (await db().prepare(`SELECT p.*, s.name sub_name FROM products p JOIN sub_categories s ON s.id = p.sub_category_id ${w} ORDER BY p.id DESC LIMIT ? OFFSET ?`)
+    .all(...args, PER, (page - 1) * PER)) as (Product & { sub_name: string })[];
+  const subs = (await db().prepare('SELECT id, name FROM sub_categories ORDER BY name').all()) as { id: number; name: string }[];
   const qs = (n: number) => '?' + new URLSearchParams({ ...(q && { q }), ...(sub && { sub }), ...(stock && { stock }), page: String(n) });
   const back = '/admin/products' + qs(page);
   return (

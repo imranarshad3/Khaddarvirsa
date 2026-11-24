@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
-  serverExternalPackages: ["better-sqlite3"],
+  serverExternalPackages: ["@libsql/client", "libsql"],
   experimental: { serverActions: { bodySizeLimit: "6mb" } }, // product image uploads
   async headers() {
     return [{ source: "/:path*", headers: [

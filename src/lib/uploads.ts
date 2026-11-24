@@ -2,6 +2,7 @@ import 'server-only';
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { put } from '@vercel/blob';
 
 export const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), 'data', 'uploads');
 const MAX = 5 * 1024 * 1024;
@@ -23,6 +24,11 @@ export async function saveImage(file: FormDataEntryValue | null): Promise<string
   const ext = sniffImage(buf);
   if (!ext) throw new Error('Only JPG, PNG, WebP or GIF images are allowed.');
   const name = `${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
+  // On Vercel the disk is temporary, so uploads go to the linked Blob store; locally they stay in data/uploads.
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blob = await put(`uploads/${name}`, buf, { access: 'public', contentType: `image/${ext === 'jpg' ? 'jpeg' : ext}`, addRandomSuffix: false });
+    return blob.url;
+  }
   await fs.mkdir(UPLOAD_DIR, { recursive: true });
   await fs.writeFile(path.join(UPLOAD_DIR, name), buf);
   return `/uploads/${name}`;

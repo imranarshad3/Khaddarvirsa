@@ -1,5 +1,5 @@
 import 'server-only';
-import { db } from './db';
+import { db, tx } from './db';
 
 export type Settings = {
   store_name: string;
@@ -24,16 +24,18 @@ const DEFAULTS: Settings = {
   social: [], bank_details: [], bank_note: '', sliders: [], seo_title: 'Khaddar Virsa', seo_description: '',
 };
 
-export function getSettings(): Settings {
-  const rows = db().prepare('SELECT key, value FROM settings').all() as { key: string; value: string }[];
+export async function getSettings(): Promise<Settings> {
+  const rows = (await db().prepare('SELECT key, value FROM settings').all()) as { key: string; value: string }[];
   const out: Record<string, unknown> = { ...DEFAULTS };
   for (const r of rows) out[r.key] = JSON.parse(r.value);
   return out as Settings;
 }
 
-export function saveSettings(patch: Partial<Settings>) {
-  const st = db().prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)');
-  db().transaction(() => { for (const [k, v] of Object.entries(patch)) if (k in DEFAULTS) st.run(k, JSON.stringify(v)); })();
+export async function saveSettings(patch: Partial<Settings>) {
+  await tx(async (d) => {
+    const st = d.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)');
+    for (const [k, v] of Object.entries(patch)) if (k in DEFAULTS) await st.run(k, JSON.stringify(v));
+  });
 }
 
 export const whatsappLink = (n: string) => `https://wa.me/${n.replace(/\D/g, '').replace(/^0/, '92')}`;

@@ -13,13 +13,13 @@ export const metadata = { title: 'Order' };
 
 export default async function OrderDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: SP }) {
   const id = Number((await params).id);
-  const o = db().prepare('SELECT * FROM orders WHERE id = ?').get(id) as (Order & { updated_at: string }) | undefined;
+  const o = (await db().prepare('SELECT * FROM orders WHERE id = ?').get(id)) as (Order & { updated_at: string }) | undefined;
   if (!o) notFound();
-  const items = db().prepare('SELECT * FROM order_items WHERE order_id = ?').all(id) as OrderItem[];
+  const items = (await db().prepare('SELECT * FROM order_items WHERE order_id = ?').all(id)) as OrderItem[];
   return (
     <>
       <Link href="/admin/orders" className="text-primary print:hidden">← Orders</Link>
-      <p className="hidden font-display text-[22px] print:block">{getSettings().store_name}</p>
+      <p className="hidden font-display text-[22px] print:block">{(await getSettings()).store_name}</p>
       <H1>Order {o.number} <StatusPill s={o.status} />
         <span className="ml-auto flex flex-wrap gap-2 font-sans print:hidden">
           <a href={`${whatsappLink(o.phone)}?text=${encodeURIComponent(`Assalam o Alaikum ${o.name}, about your order ${o.number} (${rs(o.total)}):`)}`} target="_blank" rel="noopener"

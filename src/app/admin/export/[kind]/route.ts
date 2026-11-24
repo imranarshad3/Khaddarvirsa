@@ -21,7 +21,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ kind: s
   const { kind } = await params;
   const sql = QUERIES[kind];
   if (!sql) return new Response('Not found', { status: 404 });
-  const rows = db().prepare(sql).all() as Record<string, unknown>[];
+  const rows = (await db().prepare(sql).all()) as Record<string, unknown>[];
   const cols = rows[0] ? Object.keys(rows[0]) : [];
   const csv = '﻿' + [cols.map(cell).join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\r\n');
   return new Response(csv, {

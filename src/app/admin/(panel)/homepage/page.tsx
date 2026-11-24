@@ -7,8 +7,8 @@ import { Area, Card, Field, H1, Notice, Save, type SP } from '../ui';
 export const metadata = { title: 'Homepage' };
 
 export default async function Homepage({ searchParams }: { searchParams: SP }) {
-  const { sliders } = getSettings();
-  const featured = db().prepare('SELECT id, name, home_order_no FROM sub_categories WHERE featured = 1 ORDER BY home_order_no, name').all() as { id: number; name: string; home_order_no: number }[];
+  const { sliders } = (await getSettings());
+  const featured = (await db().prepare('SELECT id, name, home_order_no FROM sub_categories WHERE featured = 1 ORDER BY home_order_no, name').all()) as { id: number; name: string; home_order_no: number }[];
   return (
     <>
       <H1>Homepage</H1>

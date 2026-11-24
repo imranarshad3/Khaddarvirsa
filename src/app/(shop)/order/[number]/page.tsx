@@ -11,9 +11,9 @@ export const metadata: Metadata = { title: 'Order confirmed', robots: { index: f
 
 export default async function OrderPage({ params }: { params: Promise<{ number: string }> }) {
   const { number } = await params;
-  const o = /^KK[0-9A-F]{10}$/.test(number) ? orderByNumber(number) : null;
+  const o = /^KK[0-9A-F]{10}$/.test(number) ? (await orderByNumber(number)) : null;
   if (!o) notFound();
-  const s = getSettings();
+  const s = (await getSettings());
   return (
     <>
       <PageBanner title="Order Confirmation" crumbs={[{ name: 'Order' }]} />

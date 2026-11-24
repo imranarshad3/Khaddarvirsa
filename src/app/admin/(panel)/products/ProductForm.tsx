@@ -5,9 +5,9 @@ import { deleteProduct, saveProduct } from '../../actions';
 import { Area, Card, Check, Field, Save } from '../ui';
 import AiAssistant from './AiAssistant';
 
-export default function ProductForm({ p }: { p?: Product }) {
-  const subs = db().prepare(`SELECT s.id, s.name, c.name cat FROM sub_categories s JOIN categories c ON c.id = s.category_id ORDER BY c.order_no, s.order_no, s.name`)
-    .all() as { id: number; name: string; cat: string }[];
+export default async function ProductForm({ p }: { p?: Product }) {
+  const subs = (await db().prepare(`SELECT s.id, s.name, c.name cat FROM sub_categories s JOIN categories c ON c.id = s.category_id ORDER BY c.order_no, s.order_no, s.name`)
+    .all()) as { id: number; name: string; cat: string }[];
   return (
     <>
       <form action={saveProduct} className="grid gap-5 lg:grid-cols-[1fr_320px]">

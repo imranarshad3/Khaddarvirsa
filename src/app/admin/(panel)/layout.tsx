@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: { default: 'Admin', template: '%s | A
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();
-  const s = getSettings();
+  const s = (await getSettings());
   return (
     <div className="admin min-h-screen bg-[#f7f2ea] print:bg-white text-[14px] text-ink-2 md:flex">
       <aside className="relative bg-ink print:hidden text-white md:sticky md:top-0 md:h-screen md:w-[256px] md:shrink-0 md:overflow-y-auto">

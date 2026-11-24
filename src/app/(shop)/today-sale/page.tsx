@@ -4,13 +4,13 @@ import { getSettings } from '@/lib/settings';
 import PageBanner from '@/components/layout/PageBanner';
 import { ProductGrid } from '@/components/product/ProductCard';
 
-export function generateMetadata(): Metadata {
-  return { title: getSettings().sale_title, alternates: { canonical: '/today-sale' } };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getSettings()).sale_title, alternates: { canonical: '/today-sale' } };
 }
 
-export default function TodaySalePage() {
-  const s = getSettings();
-  const products = saleProducts();
+export default async function TodaySalePage() {
+  const s = (await getSettings());
+  const products = (await saleProducts());
   return (
     <>
       <PageBanner title={s.sale_title} crumbs={[{ name: s.sale_title }]} />

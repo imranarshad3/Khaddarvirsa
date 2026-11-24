@@ -5,7 +5,7 @@ import { Area, Card, Field, H1, Notice, Save, type SP } from '../ui';
 export const metadata = { title: 'Settings & SEO' };
 
 export default async function SettingsPage({ searchParams }: { searchParams: SP }) {
-  const s = getSettings();
+  const s = (await getSettings());
   return (
     <>
       <H1>Settings &amp; SEO</H1>

@@ -25,7 +25,7 @@ function DiscountForm({ d }: { d?: D }) {
 }
 
 export default async function Discounts({ searchParams }: { searchParams: SP }) {
-  const list = db().prepare('SELECT * FROM discounts ORDER BY id DESC').all() as D[];
+  const list = (await db().prepare('SELECT * FROM discounts ORDER BY id DESC').all()) as D[];
   return (
     <>
       <H1>Discount codes</H1>

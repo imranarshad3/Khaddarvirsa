@@ -8,9 +8,9 @@ import SubForm from './SubForm';
 export const metadata = { title: 'Categories & collections' };
 
 export default async function Categories({ searchParams }: { searchParams: SP }) {
-  const cats = db().prepare('SELECT * FROM categories ORDER BY order_no, id').all() as Category[];
-  const subs = db().prepare(`SELECT s.*, (SELECT COUNT(*) FROM products p WHERE p.sub_category_id = s.id) n FROM sub_categories s ORDER BY order_no, name`)
-    .all() as (SubCategory & { n: number })[];
+  const cats = (await db().prepare('SELECT * FROM categories ORDER BY order_no, id').all()) as Category[];
+  const subs = (await db().prepare(`SELECT s.*, (SELECT COUNT(*) FROM products p WHERE p.sub_category_id = s.id) n FROM sub_categories s ORDER BY order_no, name`)
+    .all()) as (SubCategory & { n: number })[];
   return (
     <>
       <H1>Categories &amp; collections</H1>

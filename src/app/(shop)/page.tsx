@@ -8,10 +8,10 @@ import HeroBanners, { type Banner } from '@/components/HeroBanners';
 import { discountPercent } from '@/lib/pricing';
 import { ArrowRight } from '@/components/icons';
 
-export default function HomePage() {
-  const s = getSettings();
-  const sections = homeSections(8);
-  const cats = navigation();
+export default async function HomePage() {
+  const s = (await getSettings());
+  const sections = (await homeSections(8));
+  const cats = (await navigation());
   const pics = (ps: { img: string | null; in_stock: number }[]) => ps.filter((p) => p.in_stock).slice(0, 2).map((p) => imageUrl(p.img, 'product', '1600x900_cover'));
   const lines = [
     ['Elegance Woven Into Every Thread.', 'Handwoven Pakistani khaddar in pure cotton, with a handloom texture made with care.'],
@@ -19,14 +19,14 @@ export default function HomePage() {
     ['Heritage in Every Weave.', 'Traditional looms, timeless colours, tailored to your style.'],
     ['Timeless Comfort, Pure Cotton.', 'Soft on skin and made to last, wash after wash.'],
   ];
-  const banners: Banner[] = cats.slice(0, 4).map((c, k) => ({
+  const banners: Banner[] = (await Promise.all(cats.slice(0, 4).map(async (c, k) => ({
     eyebrow: c.name, title: lines[k % lines.length][0], text: lines[k % lines.length][1],
-    href: `/main-category/${c.alias}`, cta: `Shop ${c.name}`, images: pics(categorySections(c.id).flatMap((x) => x.products)),
-  })).filter((b) => b.images.length === 2);
+    href: `/main-category/${c.alias}`, cta: `Shop ${c.name}`, images: pics((await categorySections(c.id)).flatMap((x) => x.products)),
+  })))).filter((b) => b.images.length === 2);
   // Lifestyle photos (from the Rugistan assets) lead each banner; product shots stay as the fallback.
   const heroPhotos = ['/hero/shop-hero-wide.webp', '/hero/about-hero-wide.webp', '/hero/product-craft-courtyard.webp'];
   banners.forEach((b, k) => { if (heroPhotos[k]) b.images = [heroPhotos[k], ...b.images]; });
-  const onSale = saleProducts();
+  const onSale = (await saleProducts());
   const maxOff = Math.max(0, ...onSale.map(discountPercent));
   if (pics(onSale).length === 2) banners.splice(1, 0, {
     eyebrow: s.sale_title, title: maxOff ? `Up to ${maxOff}% Off.` : 'The Sale Is On.', text: `${onSale.length} pieces on sale for a limited time, with Cash on Delivery across Pakistan.`,

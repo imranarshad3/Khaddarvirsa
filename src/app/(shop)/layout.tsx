@@ -5,8 +5,8 @@ import CartDrawer, { CartToast } from '@/components/cart/CartDrawer';
 import { WhatsappIcon } from '@/components/icons';
 import { getSettings, whatsappLink } from '@/lib/settings';
 
-export default function ShopLayout({ children }: { children: React.ReactNode }) {
-  const s = getSettings();
+export default async function ShopLayout({ children }: { children: React.ReactNode }) {
+  const s = (await getSettings());
   return (
     <CartProvider>
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-2">Skip to content</a>

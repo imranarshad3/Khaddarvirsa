@@ -1,8 +1,10 @@
-import Database from 'better-sqlite3';
+import { createClient, type Client, type InValue, type ResultSet } from '@libsql/client';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), 'data', 'store.db');
+const LOCAL_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), 'data', 'store.db');
+// On Vercel the Turso integration sets TURSO_DATABASE_URL and TURSO_AUTH_TOKEN; without them the local SQLite file is used.
+const DB_URL = process.env.TURSO_DATABASE_URL || `file:${LOCAL_PATH}`;
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS categories (
@@ -59,18 +61,51 @@ CREATE TABLE IF NOT EXISTS subscribers (
 );
 `;
 
-const g = globalThis as unknown as { __db?: Database.Database };
+type Runner = { execute: Client['execute'] };
+const toRows = (rs: ResultSet) => rs.rows.map((r) => Object.fromEntries(rs.columns.map((c, i) => [c, r[i]])));
 
-export function db(): Database.Database {
-  if (g.__db) return g.__db;
-  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
-  const d = new Database(DB_PATH);
-  d.pragma('journal_mode = WAL');
-  d.pragma('foreign_keys = ON');
-  d.exec(SCHEMA);
-  if (!(d.prepare('SELECT COUNT(*) n FROM categories').get() as { n: number }).n) seed(d);
-  g.__db = d;
-  return d;
+/** Same shape as better-sqlite3's prepare(), but every call returns a promise. */
+function statement(conn: () => Promise<Runner>, sql: string) {
+  const exec = async (args: InValue[]) => (await conn()).execute({ sql, args });
+  return {
+    all: async (...args: InValue[]): Promise<unknown[]> => toRows(await exec(args)),
+    get: async (...args: InValue[]): Promise<unknown> => toRows(await exec(args))[0],
+    run: async (...args: InValue[]) => {
+      const rs = await exec(args);
+      return { lastInsertRowid: Number(rs.lastInsertRowid ?? 0), changes: rs.rowsAffected };
+    },
+  };
+}
+export type Db = { prepare: (sql: string) => ReturnType<typeof statement> };
+
+const g = globalThis as unknown as { __db?: Promise<Client> };
+
+async function open() {
+  if (!process.env.TURSO_DATABASE_URL) fs.mkdirSync(path.dirname(LOCAL_PATH), { recursive: true });
+  const c = createClient({ url: DB_URL, authToken: process.env.TURSO_AUTH_TOKEN });
+  await c.executeMultiple(SCHEMA);
+  if (!Number((await c.execute('SELECT COUNT(*) n FROM categories')).rows[0].n)) await seed(c);
+  return c;
+}
+const client = () => (g.__db ??= open().catch((e) => { g.__db = undefined; throw e; }));
+
+export function db(): Db {
+  return { prepare: (sql) => statement(client, sql) };
+}
+
+/** Runs fn in one write transaction: everything commits together or nothing does (also when fn throws a redirect). */
+export async function tx<T>(fn: (d: Db) => Promise<T>): Promise<T> {
+  const t = await (await client()).transaction('write');
+  try {
+    const out = await fn({ prepare: (sql) => statement(async () => t, sql) });
+    await t.commit();
+    return out;
+  } catch (e) {
+    await t.rollback().catch(() => {});
+    throw e;
+  } finally {
+    t.close();
+  }
 }
 
 /* ---------- first-run seed from the data captured from the reference site ---------- */
@@ -88,20 +123,22 @@ type RefProduct = {
   created_at: string; updated_at: string;
 };
 
-function seed(d: Database.Database) {
+async function seed(c: Client) {
   if (!fs.existsSync(path.join(REF, 'get_navigation.json'))) return;
   const nav: { cat_id: number; cat_name: string; alias: string; meta_title: string; meta_description: string; status: number; order_no: number; sub_cat: RefSub[] }[] =
     readRef('get_navigation.json').nave;
   const s = readRef('settings.json').data;
 
-  const insCat = d.prepare('INSERT INTO categories (id,name,alias,meta_title,meta_description,status,order_no) VALUES (?,?,?,?,?,?,?)');
-  const insSub = d.prepare(`INSERT INTO sub_categories (id,category_id,name,alias,description,img,meta_title,meta_description,status,featured,order_no,home_order_no)
+  const batch: { sql: string; args: InValue[] }[] = [];
+  const prep = (sql: string) => ({ run: (...args: InValue[]) => { batch.push({ sql, args }); } });
+  const insCat = prep('INSERT INTO categories (id,name,alias,meta_title,meta_description,status,order_no) VALUES (?,?,?,?,?,?,?)');
+  const insSub = prep(`INSERT INTO sub_categories (id,category_id,name,alias,description,img,meta_title,meta_description,status,featured,order_no,home_order_no)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`);
-  const insProd = d.prepare(`INSERT INTO products (id,sub_category_id,alias,title,description,price,sale_price,img,code,in_stock,on_sale,youtube_link,created_at,updated_at)
+  const insProd = prep(`INSERT INTO products (id,sub_category_id,alias,title,description,price,sale_price,img,code,in_stock,on_sale,youtube_link,created_at,updated_at)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
-  const setS = d.prepare('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)');
+  const setS = prep('INSERT OR REPLACE INTO settings (key,value) VALUES (?,?)');
 
-  d.transaction(() => {
+  {
     for (const c of nav) {
       insCat.run(c.cat_id, c.cat_name, c.alias, c.meta_title, c.meta_description, c.status ?? 1, c.order_no ?? 0);
       for (const sc of c.sub_cat)
@@ -138,10 +175,11 @@ function seed(d: Database.Database) {
     };
     for (const [k, v] of Object.entries(settings)) setS.run(k, JSON.stringify(v));
 
-    const insPage = d.prepare('INSERT INTO pages (slug,title,body) VALUES (?,?,?)');
+    const insPage = prep('INSERT INTO pages (slug,title,body) VALUES (?,?,?)');
     for (const [slug, title] of [
       ['about-us', 'About Us'], ['faq', 'FAQ'], ['return-policy', 'Return Policy'], ['terms', 'Terms & Conditions'],
       ['privacy-policy', 'Privacy Policy'], ['locations', 'Our Outlets'],
     ]) insPage.run(slug, title, '');
-  })();
+  }
+  await c.batch(batch, 'write');
 }

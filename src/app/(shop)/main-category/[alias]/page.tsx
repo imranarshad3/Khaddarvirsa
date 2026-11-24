@@ -8,16 +8,16 @@ import { ProductGrid } from '@/components/product/ProductCard';
 type Props = { params: Promise<{ alias: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const c = categoryByAlias((await params).alias);
+  const c = (await categoryByAlias((await params).alias));
   if (!c) return {};
   return { title: { absolute: c.meta_title || c.name }, description: c.meta_description ?? undefined, alternates: { canonical: `/main-category/${c.alias}` } };
 }
 
 export default async function MainCategoryPage({ params }: Props) {
-  const c = categoryByAlias((await params).alias);
+  const c = (await categoryByAlias((await params).alias));
   if (!c) notFound();
-  const s = getSettings();
-  const sections = categorySections(c.id);
+  const s = (await getSettings());
+  const sections = (await categorySections(c.id));
   const crumbs = [{ name: c.name, href: `/main-category/${c.alias}` }];
   return (
     <>

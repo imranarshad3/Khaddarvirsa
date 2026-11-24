@@ -14,7 +14,7 @@ import PaymentLogos from '@/components/PaymentLogos';
 type Props = { params: Promise<{ alias: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = productByAlias((await params).alias);
+  const p = (await productByAlias((await params).alias));
   if (!p) return {};
   const title = p.meta_title || `${p.title} ${p.code ?? ''}`.trim();
   const description = p.meta_description || p.description.split('\n')[0].slice(0, 160);
@@ -27,13 +27,13 @@ function youtubeId(url: string | null) {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const p = productByAlias((await params).alias);
+  const p = (await productByAlias((await params).alias));
   if (!p) notFound();
-  const s = getSettings();
+  const s = (await getSettings());
   const price = unitPrice(p);
   const off = discountPercent(p);
   const freeShip = s.free_shipping_over > 0 && price >= s.free_shipping_over;
-  const related = relatedProducts(p);
+  const related = (await relatedProducts(p));
   const base = siteUrl();
   const crumbs = [
     { name: p.cat_name, href: `/main-category/${p.cat_alias}` },

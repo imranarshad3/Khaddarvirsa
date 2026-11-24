@@ -7,19 +7,19 @@ import PageBanner from '@/components/layout/PageBanner';
 type Page = { slug: string; title: string; body: string; meta_description: string | null };
 type Props = { params: Promise<{ page: string }> };
 
-const getPage = (slug: string) => db().prepare('SELECT * FROM pages WHERE slug = ?').get(slug) as Page | undefined;
+const getPage = async (slug: string) => (await db().prepare('SELECT * FROM pages WHERE slug = ?').get(slug)) as Page | undefined;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = getPage((await params).page);
+  const p = await getPage((await params).page);
   if (!p) return {};
   return { title: p.title, description: p.meta_description ?? undefined, alternates: { canonical: `/${p.slug}` }, robots: p.body ? undefined : { index: false } };
 }
 
 /** Content pages (About, FAQ, policies, locations) edited in Admin → Pages. Body is plain text; blank lines make paragraphs. */
 export default async function ContentPage({ params }: Props) {
-  const p = getPage((await params).page);
+  const p = await getPage((await params).page);
   if (!p) notFound();
-  const s = getSettings();
+  const s = (await getSettings());
   return (
     <>
       <PageBanner title={p.title} crumbs={[{ name: p.title }]} />

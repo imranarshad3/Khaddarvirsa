@@ -15,21 +15,21 @@ export default async function Analytics({ searchParams }: { searchParams: SP }) 
   const since = `-${range} days`;
   const d = db();
 
-  const totals = d.prepare(`SELECT COUNT(*) orders, COALESCE(SUM(total),0) revenue, COALESCE(SUM(discount),0) discount
-    FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?)`).get(since) as { orders: number; revenue: number; discount: number };
-  const cancelled = (d.prepare(`SELECT COUNT(*) n FROM orders WHERE status = 'cancelled' AND created_at >= datetime('now', ?)`).get(since) as { n: number }).n;
-  const units = (d.prepare(`SELECT COALESCE(SUM(i.qty),0) n FROM order_items i JOIN orders o ON o.id = i.order_id WHERE ${SOLD} AND o.created_at >= datetime('now', ?)`).get(since) as { n: number }).n;
+  const totals = (await d.prepare(`SELECT COUNT(*) orders, COALESCE(SUM(total),0) revenue, COALESCE(SUM(discount),0) discount
+    FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?)`).get(since)) as { orders: number; revenue: number; discount: number };
+  const cancelled = ((await d.prepare(`SELECT COUNT(*) n FROM orders WHERE status = 'cancelled' AND created_at >= datetime('now', ?)`).get(since)) as { n: number }).n;
+  const units = ((await d.prepare(`SELECT COALESCE(SUM(i.qty),0) n FROM order_items i JOIN orders o ON o.id = i.order_id WHERE ${SOLD} AND o.created_at >= datetime('now', ?)`).get(since)) as { n: number }).n;
   const bucket = range === '365' ? '%Y-%m' : '%Y-%m-%d';
-  const series = d.prepare(`SELECT strftime('${bucket}', o.created_at) day, COUNT(*) orders, SUM(total) revenue FROM orders o
-    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY day ORDER BY day`).all(since) as { day: string; orders: number; revenue: number }[];
-  const top = d.prepare(`SELECT i.title, i.code, SUM(i.qty) qty, SUM(i.qty * i.unit_price) revenue FROM order_items i JOIN orders o ON o.id = i.order_id
-    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY COALESCE(i.product_id, i.title) ORDER BY revenue DESC LIMIT 10`).all(since) as { title: string; code: string | null; qty: number; revenue: number }[];
-  const cats = d.prepare(`SELECT COALESCE(c.name, 'Removed products') name, SUM(i.qty) qty, SUM(i.qty * i.unit_price) revenue FROM order_items i JOIN orders o ON o.id = i.order_id
+  const series = (await d.prepare(`SELECT strftime('${bucket}', o.created_at) day, COUNT(*) orders, SUM(total) revenue FROM orders o
+    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY day ORDER BY day`).all(since)) as { day: string; orders: number; revenue: number }[];
+  const top = (await d.prepare(`SELECT i.title, i.code, SUM(i.qty) qty, SUM(i.qty * i.unit_price) revenue FROM order_items i JOIN orders o ON o.id = i.order_id
+    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY COALESCE(i.product_id, i.title) ORDER BY revenue DESC LIMIT 10`).all(since)) as { title: string; code: string | null; qty: number; revenue: number }[];
+  const cats = (await d.prepare(`SELECT COALESCE(c.name, 'Removed products') name, SUM(i.qty) qty, SUM(i.qty * i.unit_price) revenue FROM order_items i JOIN orders o ON o.id = i.order_id
     LEFT JOIN products p ON p.id = i.product_id LEFT JOIN sub_categories s ON s.id = p.sub_category_id LEFT JOIN categories c ON c.id = s.category_id
-    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY c.id ORDER BY revenue DESC`).all(since) as { name: string; qty: number; revenue: number }[];
-  const statuses = d.prepare(`SELECT status, COUNT(*) n FROM orders WHERE created_at >= datetime('now', ?) GROUP BY status ORDER BY n DESC`).all(since) as { status: string; n: number }[];
-  const payments = d.prepare(`SELECT payment_method m, COUNT(*) n FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY m ORDER BY n DESC`).all(since) as { m: string; n: number }[];
-  const cities = d.prepare(`SELECT city, COUNT(*) n FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY LOWER(TRIM(city)) ORDER BY n DESC LIMIT 8`).all(since) as { city: string; n: number }[];
+    WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY c.id ORDER BY revenue DESC`).all(since)) as { name: string; qty: number; revenue: number }[];
+  const statuses = (await d.prepare(`SELECT status, COUNT(*) n FROM orders WHERE created_at >= datetime('now', ?) GROUP BY status ORDER BY n DESC`).all(since)) as { status: string; n: number }[];
+  const payments = (await d.prepare(`SELECT payment_method m, COUNT(*) n FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY m ORDER BY n DESC`).all(since)) as { m: string; n: number }[];
+  const cities = (await d.prepare(`SELECT city, COUNT(*) n FROM orders o WHERE ${SOLD} AND o.created_at >= datetime('now', ?) GROUP BY LOWER(TRIM(city)) ORDER BY n DESC LIMIT 8`).all(since)) as { city: string; n: number }[];
 
   const max = Math.max(1, ...series.map((x) => x.revenue));
   const stats = [

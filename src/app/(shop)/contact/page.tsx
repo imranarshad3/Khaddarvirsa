@@ -5,8 +5,8 @@ import { MailIcon, PhoneIcon, PinIcon, WhatsappIcon } from '@/components/icons';
 
 export const metadata: Metadata = { title: 'Contact Us', alternates: { canonical: '/contact' } };
 
-export default function ContactPage() {
-  const s = getSettings();
+export default async function ContactPage() {
+  const s = (await getSettings());
   const row = 'flex items-start gap-3 text-[17px] text-ink-2';
   return (
     <>

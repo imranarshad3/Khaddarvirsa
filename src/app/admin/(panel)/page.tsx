@@ -8,20 +8,20 @@ import { Icon } from './AdminNav';
 
 export const metadata = { title: 'Dashboard' };
 
-export default function Dashboard() {
+export default async function Dashboard() {
   const d = db();
-  const n = (sql: string) => (d.prepare(sql).get() as { n: number }).n;
+  const n = async (sql: string) => ((await d.prepare(sql).get()) as { n: number }).n;
   const stats = [
-    ['Revenue, not cancelled', rs(n("SELECT COALESCE(SUM(total),0) n FROM orders WHERE status != 'cancelled'")), '/admin/analytics', 'analytics'],
-    ['Pending orders', n("SELECT COUNT(*) n FROM orders WHERE status = 'pending'"), '/admin/orders?status=pending', 'orders'],
-    ['Orders (all)', n('SELECT COUNT(*) n FROM orders'), '/admin/orders', 'orders'],
-    ['Products', n('SELECT COUNT(*) n FROM products'), '/admin/products', 'products'],
-    ['Out of stock', n('SELECT COUNT(*) n FROM products WHERE in_stock = 0'), '/admin/products?stock=out', 'products'],
-    ['Subscribers', n('SELECT COUNT(*) n FROM subscribers'), '/admin/subscribers', 'subscribers'],
+    ['Revenue, not cancelled', rs(await n("SELECT COALESCE(SUM(total),0) n FROM orders WHERE status != 'cancelled'")), '/admin/analytics', 'analytics'],
+    ['Pending orders', await n("SELECT COUNT(*) n FROM orders WHERE status = 'pending'"), '/admin/orders?status=pending', 'orders'],
+    ['Orders (all)', await n('SELECT COUNT(*) n FROM orders'), '/admin/orders', 'orders'],
+    ['Products', await n('SELECT COUNT(*) n FROM products'), '/admin/products', 'products'],
+    ['Out of stock', await n('SELECT COUNT(*) n FROM products WHERE in_stock = 0'), '/admin/products?stock=out', 'products'],
+    ['Subscribers', await n('SELECT COUNT(*) n FROM subscribers'), '/admin/subscribers', 'subscribers'],
   ] as const;
-  const recent = d.prepare('SELECT * FROM orders ORDER BY id DESC LIMIT 10').all() as Order[];
-  const low = d.prepare('SELECT id, title, code, img, stock FROM products WHERE stock BETWEEN 1 AND 3 AND hidden = 0 ORDER BY stock, id DESC LIMIT 8')
-    .all() as { id: number; title: string; code: string | null; img: string | null; stock: number }[];
+  const recent = (await d.prepare('SELECT * FROM orders ORDER BY id DESC LIMIT 10').all()) as Order[];
+  const low = (await d.prepare('SELECT id, title, code, img, stock FROM products WHERE stock BETWEEN 1 AND 3 AND hidden = 0 ORDER BY stock, id DESC LIMIT 8')
+    .all()) as { id: number; title: string; code: string | null; img: string | null; stock: number }[];
   return (
     <>
       <section className="relative mb-6 overflow-hidden rounded-3xl bg-ink px-6 py-8 text-white md:px-10 md:py-10">
