@@ -68,12 +68,12 @@ export default async function HomePage() {
 
       <div className="container-kk">
         {sections.length > 0 && (
-          <section className="py-16">
+          <section className="mb-12 border-b border-line pb-14 pt-16 md:mb-16 md:pb-16">
             <div className="mb-8 text-center">
               <p className="eyebrow">Explore by style</p>
               <h2 className="font-display mt-2 text-[32px] md:text-[40px]">Shop by Category</h2>
             </div>
-            <nav aria-label="Featured categories" className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
+            <nav aria-label="Featured categories" className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
               {sections.map(({ sub }) => (
                 <Link key={sub.id} href={`/product-category/${sub.alias}`}
                   className="group relative block overflow-hidden rounded-t-[999px] rounded-b-2xl bg-ink shadow-[0_18px_40px_-24px_rgba(53,34,24,.6)] ring-1 ring-line transition-transform duration-500 hover:-translate-y-1.5">
