@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { db, tx } from '@/lib/db';
 import { endSession, requireAdmin } from '@/lib/auth';
 import { saveImage } from '@/lib/uploads';
-import { saveSettings, type Settings } from '@/lib/settings';
+import { getSettings, saveSettings, type Settings } from '@/lib/settings';
 import { ORDER_STATUSES } from '@/lib/orders';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
@@ -193,12 +193,9 @@ export async function deleteDiscount(form: FormData) {
 /* ---------------- settings, homepage, pages ---------------- */
 export async function saveStoreSettings(form: FormData) {
   await requireAdmin();
-  const color = str(form, 'sale_color');
   const patch: Partial<Settings> = {
     store_name: str(form, 'store_name') || 'Kamalia Khaddar',
     top_bar_text: lines(form, 'top_bar_text'),
-    sale_title: str(form, 'sale_title') || 'Sale',
-    sale_color: /^#[0-9a-fA-F]{6}$/.test(color) ? color : '#B70000',
     shipping_charges: Math.max(0, int(form, 'shipping_charges') ?? 0),
     free_shipping_over: Math.max(0, int(form, 'free_shipping_over') ?? 0),
     contact: { address: lines(form, 'address'), email: lines(form, 'email'), phone: lines(form, 'phone') },
@@ -211,6 +208,24 @@ export async function saveStoreSettings(form: FormData) {
   };
   await saveSettings(patch);
   redirect('/admin/settings?saved=1');
+}
+
+export async function saveSalePage(form: FormData) {
+  await requireAdmin();
+  const color = str(form, 'sale_color');
+  const ends = str(form, 'sale_ends_at'); // datetime-local, entered in Pakistan time
+  let banner = form.get('remove_banner') ? '' : str(form, 'sale_banner');
+  try { banner = (await saveImage(form.get('banner'))) ?? banner; } catch (e) { fail('/admin/sale', (e as Error).message); }
+  await saveSettings({
+    sale_enabled: !!form.get('sale_enabled'),
+    sale_title: str(form, 'sale_title') || 'Sale',
+    sale_color: /^#[0-9a-fA-F]{6}$/.test(color) ? color : '#B70000',
+    sale_headline: str(form, 'sale_headline').slice(0, 120),
+    sale_text: str(form, 'sale_text').slice(0, 400),
+    sale_banner: banner,
+    sale_ends_at: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(ends) ? `${ends}:00+05:00` : '',
+  });
+  redirect('/admin/sale?saved=1');
 }
 
 export async function saveHomepage(form: FormData) {
@@ -233,12 +248,16 @@ export async function savePage(form: FormData) {
   (await db().prepare(`INSERT INTO pages (slug, title, body, meta_description, updated_at) VALUES (?,?,?,?,datetime('now'))
     ON CONFLICT(slug) DO UPDATE SET title=excluded.title, body=excluded.body, meta_description=excluded.meta_description, updated_at=excluded.updated_at`)
     .run(slug, title, str(form, 'body'), optStr(form, 'meta_description')));
+  const menu = (await getSettings()).menu_pages.filter((x) => x !== slug);
+  await saveSettings({ menu_pages: form.get('in_menu') ? [...menu, slug] : menu });
   redirect(`/admin/pages?saved=1&edit=${slug}`);
 }
 
 export async function deletePage(form: FormData) {
   await requireAdmin();
-  await db().prepare('DELETE FROM pages WHERE slug = ?').run(str(form, 'slug'));
+  const slug = str(form, 'slug');
+  await db().prepare('DELETE FROM pages WHERE slug = ?').run(slug);
+  await saveSettings({ menu_pages: (await getSettings()).menu_pages.filter((x) => x !== slug) });
   redirect('/admin/pages?saved=1');
 }
 

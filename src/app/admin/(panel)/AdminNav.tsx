@@ -14,6 +14,7 @@ const ICONS: Record<string, string> = {
   discounts: 'M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8zM7 7h.01',
   homepage: 'M3 10 12 3l9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
   settings: 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',
+  sale: 'M13 2 3 14h9l-1 8 10-12h-9z',
   pages: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5',
   subscribers: 'M4 4h16v16H4zM4 6l8 7 8-7',
   shop: 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3',
@@ -28,7 +29,7 @@ export const GROUPS: { title: string; items: [string, string, string][] }[] = [
   { title: 'Overview', items: [['/admin', 'Dashboard', 'dashboard'], ['/admin/analytics', 'Analytics', 'analytics']] },
   { title: 'Sales', items: [['/admin/orders', 'Orders', 'orders'], ['/admin/customers', 'Customers', 'customers'], ['/admin/discounts', 'Discounts', 'discounts']] },
   { title: 'Catalogue', items: [['/admin/products', 'Products', 'products'], ['/admin/categories', 'Categories', 'categories']] },
-  { title: 'Website', items: [['/admin/homepage', 'Homepage', 'homepage'], ['/admin/pages', 'Pages', 'pages'], ['/admin/subscribers', 'Subscribers', 'subscribers'], ['/admin/settings', 'Settings & SEO', 'settings']] },
+  { title: 'Website', items: [['/admin/homepage', 'Homepage', 'homepage'], ['/admin/sale', 'Sale page', 'sale'], ['/admin/pages', 'Pages', 'pages'], ['/admin/subscribers', 'Subscribers', 'subscribers'], ['/admin/settings', 'Settings & SEO', 'settings']] },
 ];
 
 export function crumb(path: string) {

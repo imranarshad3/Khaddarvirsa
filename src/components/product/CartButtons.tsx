@@ -1,10 +1,22 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart, type CartItem } from '@/components/cart/CartProvider';
 import { BagIcon, CheckIcon, HeartIcon, HeartFilledIcon } from '@/components/icons';
 
 type Item = Omit<CartItem, 'qty'>;
+
+/** Buy now checks out this one product on its own: the bag is left as it is. */
+export const BUY_NOW_KEY = 'kk_buy_now';
+function useBuyNow() {
+  const router = useRouter();
+  const [going, start] = useTransition();
+  const buy = (item: Item, qty = 1) => {
+    sessionStorage.setItem(BUY_NOW_KEY, JSON.stringify([{ ...item, qty }]));
+    start(() => router.push('/checkout?now=1'));
+  };
+  return { buy, going, prefetch: () => router.prefetch('/checkout?now=1') };
+}
 
 const circle = 'flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-paper/95 text-ink shadow-[0_6px_18px_-6px_rgba(53,34,24,.45)] backdrop-blur transition-colors hover:bg-ink hover:text-white';
 
@@ -41,14 +53,13 @@ export function WishlistButton({ id, big = false }: { id: number; big?: boolean 
 }
 
 export function BuyNow({ item, large = false }: { item: Item; large?: boolean }) {
-  const { add } = useCart();
-  const router = useRouter();
+  const { buy, going, prefetch } = useBuyNow();
   return (
-    <button type="button" onClick={() => { add(item); router.push('/checkout'); }}
+    <button type="button" onClick={() => buy(item)} onPointerEnter={prefetch} disabled={going} aria-busy={going}
       className={large
         ? 'btn-dark'
         : 'w-full rounded-full bg-ink py-3 text-[12px] font-semibold uppercase tracking-[0.16em] sm:py-3.5 sm:text-[13px] sm:tracking-[0.2em] text-white transition-colors hover:bg-gold-dark'}>
-      {large ? 'Buy it Now' : 'Buy Now'}
+      {going ? 'Opening checkout…' : large ? 'Buy it Now' : 'Buy Now'}
     </button>
   );
 }
@@ -67,7 +78,7 @@ export function AddToCart({ item }: { item: Item }) {
 /** Product page buy box: quantity stepper, add to cart, buy now and wishlist. */
 export function ProductActions({ item }: { item: Item }) {
   const { add, items } = useCart();
-  const router = useRouter();
+  const { buy, going, prefetch } = useBuyNow();
   const [qty, setQty] = useState(1);
   const inCart = items.find((i) => i.id === item.id);
   const step = 'flex h-full w-11 items-center justify-center text-[20px] text-ink transition-colors hover:text-gold-dark disabled:opacity-30';
@@ -85,9 +96,9 @@ export function ProductActions({ item }: { item: Item }) {
         </button>
         <WishlistButton id={item.id} big />
       </div>
-      <button type="button" onClick={() => { add(item, qty); router.push('/checkout'); }}
-        className="h-14 w-full rounded-full bg-ink text-[13px] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:bg-gold-dark">
-        Buy it Now
+      <button type="button" onClick={() => buy(item, qty)} onPointerEnter={prefetch} disabled={going} aria-busy={going}
+        className="h-14 w-full rounded-full bg-ink text-[13px] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:bg-gold-dark disabled:opacity-70">
+        {going ? 'Opening checkout…' : 'Buy it Now'}
       </button>
     </div>
   );

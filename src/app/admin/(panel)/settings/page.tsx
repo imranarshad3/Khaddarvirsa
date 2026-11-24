@@ -16,8 +16,6 @@ export default async function SettingsPage({ searchParams }: { searchParams: SP 
             <Field label="Store name" name="store_name" defaultValue={s.store_name} />
             <Field label="WhatsApp number" name="whatsapp_number" defaultValue={s.whatsapp_number} placeholder="03XXXXXXXXX" />
             <div className="sm:col-span-2"><Area label="Announcement bar — one message per line (they rotate)" name="top_bar_text" rows={3} defaultValue={s.top_bar_text.join('\n')} /></div>
-            <Field label="Sale menu title" name="sale_title" defaultValue={s.sale_title} />
-            <Field label="Sale menu colour" name="sale_color" type="color" defaultValue={s.sale_color} />
           </div>
         </Card>
         <Card title="Delivery">

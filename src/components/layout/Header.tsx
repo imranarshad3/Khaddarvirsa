@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { navigation } from '@/lib/catalog';
+import { db } from '@/lib/db';
 import { getSettings, whatsappLink } from '@/lib/settings';
 import { WhatsappIcon, ChevronDown } from '@/components/icons';
 import SearchOverlay from './SearchOverlay';
@@ -38,6 +39,10 @@ export function Wordmark({ name, small = false }: { name: string; small?: boolea
 
 export default async function Header() {
   const s = (await getSettings());
+  const menuPages = s.menu_pages.length
+    ? ((await db().prepare(`SELECT slug, title FROM pages WHERE slug IN (${s.menu_pages.map(() => '?').join(',')})`).all(...s.menu_pages)) as { slug: string; title: string }[])
+      .sort((a, b) => s.menu_pages.indexOf(a.slug) - s.menu_pages.indexOf(b.slug))
+    : [];
   const nav: NavItem[] = (await navigation()).map((c) => ({ name: c.name, alias: c.alias, subs: c.subs.map((x) => ({ name: x.name, alias: x.alias })) }));
 
   return (
@@ -84,12 +89,13 @@ export default async function Header() {
                 )}
               </li>
             ))}
-            <li>
+            {s.sale_enabled && <li>
               <NavLink href="/today-sale" style={{ color: s.sale_color }}>
                 <span aria-hidden className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 motion-reduce:hidden" style={{ background: s.sale_color }} /><span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ background: s.sale_color }} /></span>
                 {s.sale_title}
               </NavLink>
-            </li>
+            </li>}
+            {menuPages.map((p) => <li key={p.slug}><NavLink href={`/${p.slug}`}>{p.title}</NavLink></li>)}
             <li><NavLink href="/contact">Contact</NavLink></li>
           </ul>
         </nav>
@@ -97,7 +103,8 @@ export default async function Header() {
         {/* Mobile */}
         <div className="md:hidden">
           <div className="grid grid-cols-[88px_1fr_88px] items-center px-2 py-1.5">
-            <MobileNavigation nav={nav} saleTitle={s.sale_title} saleColor={s.sale_color} />
+            <MobileNavigation nav={nav} pages={menuPages} whatsapp={s.whatsapp_number ? whatsappLink(s.whatsapp_number) : ''}
+              sale={s.sale_enabled ? { title: s.sale_title, color: s.sale_color, headline: s.sale_headline, endsAt: s.sale_ends_at } : null} />
             <Wordmark name={s.store_name} small />
             <div className="flex justify-end"><WishlistLink /><CartButton /></div>
           </div>

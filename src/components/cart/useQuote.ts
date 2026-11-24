@@ -1,13 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { quoteCart } from '@/app/actions';
-import { useCart } from './CartProvider';
+import { useCart, type CartItem } from './CartProvider';
 
 export type Quote = Awaited<ReturnType<typeof quoteCart>>;
 
-/** Server-priced totals for the current cart (prices, stock and discount are re-checked on the server). */
-export function useQuote(code?: string) {
-  const { items, ready, add } = useCart();
+/** Server-priced totals for the current cart, or for `only` (a Buy-now item); prices, stock and discount are re-checked on the server. */
+export function useQuote(code?: string, only?: CartItem[]) {
+  const cart = useCart();
+  const items = only ?? cart.items;
+  const ready = only ? true : cart.ready;
+  const add = cart.add;
   const [quote, setQuote] = useState<Quote | null>(null);
   const key = JSON.stringify(items.map((i) => [i.id, i.qty])) + '|' + (code ?? '');
 
@@ -20,7 +23,7 @@ export function useQuote(code?: string) {
       // Refresh stored prices if the shop changed them since the item was added.
       for (const l of q.lines) {
         const it = items.find((i) => i.id === l.id);
-        if (it && l.available && l.price !== it.price) add({ ...it, price: l.price }, 0);
+        if (!only && it && l.available && l.price !== it.price) add({ ...it, price: l.price }, 0);
       }
     });
     return () => { live = false; };

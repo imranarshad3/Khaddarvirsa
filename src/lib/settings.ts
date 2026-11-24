@@ -7,6 +7,14 @@ export type Settings = {
   top_bar_text: string[];
   sale_title: string;
   sale_color: string;
+  /** Today's sale page: menu link on/off, hero text and photo, optional end time (ISO) for the countdown. */
+  sale_enabled: boolean;
+  sale_headline: string;
+  sale_text: string;
+  sale_banner: string;
+  sale_ends_at: string;
+  /** Slugs of Admin → Pages entries linked from the menus, in order. */
+  menu_pages: string[];
   shipping_charges: number;
   free_shipping_over: number;
   contact: { address: string[]; email: string[]; phone: string[] };
@@ -21,6 +29,7 @@ export type Settings = {
 
 const DEFAULTS: Settings = {
   store_name: 'Khaddar Virsa', top_bar_text: [], sale_title: 'Sale', sale_color: '#B70000',
+  sale_enabled: true, sale_headline: '', sale_text: '', sale_banner: '', sale_ends_at: '', menu_pages: [],
   shipping_charges: 0, free_shipping_over: 0, contact: { address: [], email: [], phone: [] }, whatsapp_number: '',
   social: [], bank_details: [], bank_note: '', sliders: [], seo_title: 'Khaddar Virsa', seo_description: '',
 };
