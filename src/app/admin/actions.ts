@@ -49,15 +49,15 @@ export async function saveProduct(form: FormData) {
   // A tracked stock of 0 means out of stock; otherwise the manual availability switch decides.
   const inStock = stock === 0 ? 0 : bool(form, 'in_stock');
   const vals = [sub, alias, title, str(form, 'description'), price, sale, img, code, inStock, stock, bool(form, 'on_sale'),
-    optStr(form, 'youtube_link'), bool(form, 'hidden'), optStr(form, 'meta_title'), optStr(form, 'meta_description')];
+    optStr(form, 'youtube_link'), bool(form, 'hidden'), bool(form, 'premium'), optStr(form, 'meta_title'), optStr(form, 'meta_description')];
   let newId = id;
   try {
     if (id) {
       (await db().prepare(`UPDATE products SET sub_category_id=?, alias=?, title=?, description=?, price=?, sale_price=?, img=?, code=?, in_stock=?, stock=?,
-        on_sale=?, youtube_link=?, hidden=?, meta_title=?, meta_description=?, updated_at=datetime('now') WHERE id=?`).run(...vals, id));
+        on_sale=?, youtube_link=?, hidden=?, premium=?, meta_title=?, meta_description=?, updated_at=datetime('now') WHERE id=?`).run(...vals, id));
     } else {
       newId = Number((await db().prepare(`INSERT INTO products (sub_category_id, alias, title, description, price, sale_price, img, code, in_stock, stock,
-        on_sale, youtube_link, hidden, meta_title, meta_description) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(...vals)).lastInsertRowid);
+        on_sale, youtube_link, hidden, premium, meta_title, meta_description) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(...vals)).lastInsertRowid);
     }
   } catch (e) {
     if (isUnique(e)) fail(back, `Another product already uses the alias "${alias}".`);

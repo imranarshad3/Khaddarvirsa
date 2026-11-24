@@ -11,7 +11,7 @@ export type SubCategory = {
 export type Product = {
   id: number; sub_category_id: number; alias: string; title: string; description: string; price: number; sale_price: number | null;
   img: string | null; code: string | null; in_stock: number; stock: number | null; on_sale: number; youtube_link: string | null;
-  hidden: number; meta_title: string | null; meta_description: string | null; created_at: string; updated_at: string;
+  hidden: number; premium: number; meta_title: string | null; meta_description: string | null; created_at: string; updated_at: string;
 };
 export type ProductRow = Product & { sub_name: string; sub_alias: string; cat_name: string; cat_alias: string };
 
@@ -30,6 +30,8 @@ const PRODUCT_SELECT = `SELECT p.*, s.name sub_name, s.alias sub_alias, c.name c
 const PRICE = 'CASE WHEN p.sale_price > 0 AND p.sale_price < p.price THEN p.sale_price ELSE p.price END';
 // Shop default: cheapest first (in-stock pieces before sold-out ones), newest first among equal prices.
 const AVAILABLE_FIRST = `p.in_stock DESC, ${PRICE} ASC, p.id DESC`;
+// Category listings: products marked Premium in admin come before everything else.
+const PREMIUM_FIRST = `p.premium DESC, ${AVAILABLE_FIRST}`;
 
 // cache(): header, footer and pages share one navigation read per request.
 export const navigation = cache(async () => {
@@ -60,13 +62,16 @@ export async function subCategoryByAlias(alias: string) {
 /** Main category page: every sub-category that has visible products, grouped like the reference. */
 export async function categorySections(categoryId: number) {
   const subs = (await db().prepare('SELECT * FROM sub_categories WHERE category_id = ? ORDER BY order_no, id').all(categoryId)) as SubCategory[];
-  const prods = (await db().prepare(`${PRODUCT_SELECT} WHERE s.category_id = ? AND p.hidden = 0 ORDER BY ${AVAILABLE_FIRST}`).all(categoryId)) as ProductRow[];
-  return subs.map((s) => ({ sub: s, products: prods.filter((p) => p.sub_category_id === s.id) })).filter((x) => x.products.length);
+  const prods = (await db().prepare(`${PRODUCT_SELECT} WHERE s.category_id = ? AND p.hidden = 0 ORDER BY ${PREMIUM_FIRST}`).all(categoryId)) as ProductRow[];
+  return {
+    premium: prods.filter((p) => p.premium === 1),
+    sections: subs.map((s) => ({ sub: s, products: prods.filter((p) => p.sub_category_id === s.id) })).filter((x) => x.products.length),
+  };
 }
 
 export type Sort = 'price-asc' | 'latest' | 'price-desc' | 'discount';
 const SORTS: Record<Sort, string> = {
-  'price-asc': AVAILABLE_FIRST,
+  'price-asc': PREMIUM_FIRST,
   latest: 'p.in_stock DESC, p.id DESC',
   'price-desc': `p.in_stock DESC, ${PRICE} DESC, p.id DESC`,
   discount: `p.in_stock DESC, (1.0 - ${PRICE} * 1.0 / p.price) DESC`,
@@ -74,7 +79,7 @@ const SORTS: Record<Sort, string> = {
 
 export async function subCategoryProducts(subId: number, sort: Sort = 'price-asc', inStockOnly = false) {
   return (await db().prepare(`${PRODUCT_SELECT} WHERE p.sub_category_id = ? AND p.hidden = 0 ${inStockOnly ? 'AND p.in_stock = 1' : ''}
-    ORDER BY ${SORTS[sort] ?? AVAILABLE_FIRST}`).all(subId)) as ProductRow[];
+    ORDER BY ${SORTS[sort] ?? PREMIUM_FIRST}`).all(subId)) as ProductRow[];
 }
 
 export async function productByAlias(alias: string) {
@@ -116,7 +121,7 @@ export async function productsByIds(ids: number[]) {
 
 export async function homeSections(perSection = 8) {
   const subs = (await db().prepare('SELECT * FROM sub_categories WHERE featured = 1 ORDER BY home_order_no, order_no').all()) as SubCategory[];
-  const q = db().prepare(`${PRODUCT_SELECT} WHERE p.sub_category_id = ? AND p.hidden = 0 ORDER BY ${AVAILABLE_FIRST} LIMIT ?`);
+  const q = db().prepare(`${PRODUCT_SELECT} WHERE p.sub_category_id = ? AND p.hidden = 0 ORDER BY ${PREMIUM_FIRST} LIMIT ?`);
   const sections = await Promise.all(subs.map(async (s) => ({ sub: s, products: (await q.all(s.id, perSection)) as ProductRow[] })));
   return sections.filter((x) => x.products.length);
 }

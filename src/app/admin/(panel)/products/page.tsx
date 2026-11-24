@@ -55,7 +55,7 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
                     <td className="py-1.5 pr-2"><input type="hidden" name="ids" value={p.id} />
                       <Link href={`/admin/products/${p.id}`} aria-hidden tabIndex={-1}><img src={imageUrl(p.img, 'product', '100x100_cover')} alt="" width={48} height={48} loading="lazy" className="h-12 w-12 rounded-lg object-cover" /></Link></td>
                     <td className="pr-3"><Link href={`/admin/products/${p.id}`} className="font-semibold text-ink hover:text-gold-dark">{p.title}</Link>
-                      <div className="text-[12px] text-muted">{p.code} · {p.sub_name}{p.hidden ? ' · hidden' : ''}{p.on_sale ? ' · sale' : ''}</div></td>
+                      <div className="text-[12px] text-muted">{p.code} · {p.sub_name}{p.hidden ? ' · hidden' : ''}{p.on_sale ? ' · sale' : ''}{p.premium ? ' · ★ premium' : ''}</div></td>
                     <td><input name={`price_${p.id}`} type="number" min={1} required defaultValue={p.price} aria-label={`Price of ${p.title}`} className="field w-[90px]" /></td>
                     <td><input name={`sale_${p.id}`} type="number" min={1} defaultValue={p.sale_price ?? ''} aria-label={`Sale price of ${p.title}`} className="field w-[90px]" /></td>
                     <td><input name={`stock_${p.id}`} type="number" min={0} defaultValue={p.stock ?? ''} placeholder="—" aria-label={`Stock of ${p.title}`} className="field w-[80px]" /></td>

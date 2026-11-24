@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS products (
   stock INTEGER,                                      -- NULL = quantity not tracked
   on_sale INTEGER NOT NULL DEFAULT 0, youtube_link TEXT,
   hidden INTEGER NOT NULL DEFAULT 0,
+  premium INTEGER NOT NULL DEFAULT 0,               -- 1 = shown first, in the Premium section of its category
   meta_title TEXT, meta_description TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -89,6 +90,9 @@ async function open() {
   if (!process.env.TURSO_DATABASE_URL) fs.mkdirSync(path.dirname(LOCAL_PATH), { recursive: true });
   const c = createClient({ url: DB_URL, authToken: process.env.TURSO_AUTH_TOKEN });
   await c.executeMultiple(SCHEMA);
+  // Databases created before the premium flag existed get the column once.
+  if (!(await c.execute('PRAGMA table_info(products)')).rows.some((r) => r.name === 'premium'))
+    await c.execute('ALTER TABLE products ADD COLUMN premium INTEGER NOT NULL DEFAULT 0');
   if (!Number((await c.execute('SELECT COUNT(*) n FROM categories')).rows[0].n)) await seed(c);
   return c;
 }

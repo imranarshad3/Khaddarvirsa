@@ -20,7 +20,8 @@ export default async function MainCategoryPage({ params }: Props) {
   const c = (await categoryByAlias((await params).alias));
   if (!c) notFound();
   const s = (await getSettings());
-  const sections = (await categorySections(c.id));
+  const { premium, sections } = await categorySections(c.id);
+  const sale = { title: s.sale_title, color: s.sale_color };
   const crumbs = [{ name: c.name, href: `/main-category/${c.alias}` }];
   return (
     <>
@@ -28,10 +29,16 @@ export default async function MainCategoryPage({ params }: Props) {
       <PageBanner title={c.name} crumbs={crumbs} />
       <div className="container-kk mt-8">
         {sections.length === 0 && <p className="py-10 text-center"><T>No products in this category yet.</T></p>}
+        {premium.length > 0 && (
+          <section className="mb-10">
+            <SectionBar title="Premium picks" />
+            <ProductGrid products={premium} sale={sale} eager={4} />
+          </section>
+        )}
         {sections.map(({ sub, products }, i) => (
           <section key={sub.id} className="mb-10">
             <SectionBar title={sub.name} href={`/product-category/${sub.alias}`} />
-            <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} eager={i === 0 ? 4 : 0} />
+            <ProductGrid products={products} sale={sale} eager={i === 0 && !premium.length ? 4 : 0} />
           </section>
         ))}
       </div>

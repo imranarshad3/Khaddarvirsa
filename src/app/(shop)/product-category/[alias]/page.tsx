@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { imageUrl, subCategoryByAlias, subCategoryProducts, type Sort } from '@/lib/catalog';
 import { getSettings, siteUrl } from '@/lib/settings';
-import PageBanner, { JsonLd, breadcrumbJsonLd } from '@/components/layout/PageBanner';
+import PageBanner, { JsonLd, SectionBar, breadcrumbJsonLd } from '@/components/layout/PageBanner';
 import { ProductGrid } from '@/components/product/ProductCard';
 import FilterBar from '@/components/product/FilterBar';
 
@@ -26,6 +26,10 @@ export default async function SubCategoryPage({ params, searchParams }: Props) {
   const { sort = 'price-asc', stock } = await searchParams;
   const s = (await getSettings());
   const products = (await subCategoryProducts(sc.id, sort as Sort, stock === 'in'));
+  const sale = { title: s.sale_title, color: s.sale_color };
+  // Default sort lists Premium products first; show them as their own section on top.
+  const premium = sort === 'price-asc' ? products.filter((p) => p.premium === 1) : [];
+  const rest = premium.length ? products.filter((p) => p.premium !== 1) : products;
   const crumbs = [{ name: sc.cat_name, href: `/main-category/${sc.cat_alias}` }, { name: sc.name, href: `/product-category/${sc.alias}` }];
   return (
     <>
@@ -33,8 +37,14 @@ export default async function SubCategoryPage({ params, searchParams }: Props) {
       <PageBanner title={sc.name} crumbs={crumbs} />
       <div className="container-kk mt-6">
         <FilterBar count={products.length} sort={sort} inStockOnly={stock === 'in'} />
-        {products.length ? <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} eager={4} />
-          : <p className="py-10 text-center"><T>No products found.</T></p>}
+        {premium.length > 0 && (
+          <section className="mb-10">
+            <SectionBar title="Premium picks" />
+            <ProductGrid products={premium} sale={sale} eager={4} />
+          </section>
+        )}
+        {rest.length ? <ProductGrid products={rest} sale={sale} eager={premium.length ? 0 : 4} />
+          : !premium.length && <p className="py-10 text-center"><T>No products found.</T></p>}
       </div>
     </>
   );
