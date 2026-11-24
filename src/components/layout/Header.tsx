@@ -116,11 +116,11 @@ export default async function Header() {
 
         {/* Mobile */}
         <div className="md:hidden">
-          <div className="grid grid-cols-[88px_1fr_88px] items-center px-2 py-1.5">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center px-2 py-1.5">
             <MobileNavigation nav={nav} pages={menuPages} whatsapp={s.whatsapp_number ? whatsappLink(s.whatsapp_number) : ''}
               sale={s.sale_enabled ? { title: s.sale_title, color: s.sale_color, headline: s.sale_headline, endsAt: s.sale_ends_at } : null} />
             <Wordmark name={s.store_name} small />
-            <div className="flex justify-end"><WishlistLink /><CartButton /></div>
+            <div className="flex justify-end"><LangSwitch className={langBtn} /><CartButton /></div>
           </div>
           <div className="px-4 pb-3"><SearchOverlay dark quick={quick} /></div>
         </div>

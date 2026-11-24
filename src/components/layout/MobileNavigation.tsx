@@ -1,5 +1,5 @@
 'use client';
-import { LangSwitch, useT } from '@/components/i18n/LangProvider';
+import { useT } from '@/components/i18n/LangProvider';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -38,7 +38,6 @@ export default function MobileNavigation({ nav, sale, pages, whatsapp }: { nav: 
             <div className="flex items-center justify-between px-5 pb-2 pt-4">
               <Link href="/" aria-label={t('Home')}><img src="/brand/khaddar-virsa-mark.png" alt="Khaddar Virsa" width={193} height={140} className="h-[48px] w-auto" /></Link>
               <span className="flex items-center gap-2">
-              <LangSwitch className="flex h-10 items-center rounded-full border border-gold/50 px-4 text-[14px] font-semibold text-gold-dark transition hover:border-ink hover:bg-ink hover:text-sand" />
               <button type="button" aria-label={t('Close menu')} onClick={() => setOpen(false)}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition hover:rotate-90 hover:border-ink"><CloseIcon className="h-4 w-4" /></button>
               </span>
