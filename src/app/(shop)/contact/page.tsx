@@ -15,7 +15,7 @@ export default async function ContactPage() {
   const s = await getSettings();
   const t = await getT();
   const ways: Way[] = [
-    ...(s.whatsapp_number ? [{ icon: <WhatsappIcon className="h-6 w-6 text-[#25D366]" />, label: 'WhatsApp', value: s.whatsapp_number, action: t('Chat now'), href: whatsappLink(s.whatsapp_number), external: true }] : []),
+    ...(s.whatsapp_number ? [{ icon: <WhatsappIcon className="h-6 w-6 text-[#25D366]" />, label: 'WhatsApp', value: s.whatsapp_number.replace(/^(\d{2})(\d{3})(\d+)$/, '+$1 $2 $3'), action: t('Chat now'), href: whatsappLink(s.whatsapp_number), external: true }] : []),
     ...s.contact.phone.map((x) => ({ icon: <PhoneIcon className="h-6 w-6 text-gold" />, label: t('Call us'), value: x, action: t('Call now'), href: `tel:+${x.replace(/\D/g, '')}` })),
     ...s.contact.email.map((x) => ({ icon: <MailIcon className="h-6 w-6 text-gold" />, label: t('Email'), value: x, action: t('Send email'), href: `mailto:${x}` })),
   ];
