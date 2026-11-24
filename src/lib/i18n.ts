@@ -22,6 +22,7 @@ export const UR: Record<string, string> = {
   'piece found': 'پیس ملا', 'pieces found': 'پیس ملے', 'No exact match. Showing the closest pieces.': 'بالکل یہی نہیں ملا۔ قریب ترین پیس دکھائے جا رہے ہیں۔',
   'Check the spelling, try fewer words, or browse a collection.': 'ہجے چیک کریں، کم الفاظ لکھیں یا کوئی کلیکشن دیکھیں۔', 'Ask us about a piece': 'کسی پیس کے بارے میں پوچھیں',
   // Product & listings
+  'Best seller': 'سب سے زیادہ بکنے والا', 'Best sellers': 'سب سے زیادہ بکنے والے', 'Premium picks': 'پریمیم انتخاب',
   'Sold Out': 'ختم ہو گیا', 'Sold out': 'ختم ہو گیا', 'Add to bag': 'بیگ میں ڈالیں', 'Added to bag — add another': 'بیگ میں شامل — ایک اور ڈالیں', 'Remove from wishlist': 'پسندیدہ سے ہٹائیں',
   'Add to wishlist': 'پسندیدہ میں شامل کریں', 'Opening checkout…': 'چیک آؤٹ کھل رہا ہے…', 'Buy it Now': 'ابھی خریدیں', 'Buy Now': 'ابھی خریدیں', 'Added': 'شامل ہو گیا',
   'Add more': 'مزید ڈالیں', 'Add to Cart': 'کارٹ میں ڈالیں', 'Quantity': 'تعداد', 'Decrease quantity': 'تعداد کم کریں', 'Increase quantity': 'تعداد بڑھائیں', 'In bag': 'بیگ میں',

@@ -34,6 +34,7 @@ export default function ProductCard({ p, sale, priority = false }: { p: ProductR
     <article className="group flex w-full flex-col">
       <div className="relative overflow-hidden bg-soft ring-1 ring-line transition-shadow duration-500 group-hover:shadow-[0_18px_40px_-18px_rgba(53,34,24,.35)]">
         <div className="absolute left-0 top-3 z-[1] flex flex-col items-start gap-1.5 sm:top-4 sm:gap-2">
+          {p.premium > 0 && <span className="bg-gold px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-white sm:px-3 sm:text-[10px] sm:tracking-[0.2em]">★ <T>Best seller</T></span>}
           {p.on_sale === 1 && <SaleBadge title={sale.title} color={sale.color} />}
           <DiscountBadge percent={discountPercent(p)} />
         </div>

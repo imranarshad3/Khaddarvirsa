@@ -30,8 +30,8 @@ const PRODUCT_SELECT = `SELECT p.*, s.name sub_name, s.alias sub_alias, c.name c
 const PRICE = 'CASE WHEN p.sale_price > 0 AND p.sale_price < p.price THEN p.sale_price ELSE p.price END';
 // Shop default: cheapest first (in-stock pieces before sold-out ones), newest first among equal prices.
 const AVAILABLE_FIRST = `p.in_stock DESC, ${PRICE} ASC, p.id DESC`;
-// Category listings: products marked Premium in admin come before everything else.
-const PREMIUM_FIRST = `p.premium DESC, ${AVAILABLE_FIRST}`;
+// Category listings: Premium products (premium = position, 1 = first; 0 = not premium) come before everything else.
+const PREMIUM_FIRST = `(p.premium = 0), p.premium, ${AVAILABLE_FIRST}`;
 
 // cache(): header, footer and pages share one navigation read per request.
 export const navigation = cache(async () => {
@@ -64,7 +64,7 @@ export async function categorySections(categoryId: number) {
   const subs = (await db().prepare('SELECT * FROM sub_categories WHERE category_id = ? ORDER BY order_no, id').all(categoryId)) as SubCategory[];
   const prods = (await db().prepare(`${PRODUCT_SELECT} WHERE s.category_id = ? AND p.hidden = 0 ORDER BY ${PREMIUM_FIRST}`).all(categoryId)) as ProductRow[];
   return {
-    premium: prods.filter((p) => p.premium === 1),
+    premium: prods.filter((p) => p.premium > 0),
     sections: subs.map((s) => ({ sub: s, products: prods.filter((p) => p.sub_category_id === s.id) })).filter((x) => x.products.length),
   };
 }
@@ -89,6 +89,11 @@ export async function productByAlias(alias: string) {
 export async function relatedProducts(p: Product, limit = 8) {
   return (await db().prepare(`${PRODUCT_SELECT} WHERE p.sub_category_id = ? AND p.id != ? AND p.hidden = 0 ORDER BY ${AVAILABLE_FIRST} LIMIT ?`)
     .all(p.sub_category_id, p.id, limit)) as ProductRow[];
+}
+
+/** Homepage Best sellers: Premium products from every category, in their admin position. */
+export async function bestSellers(limit = 8) {
+  return (await db().prepare(`${PRODUCT_SELECT} WHERE p.premium > 0 AND p.hidden = 0 ORDER BY ${PREMIUM_FIRST} LIMIT ?`).all(limit)) as ProductRow[];
 }
 
 export async function saleProducts() {

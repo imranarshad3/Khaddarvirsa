@@ -49,7 +49,7 @@ export async function saveProduct(form: FormData) {
   // A tracked stock of 0 means out of stock; otherwise the manual availability switch decides.
   const inStock = stock === 0 ? 0 : bool(form, 'in_stock');
   const vals = [sub, alias, title, str(form, 'description'), price, sale, img, code, inStock, stock, bool(form, 'on_sale'),
-    optStr(form, 'youtube_link'), bool(form, 'hidden'), bool(form, 'premium'), optStr(form, 'meta_title'), optStr(form, 'meta_description')];
+    optStr(form, 'youtube_link'), bool(form, 'hidden'), bool(form, 'premium') ? Math.max(1, Math.floor(Number(str(form, 'premium_position')) || 1)) : 0, optStr(form, 'meta_title'), optStr(form, 'meta_description')];
   let newId = id;
   try {
     if (id) {

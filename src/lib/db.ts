@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS products (
   stock INTEGER,                                      -- NULL = quantity not tracked
   on_sale INTEGER NOT NULL DEFAULT 0, youtube_link TEXT,
   hidden INTEGER NOT NULL DEFAULT 0,
-  premium INTEGER NOT NULL DEFAULT 0,               -- 1 = shown first, in the Premium section of its category
+  premium INTEGER NOT NULL DEFAULT 0,               -- 0 = normal; 1, 2, 3… = Premium, shown first in that order
   meta_title TEXT, meta_description TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

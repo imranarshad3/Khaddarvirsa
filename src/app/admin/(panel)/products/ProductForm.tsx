@@ -53,7 +53,9 @@ export default async function ProductForm({ p }: { p?: Product }) {
               hint="Optional. If filled, each order reduces it; at 0 the product shows out of stock." />
             <div className="mt-4 grid gap-1 border-t border-line/70 pt-3">
               <Check label="Available to buy" name="in_stock" defaultChecked={p ? !!p.in_stock : true} />
-              <Check label="Premium – show first" name="premium" hint="Top of its category, in the Premium section. Use for best sellers." defaultChecked={!!p?.premium} />
+              <Check label="Premium – show first" name="premium" hint="Top of its category and in homepage Best sellers." defaultChecked={!!p?.premium} />
+              <Field label="Premium position" name="premium_position" type="number" min={1} inputMode="numeric" defaultValue={p?.premium || ''}
+                hint="1 shows first, 2 second… Empty = 1." />
               <Check label="Show on Sale page" name="on_sale" defaultChecked={!!p?.on_sale} />
               <Check label="Hide from shop" name="hidden" hint="Stays saved but customers can't see it." defaultChecked={!!p?.hidden} />
             </div>

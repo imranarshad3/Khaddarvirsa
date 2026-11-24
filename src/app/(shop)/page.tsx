@@ -1,7 +1,7 @@
 import { getT } from '@/lib/lang';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { categoryPhotos, homeSections, imageUrl, navigation, saleProducts } from '@/lib/catalog';
+import { bestSellers, categoryPhotos, homeSections, imageUrl, navigation, saleProducts } from '@/lib/catalog';
 import { getSettings, siteUrl } from '@/lib/settings';
 import { ProductGrid } from '@/components/product/ProductCard';
 import { SectionBar, JsonLd } from '@/components/layout/PageBanner';
@@ -15,7 +15,7 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 export default async function HomePage() {
   const s = (await getSettings());
   const t = await getT();
-  const sections = (await homeSections(8));
+  const [sections, best] = await Promise.all([homeSections(8), bestSellers(8)]);
   const cats = (await navigation());
   const pics = (ps: { img: string | null; in_stock: number }[]) => ps.filter((p) => p.in_stock).slice(0, 2).map((p) => imageUrl(p.img, 'product', '1600x900_cover'));
   const lines = [
@@ -92,10 +92,17 @@ export default async function HomePage() {
           </section>
         )}
 
+        {best.length > 0 && (
+          <section className="mb-14 md:mb-20">
+            <SectionBar title="Best sellers" />
+            <ProductGrid products={best} sale={sale} eager={4} />
+          </section>
+        )}
+
         {sections.map(({ sub, products }, i) => (
           <section key={sub.id} className="mb-14 md:mb-20">
             <SectionBar title={sub.name} href={`/product-category/${sub.alias}`} />
-            <ProductGrid products={products} sale={sale} eager={i === 0 ? 4 : 0} />
+            <ProductGrid products={products} sale={sale} eager={i === 0 && !best.length ? 4 : 0} />
           </section>
         ))}
       </div>

@@ -28,8 +28,8 @@ export default async function SubCategoryPage({ params, searchParams }: Props) {
   const products = (await subCategoryProducts(sc.id, sort as Sort, stock === 'in'));
   const sale = { title: s.sale_title, color: s.sale_color };
   // Default sort lists Premium products first; show them as their own section on top.
-  const premium = sort === 'price-asc' ? products.filter((p) => p.premium === 1) : [];
-  const rest = premium.length ? products.filter((p) => p.premium !== 1) : products;
+  const premium = sort === 'price-asc' ? products.filter((p) => p.premium > 0) : [];
+  const rest = premium.length ? products.filter((p) => !p.premium) : products;
   const crumbs = [{ name: sc.cat_name, href: `/main-category/${sc.cat_alias}` }, { name: sc.name, href: `/product-category/${sc.alias}` }];
   return (
     <>
