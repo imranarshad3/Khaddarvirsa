@@ -30,7 +30,7 @@ export default async function MainCategoryPage({ params }: Props) {
         {sections.map(({ sub, products }, i) => (
           <section key={sub.id} className="mb-10">
             <SectionBar title={sub.name} href={`/product-category/${sub.alias}`} />
-            <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} eager={i === 0 ? 4 : 0} scroll />
+            <ProductGrid products={products} sale={{ title: s.sale_title, color: s.sale_color }} eager={i === 0 ? 4 : 0} />
           </section>
         ))}
       </div>

@@ -63,17 +63,7 @@ export default function ProductCard({ p, sale, priority = false }: { p: ProductR
   );
 }
 
-export function ProductGrid({ products, sale, eager = 0, scroll = false }: { products: ProductRow[]; sale: { title: string; color: string }; eager?: number; scroll?: boolean }) {
-  // scroll: a swipeable row below lg (about 1.6 cards on a phone, so the next card shows), the normal grid from lg up.
-  if (scroll) return (
-    <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:-mx-8 md:scroll-px-8 md:px-8 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16 lg:overflow-visible lg:px-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
-      {products.map((p, i) => (
-        <div key={p.id} className="flex w-[62%] shrink-0 snap-start sm:w-[40%] md:w-[30%] lg:w-auto">
-          <ProductCard p={p} sale={sale} priority={i < eager} />
-        </div>
-      ))}
-    </div>
-  );
+export function ProductGrid({ products, sale, eager = 0 }: { products: ProductRow[]; sale: { title: string; color: string }; eager?: number }) {
   return (
     <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-8 sm:gap-y-16 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((p, i) => <ProductCard key={p.id} p={p} sale={sale} priority={i < eager} />)}

@@ -73,10 +73,10 @@ export default async function HomePage() {
               <p className="eyebrow">Explore by style</p>
               <h2 className="font-display mt-2 text-[32px] md:text-[40px]">Shop by Category</h2>
             </div>
-            <nav aria-label="Featured categories" className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:gap-6 lg:justify-center [&::-webkit-scrollbar]:hidden">
+            <nav aria-label="Featured categories" className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
               {sections.map(({ sub }) => (
                 <Link key={sub.id} href={`/product-category/${sub.alias}`}
-                  className="group relative block w-[170px] shrink-0 snap-start overflow-hidden rounded-t-[999px] rounded-b-2xl bg-ink shadow-[0_18px_40px_-24px_rgba(53,34,24,.6)] ring-1 ring-line transition-transform duration-500 hover:-translate-y-1.5 sm:w-[210px]">
+                  className="group relative block overflow-hidden rounded-t-[999px] rounded-b-2xl bg-ink shadow-[0_18px_40px_-24px_rgba(53,34,24,.6)] ring-1 ring-line transition-transform duration-500 hover:-translate-y-1.5">
                   <img src={imageUrl(sub.img, 'sub_cat', '300x300_cover')} alt="" width={210} height={280} loading="lazy"
                     className="aspect-[3/4] w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
@@ -93,7 +93,7 @@ export default async function HomePage() {
         {sections.map(({ sub, products }, i) => (
           <section key={sub.id} className="mb-14 md:mb-20">
             <SectionBar title={sub.name} href={`/product-category/${sub.alias}`} />
-            <ProductGrid products={products} sale={sale} eager={i === 0 ? 4 : 0} scroll />
+            <ProductGrid products={products} sale={sale} eager={i === 0 ? 4 : 0} />
           </section>
         ))}
       </div>

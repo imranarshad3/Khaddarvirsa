@@ -126,7 +126,7 @@ export default async function ProductPage({ params }: Props) {
       {related.length > 0 && (
         <section className="container-kk mb-20 mt-6">
           <SectionBar title="Related Products" href={`/product-category/${p.sub_alias}`} />
-          <ProductGrid products={related} sale={{ title: s.sale_title, color: s.sale_color }} scroll />
+          <ProductGrid products={related} sale={{ title: s.sale_title, color: s.sale_color }} />
         </section>
       )}
     </>
