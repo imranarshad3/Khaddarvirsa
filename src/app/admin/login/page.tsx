@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Logo from '@/components/layout/Logo';
 import { redirect } from 'next/navigation';
 import { clientIp } from '@/lib/rateLimit';
 import {
@@ -50,7 +49,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
       </div>
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-[400px]">
-          <div className="mb-6 flex justify-center"><Logo /></div>
+          <img src="/brand/khaddar-virsa-logo-hq.png" alt="Khaddar Virsa" width={1188} height={864} className="mx-auto mb-6 h-20 w-auto" />
           <h1 className="text-center font-display text-[32px] text-ink">Welcome back</h1>
           <p className="mb-8 mt-1 text-center text-[15px] text-muted">Sign in to manage your store.</p>
           {!adminConfigured() && (

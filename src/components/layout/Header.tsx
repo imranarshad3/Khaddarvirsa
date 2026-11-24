@@ -8,7 +8,6 @@ import MobileNavigation from './MobileNavigation';
 import { CartButton } from '@/components/cart/CartDrawer';
 import WishlistLink from './WishlistLink';
 import NavLink from './NavLink';
-import Logo from './Logo';
 import HeaderShell from './HeaderShell';
 
 export type NavItem = { name: string; alias: string; subs: { name: string; alias: string }[] };
@@ -31,7 +30,12 @@ export function Wordmark({ name, small = false }: { name: string; small?: boolea
   // Phones get the one-row logo without the tagline, which would be too small to read.
   return (
     <Link href="/" aria-label={`${name} home`} className="flex justify-center">
-      <Logo compact={small} shrink />
+      {small
+        ? <img src="/brand/khaddar-virsa-logo-hq.png" alt={name} width={1188} height={864} className="h-[46px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[38px]" />
+        : <span className="flex flex-col items-center">
+            <img src="/brand/khaddar-virsa-logo-hq.png" alt={name} width={1188} height={864} className="h-[62px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[46px]" />
+            <span className="mt-1 whitespace-nowrap font-[Georgia,'Times_New_Roman',serif] text-[11px] leading-none tracking-[0.06em] text-ink transition-all duration-300 group-data-[scrolled]/hdr:mt-0 group-data-[scrolled]/hdr:h-0 group-data-[scrolled]/hdr:opacity-0">Feel the Fabric of Tradition</span>
+          </span>}
     </Link>
   );
 }

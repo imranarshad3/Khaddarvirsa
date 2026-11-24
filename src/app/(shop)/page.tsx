@@ -47,7 +47,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'WebSite', name: s.store_name, url: siteUrl() }} />
       <JsonLd data={{
-        '@context': 'https://schema.org', '@type': 'Organization', name: s.store_name, url: siteUrl(), logo: siteUrl() + '/brand/khaddar-virsa-logo.png',
+        '@context': 'https://schema.org', '@type': 'Organization', name: s.store_name, url: siteUrl(), logo: siteUrl() + '/brand/khaddar-virsa-logo-hq.png',
         email: s.contact.email[0], telephone: s.contact.phone[0], sameAs: s.social.map((x) => x.link),
         address: s.contact.address[0] ? { '@type': 'PostalAddress', streetAddress: s.contact.address[0], addressCountry: 'PK' } : undefined,
       }} />
