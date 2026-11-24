@@ -27,13 +27,14 @@ export default async function HomePage() {
     href: `/main-category/${c.alias}`, cta: `Shop ${c.name}`, images: (await categoryPhotos(c.id)).map((img) => imageUrl(img, 'product', '1600x900_cover')),
   })))).filter((b) => b.images.length === 2);
   // Lifestyle photos (from the Rugistan assets) lead each banner; product shots stay as the fallback.
-  const heroPhotos = ['/hero/shop-hero-wide.webp', '/hero/about-hero-wide.webp', '/hero/product-craft-courtyard.webp'];
-  banners.forEach((b, k) => { if (heroPhotos[k]) b.images = [heroPhotos[k], ...b.images]; });
+  // focus = where the person stands across the photo (%), so phones crop around them.
+  const heroPhotos: [string, number][] = [['/hero/shop-hero-wide.webp', 66], ['/hero/about-hero-wide.webp', 62], ['/hero/product-craft-courtyard.webp', 64]];
+  banners.forEach((b, k) => { if (heroPhotos[k]) { b.images = [heroPhotos[k][0], ...b.images]; b.focus = heroPhotos[k][1]; } });
   const onSale = (await saleProducts());
   const maxOff = Math.max(0, ...onSale.map(discountPercent));
   if (pics(onSale).length === 2) banners.splice(1, 0, {
     eyebrow: s.sale_title, title: maxOff ? `Up to ${maxOff}% Off.` : 'The Sale Is On.', text: `${onSale.length} pieces on sale for a limited time, with Cash on Delivery across Pakistan.`,
-    href: '/today-sale', cta: 'Shop the Sale', images: ['/hero/collections-hero-wide.webp', ...pics(onSale)],
+    href: '/today-sale', cta: 'Shop the Sale', images: ['/hero/collections-hero-wide.webp', ...pics(onSale)], focus: 82,
   });
   const sale = { title: s.sale_title, color: s.sale_color };
   const perks = [
