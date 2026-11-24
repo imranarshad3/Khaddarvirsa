@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-dm-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-dm-serif), Georgia, serif;
+  /* Khaddar Virsa palette: cream paper, espresso ink, bronze accents */
+  --color-body: #6f6257;
+  --color-muted: #9a8b7d;
+  --color-ink: #352218;
+  --color-ink-2: #30251d;
+  --color-sale: #9b2c1f;
+  --color-gold: #916b43;
+  --color-gold-dark: #795536;
+  --color-sand: #d4b289;
+  --color-cream: #fbf7f1;
+  --color-paper: #fffaf2;
+  --color-line: #e8dfd2;
+  --color-sun: #d4b289;
+  --color-soft: #f4ede3;
+  --color-primary: #795536;
+  --color-hover: #916b43;
+  --shadow-card: 0 1px 2px rgba(53, 34, 24, 0.06);
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.75; color: var(--color-body); background: var(--color-cream); }
+@layer base {
+  h1, h2, h3, h4 { font-weight: 500; line-height: 1.15; color: var(--color-ink); }
+  a { transition: color .3s; }
+}
+::selection { background: var(--color-sand); color: var(--color-ink); }
+
+@layer components {
+  .container-kk { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container-kk { padding: 0 32px; } }
+
+  .page-banner { background: var(--color-ink); }
+  .section-bar { background: transparent; }
+  .eyebrow { font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: var(--color-gold); font-weight: 600; }
+  .font-display { font-family: var(--font-serif); font-weight: 400; }
+  .btn-dark { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; background: var(--color-ink); color: #fff; padding: 16px 34px; font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; transition: background .3s; }
+  .btn-dark:hover { background: var(--color-gold-dark); }
+  .btn-line { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border: 1px solid var(--color-ink); color: var(--color-ink); padding: 15px 34px; font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; transition: background .3s, color .3s; }
+  .btn-line:hover { background: var(--color-ink); color: #fff; }
+
+  .field { width: 100%; border: 1px solid var(--color-line); border-radius: 0; padding: 12px 14px; font-size: 16px; color: var(--color-ink-2); background: #fff; }
+  .field:focus { outline: 1px solid var(--color-gold); outline-offset: -1px; border-color: var(--color-gold); }
+  .label { display: block; font-size: 14px; letter-spacing: .04em; color: var(--color-ink-2); margin-bottom: 4px; }
+
+  .prose-kk { color: var(--color-body); font-size: 17px; line-height: 1.85; }
+  .prose-kk p, .prose-kk ul { margin-bottom: 1em; }
+  .prose-kk h2 { font-family: var(--font-serif); font-weight: 400; font-size: 30px; color: var(--color-ink); margin: 1.2em 0 .4em; }
+  .prose-kk ul { list-style: disc; padding-left: 1.5em; }
+}
+
+@keyframes kk-slide-in { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes kk-slide-left { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes kk-progress { from { width: 0; } to { width: 100%; } }
+@keyframes kk-fade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Admin studio polish: scoped to .admin so the storefront is untouched. Unlayered on purpose, to restyle the panel's existing utility classes. */
+.admin .field { border-radius: 12px; border-color: var(--color-line); background: #fffdf9; font-size: 15px; padding: 10px 14px; transition: border-color .2s, box-shadow .2s; }
+.admin .field:focus { outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 4px rgba(145, 107, 67, .14); }
+.admin .label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px; }
+.admin .shadow-card { border-radius: 16px; border: 1px solid rgba(232, 223, 210, .7); box-shadow: 0 1px 2px rgba(53,34,24,.04), 0 12px 32px -18px rgba(53,34,24,.18); }
+.admin main table th { font-weight: 600; }
+.admin main table td { padding-top: .6rem; padding-bottom: .6rem; }
+.admin main button.bg-ink-2, .admin main a.bg-ink-2 { border-radius: 999px; }
+.admin input[type="file"]::file-selector-button { margin-right: 12px; border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-soft); padding: 6px 14px; color: var(--color-ink-2); cursor: pointer; }
+@keyframes kk-fade-in { from { opacity: 0; } to { opacity: 1; } }

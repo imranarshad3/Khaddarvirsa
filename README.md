@@ -1,131 +1,79 @@
-# Rugistan
+# Khaddar Virsa — online store
 
-Pakistani fashion, shawls and women's clothing store: React 19 + TypeScript + Vite storefront and administration console. Clerk owns sign-in; Supabase PostgreSQL/RLS and Storage own application data and media. There is no repository-owned HTTP application server. Product/order amounts are stored in the base currency (currently PKR); other currencies are display conversions.
+A premium khaddar store branded as Khaddar Virsa (brand details from khaddarvirsa.store), with the catalogue imported from kamaliakhaddar.pk, as one Next.js app with its own database and admin panel.
 
-## Development
+- **Storefront:** home, main categories, collections with sort and in-stock filtering, product pages, today's sale, search, cart, checkout, order confirmation, contact and content pages.
+- **Orders:** checkout supports Cash on Delivery and Direct Bank Transfer. The server re-prices every order, checks stock and saves it in one transaction. Delivery charges and the free-delivery threshold come from settings. Discount codes are supported.
+- **Admin (`/admin`):** dashboard, orders (status and internal note; cancelling returns stock), products (create, edit, image upload, bulk price and stock edits), categories and collections, customers (built from orders), discount codes, homepage slider, settings and SEO, content pages, newsletter subscribers.
+- **SEO:** per-page metadata and canonical URLs, Product / Organization / Breadcrumb JSON-LD, `sitemap.xml`, `robots.txt`.
 
-Use Node 24 (see `package.json`).
+## Requirements
 
-```sh
-npm ci
+- Node.js **20.9 or newer** (developed on 22; `.nvmrc` says 22). Node 18 cannot load the Tailwind CSS 4 toolchain.
+- A server with a writable disk for the SQLite database and uploaded images. This rules out serverless hosts with read-only or ephemeral disks (e.g. a default Vercel deploy): use a VPS, a container with a volume, or similar.
+
+## Run it
+
+```bash
+nvm use
+```
+
+```bash
+npm install
+```
+
+```bash
 cp .env.example .env.local
+```
+
+Then set `ADMIN_PASSWORD` and `SESSION_SECRET` in `.env.local` (see below).
+
+```bash
 npm run dev
 ```
 
-Set `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, and `VITE_CLERK_PUBLISHABLE_KEY`. Only publishable/legacy anon credentials belong in `VITE_` variables. Service-role and Clerk secret keys belong in operator/server environments. They are not needed to build or run the browser application.
+The first request creates `data/store.db` and fills it from `data/reference/*.json`: the 4 categories, collections, 358 products, store settings and slider captured from the current website. An existing database is never re-seeded or overwritten.
 
-```sh
-npm run lint
-npm run typecheck
-npm test
-npm run test:browser
-npm run build
-npm run check:supabase
-npm run check:production
+Production:
+
+```bash
+npm run build && npm start
 ```
 
-`check:production` requires a live Clerk key. A successful build alone does not establish release readiness. Lint currently passes with existing React lifecycle/Fast Refresh warnings; these have not been blanket-disabled.
+Checks: `npm run lint`, `npm run typecheck`, `npm test` (pricing and totals rules).
 
-## Styling architecture
+## Environment variables
 
-Every stylesheet is wrapped in a CSS cascade layer, declared once at the top of `src/index.css`:
+| Variable | Required | Purpose |
+|---|---|---|
+| `SITE_URL` | yes in production | Public URL, no trailing slash. Used for canonical links, sitemap and JSON-LD. |
+| `ADMIN_PASSWORD` | for admin | Admin login password. The admin panel stays disabled until this and `SESSION_SECRET` are set. |
+| `SESSION_SECRET` | for admin | At least 32 random characters; signs the admin session cookie. Generate: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. Changing it logs everyone out. |
+| `DATABASE_PATH` | no | SQLite file, default `./data/store.db`. |
+| `UPLOAD_DIR` | no | Folder for admin-uploaded images, default `./data/uploads` (served at `/uploads/...`). |
+| `REFERENCE_IMAGE_BASE` | no | Where imported catalogue images are loaded from, default `https://kamaliakhaddar.pk/image/upload`. |
+
+No secrets are committed. `.env.local`, the database and uploads are git-ignored.
+
+**Back up** `data/store.db` (and its `-wal` file, or use `sqlite3 data/store.db ".backup backup.db"`) and the uploads folder: they hold all orders and edits.
+
+## Security notes
+
+- Every admin page and every admin server action checks the signed, httpOnly session cookie on the server (`requireAdmin()` in `src/lib/auth.ts`).
+- Login is limited to 5 failed attempts per IP per 15 minutes. The counter is in memory, so it resets on restart and isn't shared between processes.
+- Uploads are checked by their real file bytes (JPG/PNG/WebP/GIF only, 5 MB max) and saved under random names.
+- Prices, discounts, delivery charges and stock are always recalculated on the server; the cart in the browser is only a list of product IDs and quantities.
+
+## Project layout
 
 ```
-@layer reset, tokens, base, storefront, studio, components, system;
+src/lib/          db (schema + seed), catalog, orders, pricing (+ test), settings, auth, uploads
+src/app/(shop)/   storefront pages
+src/app/admin/    login, admin pages ((panel)/), admin server actions (actions.ts)
+src/app/actions.ts  storefront server actions: cart quote, place order, search, newsletter
+src/components/   layout, cart and product components
+data/reference/   catalogue snapshot used for the first-run seed
+docs/             reference audit, requirements, final report
 ```
 
-| Layer | File(s) | Role |
-| --- | --- | --- |
-| `reset` | `src/index.css` | Document reset, toasts, boot screen |
-| `tokens` | `src/styles/design-tokens.css` | The brand's single source of truth: colour, type, rhythm, motion |
-| `base` | `src/styles/client.css`, `src/styles/admin.css` | Structural defaults for storefront and studio |
-| `storefront` | `src/styles/premium.css` | Page-specific storefront layout |
-| `studio` | `src/styles/admin-theme.css` | Studio theme |
-| `components` | `src/styles/select.css` | Shared portalled controls |
-| `system` | `src/styles/luxury.css` | The design system — final, authoritative pass over both surfaces |
-
-Because later layers win regardless of selector specificity, `luxury.css` can state a rule once instead of
-out-specifying earlier files. Add new design decisions there and resolve colour/size values to the
-`--rg-*` tokens rather than literals.
-
-Two stylesheets stay outside the layers on purpose: `src/styles/clerk.css` (Clerk injects its own
-unlayered stylesheet at runtime, and unlayered rules beat layered ones) and `src/pages/client/home-hero.css`
-(page-scoped, loaded with the home chunk).
-
-## Database regression tests
-
-`npm run test:db` requires Docker and an existing local Supabase PostgreSQL container (default `supabase_db_rugistan`; override `SUPABASE_TEST_CONTAINER`). It creates a uniquely named disposable database, applies every migration in filename order, runs pgTAP ownership/CRUD/checkout tests and a forced concurrent promotion-redemption test, then drops that database. Existing local/cloud user data is not reset. Storage and JWT helper schemas are minimal test fixtures; real Clerk token verification and Storage HTTP uploads still require end-to-end verification.
-
-`pg_cron` is installed only in its configured database, normally `postgres`; the test runner validates scheduling separately in a rolled-back transaction. It does not leave a test cron job behind.
-
-Browser fixtures intercept database responses to exercise the real dropdown, page editor and product form. Local runs also visit eight live public routes at 390/768/1440px. CI skips those three external-service smoke tests unless `RUN_LIVE_SMOKE=1`; seven deterministic component regressions still run. They do not establish successful live sign-in, admin uploads or checkout.
-
-## Release sequence
-
-1. Back up the hosted database and confirm its migration history. This project previously used manual dashboard SQL; do **not** blindly replay initial migrations or reset the database.
-2. Review and apply `supabase/migrations/20261024050719_production_integrity.sql` against the existing matching Clerk/text-ID schema, in one transaction. It adds atomic cart/product/shipping RPCs, stronger submission policies, private guest tracking, checkout idempotency, promotion locking, expiry scheduling and monetary-unit guards. Existing orders are retained; only new pending offline orders receive a 48-hour reservation expiry.
-3. Confirm the `rugistan-expire-reservations` cron job runs every 15 minutes and can execute `release_expired_reservations()`. Mark legitimately accepted orders Processing before expiry, or confirm payment. Existing pending orders are not automatically expired.
-4. Configure a production Clerk instance, live publishable key, allowed origins/redirects, email verification and Supabase's Clerk third-party integration for that same instance. Local `supabase/config.toml` does not enable Clerk automatically. Verify a real Clerk JWT is accepted and cannot read another customer's orders or grant admin access.
-5. **Close the guest-checkout abuse blocker.** The public `place_order` RPC still needs a trusted server-verified challenge and throttled backend path. Enforce that path at the database execution boundary so callers cannot bypass it with direct RPC requests. Frontend-only CAPTCHA is insufficient. Quantity limits, per-email pending limits and reservation expiry reduce damage but do not stop fabricated-email abuse.
-6. Run all checks, `npm run check:production`, then build with the intended public production environment. Deploy `dist/` to an HTTPS static host with SPA fallback. `public/_redirects` and `_headers` support hosts that implement those files; configure equivalent rewrites/headers elsewhere. HTML should revalidate. Only fingerprinted Vite-generated assets should receive immutable caching; original photo paths can change.
-7. Test sign-up/verification/sign-in/out, both account roles, product/media CRUD, all payment/delivery options, promotion failures, failed-network checkout retries, private guest tracking, cancellation/restocking and responsive navigation against the deployed URL. Confirm backups, alerting, error collection and the reservation scheduler operationally.
-
-Apply the migration **before releasing this frontend**; new RPC-dependent saves intentionally surface errors if the backend is older. No hosted migrations or deployment were performed by the production audit because administrative Supabase CLI access was unavailable.
-
-### Guest tracking compatibility
-
-New guest confirmations expose a private link whose fragment contains the high-entropy order UUID. Keep that link private. Lookup requires the order number, email and private key. Older guests without a saved key must contact the store; authenticated owners retain access to their orders. Sequential order numbers plus a known email no longer suffice after the migration.
-
-### Payments and notifications
-
-Checkout supports the enabled offline methods configured in store settings. No card gateway or order-email delivery integration is implemented. Do not advertise automatic payment capture or order emails until those providers and verified server-side callbacks exist. Order confirmation copy reflects receipt and actual payment status.
-
-### Administrator provisioning
-
-```sh
-node scripts/create-admin.mjs verified-email@example.com user_existingClerkId
-```
-
-Requires server-only `SUPABASE_SERVICE_ROLE_KEY` and `CLERK_SECRET_KEY` plus the matching Supabase URL. It verifies that email against an existing Clerk identity before granting the database role; it does not create accounts or reset passwords. Existing admins are preserved. API reference: https://clerk.com/docs/reference/backend-api
-
-Never put private payment credentials in `settings`: storefront-facing store/payment settings are public. Keep gateway credentials in a trusted backend secret store.
-
-Customized Clerk screens pin `@clerk/ui` through the provider so remote UI releases cannot silently change their structure. Upgrade and test that dependency deliberately. Reference: https://clerk.com/docs/reference/components/versioning
-
-### Hosted rollout status
-
-The existing hosted Rugistan schema was originally bootstrapped outside migration history. The production rollout now records `20261024002000`, `20261024050719`, `20261024055027`, and `20261024190354` in `supabase_migrations.schema_migrations`. The rollout preserved the existing 8 products, 19 media rows, 29 variants, 2 profiles, and 0 orders.
-
-Do not replay initial schema files or run `db reset --linked` against production. Before adopting automated `db push`, capture and reconcile the manually bootstrapped baseline; the earlier schema files are not represented by matching hosted history entries. The checked-in SQL is also exercised against a disposable local database with `npm run test:db`.
-
-The deployed site still uses a Clerk development instance. Configure a Clerk production instance and its allowed origins, update the Vercel public Clerk key, verify Supabase third-party authentication for that issuer, and run signed-in customer/admin acceptance checks before treating authentication as production-ready.
-
-Signed-in acceptance checks against the deployed Vercel site passed for the existing administrator (account dashboard shortcut plus nine read-only admin routes) and a temporary development customer (profile synchronization, admin denial, order-history rendering, and sign-out). Test sessions were revoked and temporary Clerk/Supabase fixtures removed. These checks validate the current development-backed deployment; repeat them after the eventual Clerk production-instance switch.
-
-Clerk production requires an owned custom domain with DNS access; a `*.vercel.app` hostname cannot host the production Clerk configuration. See https://clerk.com/docs/guides/development/deployment/vercel. No custom domain is currently linked to this project. Do not replace the working development key until the production domain, DNS, issuer integration and production admin identity are ready. Development and production Clerk instances have separate user identities, so changing API keys alone does not migrate administrator access or existing profile relationships.
-
-### Server write boundary
-
-Checkout, contact, newsletter and product-view writes use `/api/store`. The Vercel function verifies Clerk session JWTs when supplied, derives a client identity from Vercel's overwritten IP header, and consumes atomic database quotas before writing. Guest checkout remains supported. Public Supabase clients cannot invoke the privileged write RPCs or insert into these submission tables.
-
-Configure `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `CLERK_SECRET_KEY` and a random `RATE_LIMIT_SECRET` (at least 32 characters) as **server-only** secrets. Never prefix these with `VITE_`. `npm run dev` serves the same API through Vite's Node middleware; restart after environment changes. Deployment origins are restricted to the production hostname and Vercel's deployment URL; update the explicit allowlist when adding an owned domain.
-
-Quotas per trusted IP: checkout 5 per 15 minutes; contact/newsletter 5 per hour; views 120 per hour. Separate daily global budgets bound distributed write volume (checkout/contact 1,000, newsletter 2,000, views 200,000). Counters contain keyed hashes, not raw IP addresses, and expired counters are cleaned as requests arrive. Quotas are not a guarantee against distributed denial of service; use Vercel's platform firewall/bot controls if traffic warrants it. Do not put an untrusted proxy in front of the deployment without revisiting the client-IP trust boundary.
-
-Staff notes live in `order_admin_notes` under administrator-only RLS; customer order rows never contain them. Existing notes are preserved by the security migration. Apply migrations only after staging the corresponding API/frontend release, and promote immediately after verification. Do not roll back to a frontend that calls direct public write paths after this migration.
-
-Run `npm test`, `npm run test:db`, `npm run test:browser`, `npm run lint` and `npm run build`. Database tests create and delete an isolated local database; they never reset the hosted project. `npm run check:production` additionally requires live Clerk keys; an owned custom domain is still required before switching the current development Clerk instance to production. Password storage/hashing and session issuance remain managed by Clerk.
-
-### Product photo assistant (optional)
-
-The admin product editor can analyze up to three uploaded photos using Groq. Set `GROQ_API_KEY` only in the server environment; `GROQ_VISION_MODEL` defaults to the verified `qwen/qwen3.8-27b` vision model. Uploaded product photos and merchant notes are sent to Groq only when an administrator requests generation. Videos are excluded. Suggested fields and follow-up questions are reviewed before applying; saving/publishing remains a separate action. Existing size IDs and inventory are preserved when merging suggestions. Price uses the store base currency, not the optional converted display currency.
-
-`/api/admin-product-ai` verifies a Clerk session and the database admin role before provider access. It restricts photo URLs to this store’s uploaded product media or packaged assets, bounds input/output, uses a 45-second provider timeout, and consumes the persistent quota under a distinct per-admin key (5 generations/hour, sharing the existing contact action’s global safety ceiling). Groq errors never include provider responses or credentials. No provider SDK dependency was added.
-
-New uploads can be formatted locally into consistent 4:5 card photos with neutral padding; the checkbox lets the merchant retain original framing instead. Formatting resizes without changing product patterns or colors and does not increase image resolution beyond the original. Videos are uploaded unchanged. Existing photos are not silently rewritten.
-
-### Team invitations and assigned studio access
-
-Administrators can invite or resend invitations from **Admin Profile → Team & Roles**. Choose Owner, Super Admin or Admin. Owners have full control; Super Admins manage the store and Admin team members; Admins handle daily operations without store settings or team management. Invitation delivery uses Clerk with `ignore_existing: true` and `notify: true`, so existing accounts receive the email too. Invitations expire after seven days. No access is granted until a signed-in account accepts with the invited verified email. Owners and Super Admins can manage lower team roles. Owner accounts and self-role changes are protected.
-
-The `/api/team` gateway verifies Clerk sessions and the current database role, enforces persistent request quotas, and keeps provider credentials server-side. Only service-role RPCs create or accept invitations and change assignments. Restricted members retain customer profiles; `team_access`, RLS, module-gated RPCs and scoped media policies enforce access independently of the UI. Run migration `20261025012636_team_invitations_permissions` before releasing this feature. The migration preserves existing administrators and customer ownership checks. Automated delivery tests mock Clerk; they send no real emails.
+See [docs/final-report.md](docs/final-report.md) for what differs from the reference site, what is not included, and open questions.
