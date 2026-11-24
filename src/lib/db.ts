@@ -169,7 +169,7 @@ async function seed(c: Client) {
       shipping_charges: s.shipping_charges,
       free_shipping_over: s.shipping_fee_over,
       // Brand contact from khaddarvirsa.store; the reference store's address, socials and bank accounts are not reused.
-      contact: { address: [], email: ['info@khaddervirsa.com'], phone: ['+92 342 4307737'] },
+      contact: { address: [], email: ['khaddarvirsa1@gmail.com'], phone: ['+92 342 4307737'] },
       whatsapp_number: '923424307737',
       social: [],
       bank_details: [],

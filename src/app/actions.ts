@@ -6,6 +6,8 @@ import { imageUrl, searchProducts, type Product } from '@/lib/catalog';
 import { clientIp, hit } from '@/lib/rateLimit';
 import { findDiscount, normalizePhone, orderByNumber, OrderError, placeOrder, type OrderInput } from '@/lib/orders';
 import { redirect } from 'next/navigation';
+import { after } from 'next/server';
+import { notifyNewOrder } from '@/lib/notify';
 
 /** Current server prices and totals for the cart, so the customer never sees stale prices at checkout. */
 export async function quoteCart(items: { id: number; qty: number }[], code?: string) {
@@ -36,7 +38,9 @@ export async function submitOrder(input: OrderInput): Promise<{ ok: true; number
   try {
     if ((await hit(`order:${await clientIp()}`, 10 * 60)) > 8)
       return { ok: false, error: 'Too many orders from your connection. Please wait a few minutes or order on WhatsApp.' };
-    return { ok: true, number: (await placeOrder(input)) };
+    const number = await placeOrder(input);
+    after(() => notifyNewOrder(number)); // after the response, so a slow or failed alert never delays or loses the order
+    return { ok: true, number };
   } catch (e) {
     if (e instanceof OrderError) return { ok: false, error: e.message };
     console.error('placeOrder failed', e);
