@@ -17,7 +17,7 @@ export default async function Dashboard() {
     ['Orders (all)', await n('SELECT COUNT(*) n FROM orders'), '/admin/orders', 'orders'],
     ['Products', await n('SELECT COUNT(*) n FROM products'), '/admin/products', 'products'],
     ['Out of stock', await n('SELECT COUNT(*) n FROM products WHERE in_stock = 0'), '/admin/products?stock=out', 'products'],
-    ['Subscribers', await n('SELECT COUNT(*) n FROM subscribers'), '/admin/subscribers', 'subscribers'],
+    ["Today's orders", await n("SELECT COUNT(*) n FROM orders WHERE date(created_at) = date('now')"), '/admin/orders', 'orders'],
   ] as const;
   const recent = (await d.prepare('SELECT * FROM orders ORDER BY id DESC LIMIT 10').all()) as Order[];
   const low = (await d.prepare('SELECT id, title, code, img, stock FROM products WHERE stock BETWEEN 1 AND 3 AND hidden = 0 ORDER BY stock, id DESC LIMIT 8')

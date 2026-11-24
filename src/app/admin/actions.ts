@@ -111,7 +111,7 @@ export async function saveCategory(form: FormData) {
 export async function saveSubCategory(form: FormData) {
   await requireAdmin();
   const id = int(form, 'id');
-  const back = id ? `/admin/categories/${id}` : '/admin/categories';
+  const back = id ? `/admin/categories/${id}` : '/admin/categories/new';
   const name = str(form, 'name');
   const alias = slugify(str(form, 'alias') || name);
   const cat = int(form, 'category_id');
@@ -194,7 +194,7 @@ export async function deleteDiscount(form: FormData) {
 export async function saveStoreSettings(form: FormData) {
   await requireAdmin();
   const patch: Partial<Settings> = {
-    store_name: str(form, 'store_name') || 'Kamalia Khaddar',
+    store_name: str(form, 'store_name') || 'Khaddar Virsa',
     top_bar_text: lines(form, 'top_bar_text'),
     shipping_charges: Math.max(0, int(form, 'shipping_charges') ?? 0),
     free_shipping_over: Math.max(0, int(form, 'free_shipping_over') ?? 0),

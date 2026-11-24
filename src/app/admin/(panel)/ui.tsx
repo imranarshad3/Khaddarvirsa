@@ -37,9 +37,30 @@ export function Area({ label, name, hint, ...rest }: { label: string; name: stri
   );
 }
 
-export const Check = ({ label, name, defaultChecked }: { label: string; name: string; defaultChecked?: boolean }) => (
-  <label className="flex cursor-pointer items-center gap-2.5"><input type="checkbox" name={name} defaultChecked={defaultChecked} className="h-4 w-4 accent-[#795536]" /> {label}</label>
+/** On/off switch (a styled checkbox, so forms post exactly as before). */
+export const Check = ({ label, name, defaultChecked, hint }: { label: string; name: string; defaultChecked?: boolean; hint?: string }) => (
+  <label className="flex cursor-pointer items-start justify-between gap-4 rounded-xl px-1 py-1.5">
+    <span><span className="block text-ink-2">{label}</span>{hint && <span className="block text-[12px] text-muted">{hint}</span>}</span>
+    <input type="checkbox" name={name} defaultChecked={defaultChecked} className="peer sr-only" />
+    <span aria-hidden className="relative mt-0.5 h-6 w-11 shrink-0 rounded-full bg-line transition peer-checked:bg-emerald-600 peer-focus-visible:ring-4 peer-focus-visible:ring-gold/30 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition peer-checked:after:translate-x-5" />
+  </label>
 );
+
+/** Rarely needed fields, folded away so the main form stays short. */
+export const More = ({ title = 'More options', children }: { title?: string; children: React.ReactNode }) => (
+  <details className="group mb-5 rounded-2xl border border-line/70 bg-white/60 px-5 py-4 md:px-6">
+    <summary className="flex cursor-pointer list-none items-center justify-between font-semibold text-ink-2 marker:hidden">{title}
+      <span aria-hidden className="text-gold transition group-open:rotate-45 text-[20px] leading-none">+</span></summary>
+    <div className="mt-4 grid gap-3">{children}</div>
+  </details>
+);
+
+export const Back = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <Link href={href} className="mb-3 inline-flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-muted hover:text-gold-dark">← {children}</Link>
+);
+
+export const BTN = 'inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-ink-2 shadow-sm transition hover:border-gold hover:text-gold-dark';
+export const BTN_DARK = 'inline-flex h-10 items-center gap-2 rounded-full bg-ink px-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_24px_-12px_rgba(53,34,24,.7)] transition hover:bg-gold-dark';
 
 export const Save = ({ children = 'Save' }: { children?: React.ReactNode }) => (
   <button className="h-11 rounded-full bg-ink px-7 text-[12px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_10px_24px_-12px_rgba(53,34,24,.7)] transition hover:bg-gold-dark">{children}</button>
