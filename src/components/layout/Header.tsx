@@ -8,6 +8,7 @@ import MobileNavigation from './MobileNavigation';
 import { CartButton } from '@/components/cart/CartDrawer';
 import WishlistLink from './WishlistLink';
 import NavLink from './NavLink';
+import Logo from './Logo';
 import HeaderShell from './HeaderShell';
 
 export type NavItem = { name: string; alias: string; subs: { name: string; alias: string }[] };
@@ -27,12 +28,10 @@ export function AnnouncementBar({ texts }: { texts: string[] }) {
 }
 
 export function Wordmark({ name, small = false }: { name: string; small?: boolean }) {
-  // Phones get the mark without the tagline, which would be too small to read.
+  // Phones get the one-row logo without the tagline, which would be too small to read.
   return (
     <Link href="/" aria-label={`${name} home`} className="flex justify-center">
-      {small
-        ? <img src="/brand/khaddar-virsa-mark.png" alt={name} width={193} height={140} className="h-[46px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[38px]" />
-        : <img src="/brand/khaddar-virsa-logo.png" alt={name} width={194} height={164} className="h-[76px] w-auto transition-[height] duration-300 group-data-[scrolled]/hdr:h-[52px]" />}
+      <Logo compact={small} shrink />
     </Link>
   );
 }

@@ -3,6 +3,7 @@ import { getSettings, whatsappLink } from '@/lib/settings';
 import { MailIcon, PhoneIcon, PinIcon, SocialIcon, WhatsappIcon } from '@/components/icons';
 import PaymentLogos from '@/components/PaymentLogos';
 import Newsletter from './Newsletter';
+import Logo from './Logo';
 
 export default async function Footer() {
   const s = (await getSettings());
@@ -22,7 +23,7 @@ export default async function Footer() {
       </div>
       <div className="container-kk grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <section>
-          <p className="font-display text-[26px] uppercase tracking-[0.1em] text-white">{s.store_name}</p>
+          <div className="flex"><Logo compact light /></div>
           <p className="mt-1 text-[11px] uppercase tracking-[0.32em] text-sand">Feel the fabric of tradition</p>
           <p className="mt-5 max-w-[320px]">Timeless cultural tradition with modern elegance: premium khaddar crafted for comfort and style.</p>
           {s.social.length > 0 && (
