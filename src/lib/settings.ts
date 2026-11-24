@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import 'server-only';
 import { db, tx } from './db';
 
@@ -24,12 +25,13 @@ const DEFAULTS: Settings = {
   social: [], bank_details: [], bank_note: '', sliders: [], seo_title: 'Khaddar Virsa', seo_description: '',
 };
 
-export async function getSettings(): Promise<Settings> {
+// cache(): one settings read per request, however many components ask for it.
+export const getSettings = cache(async (): Promise<Settings> => {
   const rows = (await db().prepare('SELECT key, value FROM settings').all()) as { key: string; value: string }[];
   const out: Record<string, unknown> = { ...DEFAULTS };
   for (const r of rows) out[r.key] = JSON.parse(r.value);
   return out as Settings;
-}
+});
 
 export async function saveSettings(patch: Partial<Settings>) {
   await tx(async (d) => {
@@ -41,5 +43,6 @@ export async function saveSettings(patch: Partial<Settings>) {
 export const whatsappLink = (n: string) => `https://wa.me/${n.replace(/\D/g, '').replace(/^0/, '92')}`;
 
 export function siteUrl() {
-  return (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
+  const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL; // set by Vercel, so preview builds still point canonicals at the live domain
+  return (process.env.SITE_URL || (prod ? `https://${prod}` : 'http://localhost:3000')).replace(/\/$/, '');
 }

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { put } from '@vercel/blob';
 
 export const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), 'data', 'uploads');
-const MAX = 5 * 1024 * 1024;
+const MAX = 4 * 1024 * 1024; // Vercel rejects request bodies over 4.5 MB
 
 /** Detect the real image type from the file's first bytes; the browser-sent type and name are not trusted. */
 export function sniffImage(b: Buffer): 'jpg' | 'png' | 'webp' | 'gif' | null {
@@ -19,7 +19,7 @@ export function sniffImage(b: Buffer): 'jpg' | 'png' | 'webp' | 'gif' | null {
 /** Saves an uploaded image and returns its public path, or null if no file was sent. Throws on invalid files. */
 export async function saveImage(file: FormDataEntryValue | null): Promise<string | null> {
   if (!file || typeof file === 'string' || file.size === 0) return null;
-  if (file.size > MAX) throw new Error('Image is larger than 5 MB.');
+  if (file.size > MAX) throw new Error('Image is larger than 4 MB. Please use a smaller photo.');
   const buf = Buffer.from(await file.arrayBuffer());
   const ext = sniffImage(buf);
   if (!ext) throw new Error('Only JPG, PNG, WebP or GIF images are allowed.');

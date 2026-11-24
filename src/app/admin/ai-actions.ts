@@ -12,13 +12,13 @@ type Result = { ok: true; draft: AiDraft } | { ok: false; error: string };
 
 // shortcut: in-memory per-process limit (10/hour), resets on restart; move to a shared store if you run several instances.
 const uses: number[] = [];
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_BYTES = 4 * 1024 * 1024;
 const clip = (v: unknown, n: number) => (typeof v === 'string' ? v.replace(/<[^>]*>/g, '').trim().slice(0, n) : '');
 
 async function photo(form: FormData): Promise<string | null> {
   const file = form.get('image');
   if (file && typeof file !== 'string' && file.size > 0) {
-    if (file.size > MAX_BYTES) throw new Error('Photo is larger than 5 MB.');
+    if (file.size > MAX_BYTES) throw new Error('Photo is larger than 4 MB.');
     const buf = Buffer.from(await file.arrayBuffer());
     const ext = sniffImage(buf);
     if (!ext) throw new Error('Only JPG, PNG, WebP or GIF photos can be analysed.');

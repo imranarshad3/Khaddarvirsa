@@ -17,9 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = (await productByAlias((await params).alias));
   if (!p) return {};
   const title = p.meta_title || `${p.title} ${p.code ?? ''}`.trim();
-  const description = p.meta_description || p.description.split('\n')[0].slice(0, 160);
+  const price = unitPrice(p);
+  const description = p.meta_description || p.description.split('\n')[0].slice(0, 160)
+    || `${title}: Rs ${price.toLocaleString()} at ${(await getSettings()).store_name}. Cash on Delivery across Pakistan.`;
   const img = imageUrl(p.img, 'product');
-  return { title, description, alternates: { canonical: `/product/${p.alias}` }, openGraph: { title, description, images: [img], type: 'website' } };
+  return { title, description, alternates: { canonical: `/product/${p.alias}` }, openGraph: { title, description, images: [img], type: 'website' }, twitter: { card: 'summary_large_image', images: [img] } };
 }
 
 function youtubeId(url: string | null) {

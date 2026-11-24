@@ -1,5 +1,6 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { categorySections, homeSections, imageUrl, navigation, saleProducts } from '@/lib/catalog';
+import { categoryPhotos, homeSections, imageUrl, navigation, saleProducts } from '@/lib/catalog';
 import { getSettings, siteUrl } from '@/lib/settings';
 import { ProductGrid } from '@/components/product/ProductCard';
 import { SectionBar, JsonLd } from '@/components/layout/PageBanner';
@@ -7,6 +8,8 @@ import HeroSlider from '@/components/HeroSlider';
 import HeroBanners, { type Banner } from '@/components/HeroBanners';
 import { discountPercent } from '@/lib/pricing';
 import { ArrowRight } from '@/components/icons';
+
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default async function HomePage() {
   const s = (await getSettings());
@@ -21,7 +24,7 @@ export default async function HomePage() {
   ];
   const banners: Banner[] = (await Promise.all(cats.slice(0, 4).map(async (c, k) => ({
     eyebrow: c.name, title: lines[k % lines.length][0], text: lines[k % lines.length][1],
-    href: `/main-category/${c.alias}`, cta: `Shop ${c.name}`, images: pics((await categorySections(c.id)).flatMap((x) => x.products)),
+    href: `/main-category/${c.alias}`, cta: `Shop ${c.name}`, images: (await categoryPhotos(c.id)).map((img) => imageUrl(img, 'product', '1600x900_cover')),
   })))).filter((b) => b.images.length === 2);
   // Lifestyle photos (from the Rugistan assets) lead each banner; product shots stay as the fallback.
   const heroPhotos = ['/hero/shop-hero-wide.webp', '/hero/about-hero-wide.webp', '/hero/product-craft-courtyard.webp'];
@@ -41,8 +44,9 @@ export default async function HomePage() {
   ];
   return (
     <>
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'WebSite', name: s.store_name, url: siteUrl() }} />
       <JsonLd data={{
-        '@context': 'https://schema.org', '@type': 'Organization', name: s.store_name, url: siteUrl(), logo: siteUrl() + '/brand/favicon.svg',
+        '@context': 'https://schema.org', '@type': 'Organization', name: s.store_name, url: siteUrl(), logo: siteUrl() + '/brand/khaddar-virsa-logo.png',
         email: s.contact.email[0], telephone: s.contact.phone[0], sameAs: s.social.map((x) => x.link),
         address: s.contact.address[0] ? { '@type': 'PostalAddress', streetAddress: s.contact.address[0], addressCountry: 'PK' } : undefined,
       }} />

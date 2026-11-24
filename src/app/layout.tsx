@@ -15,7 +15,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: s.seo_title, template: `%s | ${s.store_name}` },
     description: s.seo_description,
     icons: { icon: "/brand/favicon.svg" },
-    openGraph: { siteName: s.store_name, type: "website", locale: "en_PK" },
+    applicationName: s.store_name,
+    openGraph: { siteName: s.store_name, type: "website", locale: "en_PK", images: [{ url: "/brand/og-default.jpg", width: 1200, height: 630, alt: s.store_name }] },
+    twitter: { card: "summary_large_image" },
+    formatDetection: { telephone: false },
   };
 }
 

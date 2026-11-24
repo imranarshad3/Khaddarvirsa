@@ -56,7 +56,7 @@ export default async function ProductForm({ p }: { p?: Product }) {
           <Card title="Image">
             {p?.img && <img src={imageUrl(p.img, 'product', '300x300_cover')} alt="" width={300} height={300} className="mb-2 aspect-square w-full object-cover" />}
             <input type="file" name="image" accept="image/jpeg,image/png,image/webp,image/gif" aria-label="Upload image" />
-            <p className="mt-1 text-[12px] text-muted">JPG, PNG, WebP or GIF, up to 5 MB. Uploading replaces the current image.</p>
+            <p className="mt-1 text-[12px] text-muted">JPG, PNG, WebP or GIF, up to 4 MB. Uploading replaces the current image.</p>
           </Card>
           <Save>{p ? 'Save product' : 'Create product'}</Save>
         </div>

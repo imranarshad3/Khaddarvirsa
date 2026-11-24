@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { subCategoryByAlias, subCategoryProducts, type Sort } from '@/lib/catalog';
+import { imageUrl, subCategoryByAlias, subCategoryProducts, type Sort } from '@/lib/catalog';
 import { getSettings, siteUrl } from '@/lib/settings';
 import PageBanner, { JsonLd, breadcrumbJsonLd } from '@/components/layout/PageBanner';
 import { ProductGrid } from '@/components/product/ProductCard';
@@ -13,7 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!sc) return {};
   return {
     title: sc.meta_title || sc.name,
-    description: sc.meta_description || sc.description || undefined,
+    description: sc.meta_description || sc.description || `Shop ${sc.name} (${sc.cat_name}) at ${(await getSettings()).store_name}. Cash on Delivery across Pakistan.`,
+    ...(sc.img ? { openGraph: { images: [imageUrl(sc.img, 'sub_cat')] } } : {}),
     alternates: { canonical: `/product-category/${sc.alias}` },
   };
 }

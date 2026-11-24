@@ -10,7 +10,9 @@ type Props = { params: Promise<{ alias: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = (await categoryByAlias((await params).alias));
   if (!c) return {};
-  return { title: { absolute: c.meta_title || c.name }, description: c.meta_description ?? undefined, alternates: { canonical: `/main-category/${c.alias}` } };
+  const store = (await getSettings()).store_name;
+  return { title: { absolute: c.meta_title || `${c.name} | ${store}` },
+    description: c.meta_description || `Shop ${c.name} at ${store}. Cash on Delivery across Pakistan.`, alternates: { canonical: `/main-category/${c.alias}` } };
 }
 
 export default async function MainCategoryPage({ params }: Props) {

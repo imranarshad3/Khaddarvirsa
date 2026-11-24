@@ -2,6 +2,7 @@ import 'server-only';
 import crypto from 'node:crypto';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { hit, peek } from './rateLimit';
 
 const COOKIE = 'kk_admin';
 const MAX_AGE = 60 * 60 * 12; // 12 hours
@@ -45,7 +46,9 @@ export async function startSession() {
 }
 
 function allowedOrigins() {
-  const list = [process.env.SITE_URL, ...(process.env.ADMIN_ALLOWED_ORIGINS || '').split(',')]
+  // VERCEL_URL / VERCEL_BRANCH_URL let admin sign-in work on preview deployments too.
+  const vercel = [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(Boolean).map((h) => `https://${h}`);
+  const list = [process.env.SITE_URL, ...vercel, ...(process.env.ADMIN_ALLOWED_ORIGINS || '').split(',')]
     .map((u) => { try { return u ? new URL(u.trim()).origin : ''; } catch { return ''; } }).filter(Boolean);
   if (process.env.NODE_ENV !== 'production') list.push('http://localhost:3000', 'http://127.0.0.1:3000');
   return [...new Set(list)];
@@ -88,14 +91,10 @@ export async function requireAdmin() {
   if (!(await isAdmin())) redirect('/admin/login');
 }
 
-// shortcut: in-memory login throttle, resets on restart and is per-process; use a shared store if you run several instances.
-const attempts = new Map<string, { n: number; until: number }>();
-export function loginThrottled(key: string) {
-  const a = attempts.get(key);
-  return Boolean(a && a.n >= 5 && a.until > Date.now());
+// Shared across server instances via the rate_limits table: 5 failed sign-ins lock an IP out for 15 minutes.
+export async function loginThrottled(ip: string) {
+  return (await peek(`login:${ip}`)) >= 5;
 }
-export function recordLoginFailure(key: string) {
-  const a = attempts.get(key);
-  const fresh = !a || a.until < Date.now();
-  attempts.set(key, { n: fresh ? 1 : a!.n + 1, until: Date.now() + 15 * 60 * 1000 });
+export async function recordLoginFailure(ip: string) {
+  await hit(`login:${ip}`, 15 * 60);
 }

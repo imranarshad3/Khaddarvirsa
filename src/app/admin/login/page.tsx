@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
+import { clientIp } from '@/lib/rateLimit';
 import {
   adminConfigured, checkPassword, clerkConfigured, clerkUserIsAdmin, isAdmin, loginThrottled, passwordConfigured, recordLoginFailure, startSession,
 } from '@/lib/auth';
@@ -8,14 +8,12 @@ import ClerkAdminSignIn from './ClerkAdminSignIn';
 
 export const metadata: Metadata = { title: 'Admin login', robots: { index: false } };
 
-const clientIp = async () => (await headers()).get('x-forwarded-for')?.split(',')[0].trim() || 'local';
-
 async function login(form: FormData) {
   'use server';
   const ip = await clientIp();
-  if (loginThrottled(ip)) redirect('/admin/login?e=locked');
+  if (await loginThrottled(ip)) redirect('/admin/login?e=locked');
   if (!checkPassword(String(form.get('password') ?? ''))) {
-    recordLoginFailure(ip);
+    await recordLoginFailure(ip);
     redirect('/admin/login?e=1');
   }
   await startSession();
@@ -25,11 +23,11 @@ async function login(form: FormData) {
 async function clerkLogin(token: string): Promise<{ ok: true } | { ok: false; error: string }> {
   'use server';
   const ip = await clientIp();
-  if (loginThrottled(ip)) return { ok: false, error: 'Too many attempts. Try again in 15 minutes.' };
+  if (await loginThrottled(ip)) return { ok: false, error: 'Too many attempts. Try again in 15 minutes.' };
   const r = await clerkUserIsAdmin(String(token ?? ''));
   if (r === 'ok') { await startSession(); return { ok: true }; }
   if (r === 'unavailable') return { ok: false, error: 'Could not check admin access right now. Please try again.' };
-  recordLoginFailure(ip);
+  await recordLoginFailure(ip);
   return { ok: false, error: r === 'denied' ? 'This account is not a store administrator.' : 'Your sign-in could not be verified. Please sign in again.' };
 }
 

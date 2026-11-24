@@ -59,6 +59,11 @@ CREATE TABLE IF NOT EXISTS pages (
 CREATE TABLE IF NOT EXISTS subscribers (
   id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE COLLATE NOCASE, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS rate_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, reset_at INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS sub_categories_cat ON sub_categories(category_id);
+CREATE INDEX IF NOT EXISTS order_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS orders_created ON orders(created_at);
+CREATE INDEX IF NOT EXISTS orders_phone ON orders(phone);
 `;
 
 type Runner = { execute: Client['execute'] };

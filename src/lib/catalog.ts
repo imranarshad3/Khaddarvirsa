@@ -1,4 +1,5 @@
 import 'server-only';
+import { cache } from 'react';
 import { db } from './db';
 
 export type Category = { id: number; name: string; alias: string; meta_title: string | null; meta_description: string | null; status: number; order_no: number };
@@ -29,10 +30,21 @@ const PRICE = 'CASE WHEN p.sale_price > 0 AND p.sale_price < p.price THEN p.sale
 // Shop default: cheapest first (in-stock pieces before sold-out ones), newest first among equal prices.
 const AVAILABLE_FIRST = `p.in_stock DESC, ${PRICE} ASC, p.id DESC`;
 
-export async function navigation() {
-  const cats = (await db().prepare('SELECT * FROM categories WHERE status = 1 ORDER BY order_no, id').all()) as Category[];
-  const subs = (await db().prepare('SELECT * FROM sub_categories WHERE status = 1 ORDER BY order_no, id').all()) as SubCategory[];
+// cache(): header, footer and pages share one navigation read per request.
+export const navigation = cache(async () => {
+  const [cats, subs] = (await Promise.all([
+    db().prepare('SELECT * FROM categories WHERE status = 1 ORDER BY order_no, id').all(),
+    db().prepare('SELECT * FROM sub_categories WHERE status = 1 ORDER BY order_no, id').all(),
+  ])) as [Category[], SubCategory[]];
   return cats.map((c) => ({ ...c, subs: subs.filter((s) => s.category_id === c.id) }));
+});
+
+/** First in-stock product photos of a category, for homepage banners. */
+export async function categoryPhotos(categoryId: number, limit = 2) {
+  const rows = (await db().prepare(`SELECT p.img FROM products p JOIN sub_categories s ON s.id = p.sub_category_id
+    WHERE s.category_id = ? AND p.hidden = 0 AND p.in_stock = 1 AND p.img IS NOT NULL AND p.img != '' ORDER BY ${AVAILABLE_FIRST} LIMIT ?`)
+    .all(categoryId, limit)) as { img: string }[];
+  return rows.map((r) => r.img);
 }
 
 export async function categoryByAlias(alias: string) {
@@ -104,6 +116,6 @@ export async function sitemapEntries() {
   return {
     categories: (await d.prepare('SELECT alias FROM categories WHERE status = 1').all()) as { alias: string }[],
     subs: (await d.prepare('SELECT s.alias FROM sub_categories s JOIN categories c ON c.id = s.category_id AND c.status = 1').all()) as { alias: string }[],
-    products: (await d.prepare(`SELECT p.alias, p.updated_at FROM products p JOIN sub_categories s ON s.id = p.sub_category_id JOIN categories c ON c.id = s.category_id AND c.status = 1 WHERE p.hidden = 0`).all()) as { alias: string; updated_at: string }[],
+    products: (await d.prepare(`SELECT p.alias, p.img, p.updated_at FROM products p JOIN sub_categories s ON s.id = p.sub_category_id JOIN categories c ON c.id = s.category_id AND c.status = 1 WHERE p.hidden = 0`).all()) as { alias: string; img: string | null; updated_at: string }[],
   };
 }
