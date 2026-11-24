@@ -12,10 +12,10 @@ export function CartButton() {
   const { count, ready, setDrawerOpen } = useCart();
   return (
     <button type="button" onClick={() => setDrawerOpen(true)} aria-label={`Open cart, ${count} items`}
-      className="relative flex h-10 w-10 items-center justify-center text-ink hover:text-gold">
+      className="relative flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-soft hover:text-gold-dark">
       <BagIcon className="h-5 w-5" />
       {ready && count > 0 && (
-        <span className="absolute -right-1 -top-1 min-w-[18px] rounded-full bg-ink px-1 text-center text-[12px] font-bold leading-[18px] text-white">{count}</span>
+        <span className="absolute right-0.5 top-0.5 min-w-[18px] rounded-full bg-gold-dark px-1 text-center text-[11px] font-bold leading-[18px] text-white ring-2 ring-paper">{count}</span>
       )}
     </button>
   );

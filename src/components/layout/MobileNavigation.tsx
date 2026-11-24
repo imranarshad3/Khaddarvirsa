@@ -18,7 +18,7 @@ export default function MobileNavigation({ nav, saleTitle, saleColor }: { nav: N
   const link = 'flex min-h-[52px] items-center border-b border-line px-5 text-[14px] font-semibold uppercase tracking-[0.14em] text-ink-2 hover:bg-soft';
   return (
     <>
-      <button type="button" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} className="flex h-11 w-11 items-center justify-center text-ink">
+      <button type="button" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} className="flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-soft">
         <MenuIcon className="h-6 w-6" />
       </button>
       {/* Portal: the header's backdrop-blur would otherwise trap this fixed panel inside the header strip. */}

@@ -36,10 +36,10 @@ export default function SearchOverlay({ dark = false }: { dark?: boolean }) {
       <input id={dark ? 'search-m' : 'search-d'} type="search" value={q} placeholder="Search khaddar…" autoComplete="off"
         onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)}
         onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
-        className="w-full border-0 border-b border-line bg-transparent py-2 pl-0 pr-9 text-[15px] text-ink-2 outline-none placeholder:text-muted focus:border-gold" />
-      <button type="submit" aria-label="Search" className="absolute right-1 top-1/2 -translate-y-1/2 text-ink"><SearchIcon /></button>
+        className="w-full rounded-full border border-line bg-white/70 py-2.5 pl-11 pr-4 text-[15px] text-ink-2 outline-none transition placeholder:text-muted focus:border-gold focus:bg-white focus:ring-4 focus:ring-gold/10 [&::-webkit-search-cancel-button]:hidden" />
+      <button type="submit" aria-label="Search" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted hover:text-ink"><SearchIcon className="h-[18px] w-[18px]" /></button>
       {open && done && done === q && (
-        <div className="absolute left-0 right-0 top-full z-40 mt-2 sm:min-w-[340px] border-t-2 border-gold bg-paper shadow-[0_24px_50px_-20px_rgba(53,34,24,.35)]" style={{ animation: 'kk-fade .15s' }}>
+        <div className="absolute left-0 right-0 top-full z-40 mt-2 overflow-hidden rounded-2xl border border-line bg-paper sm:min-w-[340px] shadow-[0_24px_50px_-20px_rgba(53,34,24,.35)]" style={{ animation: 'kk-fade .15s' }}>
           {hits.length ? (
             <>
               <p className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">Products</p>
