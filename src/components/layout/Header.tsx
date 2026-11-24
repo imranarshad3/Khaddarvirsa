@@ -65,8 +65,9 @@ export default async function Header() {
             <CartButton />
           </div>
         </div>
-        <nav aria-label="Main" className="hidden border-t border-line/70 md:block">
-          <ul className="container-kk flex flex-wrap items-center justify-center gap-x-6 text-[12px] font-semibold uppercase tracking-[0.22em] text-ink-2 lg:gap-x-11">
+        <nav aria-label="Main" className="hidden border-b border-gold/40 bg-ink shadow-[inset_0_1px_0_rgba(212,178,137,.25)] md:block">
+          {/* Small gold diamonds sit between the items. */}
+          <ul className="container-kk flex flex-wrap items-center justify-center gap-x-6 text-[12px] font-semibold uppercase tracking-[0.24em] text-sand [&>li+li]:before:mr-6 [&>li+li]:before:inline-block [&>li+li]:before:h-1 [&>li+li]:before:w-1 [&>li+li]:before:rotate-45 [&>li+li]:before:bg-gold [&>li+li]:before:align-middle [&>li+li]:before:content-[''] lg:gap-x-9 lg:[&>li+li]:before:mr-9">
             <li><NavLink href="/">Home</NavLink></li>
             {nav.map((c) => (
               <li key={c.alias} className="group relative">
@@ -92,9 +93,11 @@ export default async function Header() {
               </li>
             ))}
             {s.sale_enabled && <li>
-              <NavLink href="/today-sale" style={{ color: s.sale_color }}>
-                <span aria-hidden className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 motion-reduce:hidden" style={{ background: s.sale_color }} /><span className="relative inline-flex h-1.5 w-1.5 rounded-full" style={{ background: s.sale_color }} /></span>
-                {s.sale_title}
+              <NavLink href="/today-sale">
+                <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-white shadow-[0_6px_16px_-8px_rgba(0,0,0,.6)]" style={{ background: s.sale_color }}>
+                  <span aria-hidden className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-70 motion-reduce:hidden" /><span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" /></span>
+                  {s.sale_title}
+                </span>
               </NavLink>
             </li>}
             {menuPages.map((p) => <li key={p.slug}><NavLink href={`/${p.slug}`}>{p.title}</NavLink></li>)}
