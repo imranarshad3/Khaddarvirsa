@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/auth';
 import { getSettings } from '@/lib/settings';
 import { logout } from '../actions';
 import AdminNav, { Crumb, Icon } from './AdminNav';
+import AssistantChat from './AssistantChat';
 
 export const metadata: Metadata = { title: { default: 'Admin', template: '%s | Admin' }, robots: { index: false } };
 
@@ -34,7 +35,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             Visit store <Icon name="shop" className="h-3.5 w-3.5" />
           </Link>
         </header>
-        <main className="mx-auto max-w-[1400px] p-4 md:p-8">{children}</main>
+        <main className="mx-auto max-w-[1400px] p-4 pb-24 md:p-8 md:pb-24">{children}</main>
+        <AssistantChat />
       </div>
     </div>
   );

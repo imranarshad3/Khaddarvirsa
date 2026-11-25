@@ -97,3 +97,22 @@ export async function orderByNumber(number: string) {
   if (!o) return null;
   return { ...o, items: (await db().prepare('SELECT * FROM order_items WHERE order_id = ?').all(o.id)) as OrderItem[] };
 }
+
+/** Sets an order's status, note, courier and tracking; returns an error message or null. Cancelling returns tracked stock; re-opening a cancelled order takes it again. */
+export async function applyOrderUpdate(id: number, f: { status: string; admin_note: string | null; courier: string | null; tracking: string | null }): Promise<string | null> {
+  if (!(ORDER_STATUSES as readonly string[]).includes(f.status)) return 'Unknown status.';
+  let err: string | null = null;
+  await tx(async (d) => {
+    const old = (await d.prepare('SELECT status FROM orders WHERE id = ?').get(id)) as { status: string } | undefined;
+    if (!old) { err = 'Order not found.'; return; }
+    const sign = old.status !== 'cancelled' && f.status === 'cancelled' ? 1 : old.status === 'cancelled' && f.status !== 'cancelled' ? -1 : 0;
+    if (sign) {
+      const items = (await d.prepare('SELECT product_id, qty FROM order_items WHERE order_id = ?').all(id)) as { product_id: number; qty: number }[];
+      const st = d.prepare(`UPDATE products SET stock = MAX(stock + ?, 0), in_stock = CASE WHEN stock + ? > 0 THEN 1 ELSE 0 END WHERE id = ? AND stock IS NOT NULL`);
+      for (const it of items) await st.run(sign * it.qty, sign * it.qty, it.product_id);
+    }
+    await d.prepare("UPDATE orders SET status = ?, admin_note = ?, courier = ?, tracking = ?, updated_at = datetime('now') WHERE id = ?")
+      .run(f.status, f.admin_note, f.courier, f.tracking, id);
+  });
+  return err;
+}

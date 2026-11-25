@@ -5,7 +5,7 @@ import { db, tx } from '@/lib/db';
 import { endSession, requireAdmin } from '@/lib/auth';
 import { saveImage } from '@/lib/uploads';
 import { getSettings, saveSettings, type Settings } from '@/lib/settings';
-import { ORDER_STATUSES } from '@/lib/orders';
+import { applyOrderUpdate } from '@/lib/orders';
 import { parseCsv } from '@/lib/csv';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
@@ -206,22 +206,9 @@ export async function deleteSubCategory(form: FormData) {
 /* ---------------- orders ---------------- */
 export async function updateOrder(form: FormData) {
   await requireAdmin();
-  const id = int(form, 'id');
-  const status = str(form, 'status');
-  if (!(ORDER_STATUSES as readonly string[]).includes(status)) fail(`/admin/orders/${id}`, 'Unknown status.');
-  await tx(async (d) => {
-    const old = (await d.prepare('SELECT status FROM orders WHERE id = ?').get(id)) as { status: string } | undefined;
-    if (!old) fail('/admin/orders', 'Order not found.');
-    // Cancelling returns tracked stock; re-opening a cancelled order takes it again.
-    const sign = old.status !== 'cancelled' && status === 'cancelled' ? 1 : old.status === 'cancelled' && status !== 'cancelled' ? -1 : 0;
-    if (sign) {
-      const items = (await d.prepare('SELECT product_id, qty FROM order_items WHERE order_id = ?').all(id)) as { product_id: number; qty: number }[];
-      const st = d.prepare(`UPDATE products SET stock = MAX(stock + ?, 0), in_stock = CASE WHEN stock + ? > 0 THEN 1 ELSE 0 END WHERE id = ? AND stock IS NOT NULL`);
-      for (const it of items) (await st.run(sign * it.qty, sign * it.qty, it.product_id));
-    }
-    (await d.prepare("UPDATE orders SET status = ?, admin_note = ?, courier = ?, tracking = ?, updated_at = datetime('now') WHERE id = ?")
-      .run(status, optStr(form, 'admin_note'), optStr(form, 'courier'), optStr(form, 'tracking'), id));
-  });
+  const id = int(form, 'id') ?? 0;
+  const err = await applyOrderUpdate(id, { status: str(form, 'status'), admin_note: optStr(form, 'admin_note'), courier: optStr(form, 'courier'), tracking: optStr(form, 'tracking') });
+  if (err) fail(err === 'Order not found.' ? '/admin/orders' : `/admin/orders/${id}`, err);
   redirect(`/admin/orders/${id}?saved=1`);
 }
 
