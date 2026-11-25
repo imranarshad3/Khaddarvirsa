@@ -93,7 +93,7 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[980px] text-left">
               <thead className="border-b border-line text-[11px] uppercase tracking-[0.14em] text-muted">
-                <tr><th className="w-8 py-2"><SelectAll /></th><th /><th>Product</th><th>Price</th><th>Sale price</th><th>Stock qty</th><th>In stock</th><th>Hidden</th><th className="text-right">Actions</th></tr>
+                <tr><th className="w-8 py-2"><SelectAll /></th><th /><th>Product</th><th>Price</th><th>Sale price</th><th>Stock qty</th><th className="px-2">In stock</th><th className="px-2">Hidden</th><th className="text-right">Actions</th></tr>
               </thead>
               <tbody>
                 {rows.map((p) => (
@@ -109,8 +109,8 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
                     <td><input name={`price_${p.id}`} type="number" min={1} required defaultValue={p.price} aria-label={`Price of ${p.title}`} className="field w-[90px]" /></td>
                     <td><input name={`sale_${p.id}`} type="number" min={1} defaultValue={p.sale_price ?? ''} aria-label={`Sale price of ${p.title}`} className="field w-[90px]" /></td>
                     <td><input name={`stock_${p.id}`} type="number" min={0} defaultValue={p.stock ?? ''} placeholder="—" aria-label={`Stock of ${p.title}`} className="field w-[80px]" /></td>
-                    <td><input name={`instock_${p.id}`} type="checkbox" defaultChecked={!!p.in_stock} aria-label={`${p.title} in stock`} className="h-4 w-4 accent-[#795536]" /></td>
-                    <td><input name={`hidden_${p.id}`} type="checkbox" defaultChecked={!!p.hidden} aria-label={`Hide ${p.title} from the shop`} className="h-4 w-4 accent-[#795536]" /></td>
+                    <td className="px-2"><Toggle name={`instock_${p.id}`} on={!!p.in_stock} label={`${p.title} in stock`} /></td>
+                    <td className="px-2"><Toggle name={`hidden_${p.id}`} on={!!p.hidden} label={`Hide ${p.title} from the shop`} /></td>
                     <td className="whitespace-nowrap text-right">
                       <span className="inline-flex gap-1.5">
                         <Link href={`/admin/products/${p.id}`} className={ROW_BTN}>Edit</Link>
@@ -155,5 +155,16 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
         {total > PER && <span className="self-center text-[13px] text-muted">Page {page} of {Math.ceil(total / PER)}</span>}
       </nav>
     </>
+  );
+}
+
+/** Checkbox drawn as an on/off switch; still a real checkbox so the form posts it the same way. */
+function Toggle({ name, on, label }: { name: string; on: boolean; label: string }) {
+  return (
+    <label className="relative inline-flex cursor-pointer items-center">
+      <input name={name} type="checkbox" defaultChecked={on} aria-label={label} className="peer sr-only" />
+      <span className="h-6 w-11 rounded-full bg-[#ddd3c7] transition-colors peer-checked:bg-[#795536] peer-focus-visible:ring-2 peer-focus-visible:ring-[#b8925a] peer-focus-visible:ring-offset-2" />
+      <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+    </label>
   );
 }
