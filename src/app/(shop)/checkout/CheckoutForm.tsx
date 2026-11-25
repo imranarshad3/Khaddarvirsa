@@ -123,7 +123,22 @@ export default function CheckoutForm({ bank, bankNote, buyNow }: { bank: Setting
         <Section n={1} title={t('Contact details')}>
           <div><label className={lbl} htmlFor="name">{t('Full name')} *</label><input id="name" name="name" required maxLength={100} autoComplete="name" className={input} /></div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div><label className={lbl} htmlFor="phone">{t('Mobile number')} *</label><input id="phone" name="phone" type="tel" required inputMode="tel" placeholder="03XXXXXXXXX" autoComplete="tel" className={input} /></div>
+            <div>
+              <label className={lbl} htmlFor="phone">{t('Mobile number')} *</label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                inputMode="tel"
+                pattern="(?:\+?92|0)[\d\s\-]{10,13}"
+                title="Please enter a valid 11-digit Pakistani mobile number (e.g. 03001234567 or +923001234567)"
+                placeholder="03XXXXXXXXX"
+                autoComplete="tel"
+                className={input}
+              />
+              <span className="mt-1 block text-[11px] text-muted">{t('Pakistani mobile format: 03001234567')}</span>
+            </div>
             <div><label className={lbl} htmlFor="email">{t('Email')} {opt}</label><input id="email" name="email" type="email" maxLength={150} autoComplete="email" className={input} /></div>
           </div>
         </Section>

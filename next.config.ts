@@ -4,6 +4,15 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   serverExternalPackages: ["@libsql/client", "libsql"],
   experimental: { serverActions: { bodySizeLimit: "4.5mb" } }, // product image uploads; Vercel caps bodies at 4.5 MB
+  async redirects() {
+    return [
+      {
+        source: '/shipping-policy',
+        destination: '/return-policy',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: [
       { key: "X-Content-Type-Options", value: "nosniff" },

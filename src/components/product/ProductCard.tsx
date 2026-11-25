@@ -55,7 +55,7 @@ export default function ProductCard({ p, sale, priority = false }: { p: ProductR
           </p>
         )}
         <h3 className="mt-1 font-display text-[17px] leading-snug text-ink sm:text-[21px]">
-          <Link href={`/product/${p.alias}`} className="transition-colors hover:text-gold-dark">{p.title}</Link>
+          <Link href={`/product/${p.alias}`} className="transition-colors hover:text-gold-dark">{p.code ? `${p.title} ${p.code}` : p.title}</Link>
         </h3>
         <span aria-hidden className="mx-auto my-2.5 block h-px w-8 bg-sand" />
         <PriceDisplay price={p.price} sale={p.sale_price} />
