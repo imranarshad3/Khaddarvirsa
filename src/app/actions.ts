@@ -4,10 +4,11 @@ import { getSettings } from '@/lib/settings';
 import { totals, unitPrice } from '@/lib/pricing';
 import { imageUrl, searchProducts, type Product } from '@/lib/catalog';
 import { clientIp, hit } from '@/lib/rateLimit';
-import { findDiscount, normalizePhone, orderByNumber, OrderError, placeOrder, type OrderInput } from '@/lib/orders';
+import { findDiscount, normalizePhone, orderByNumber, OrderError, placeOrder, type Order, type OrderInput } from '@/lib/orders';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
 import { notifyNewOrder } from '@/lib/notify';
+import { endCustomerSession, startCustomerSession } from '@/lib/customer';
 
 /** Current server prices and totals for the cart, so the customer never sees stale prices at checkout. */
 export async function quoteCart(items: { id: number; qty: number }[], code?: string) {
@@ -69,14 +70,33 @@ export async function subscribe(_: unknown, form: FormData): Promise<{ ok: boole
 }
 
 /** Order tracking: needs the order number and the phone it was placed with, so numbers alone reveal nothing. */
-export async function trackOrder(_: unknown, form: FormData): Promise<{ error: string }> {
+/** Checks an order number + mobile pair (rate-limited per IP). Returns the order or an error message. */
+async function provenOrder(form: FormData, bucket: string): Promise<{ error: string } | { order: Order; phone: string }> {
   const raw = String(form.get('number') ?? '').toUpperCase().replace(/[^0-9A-Z]/g, '');
   const number = raw.startsWith('KK') ? raw : `KK${raw}`;
   const phone = normalizePhone(String(form.get('phone') ?? ''));
   if (!/^KK[0-9A-F]{10}$/.test(number)) return { error: 'Please enter the order number from your confirmation, for example KK1A2B3C4D5E.' };
   if (!phone) return { error: 'Please enter the mobile number you ordered with, for example 03001234567.' };
-  if ((await hit(`track:${await clientIp()}`, 10 * 60)) > 20) return { error: 'Too many attempts. Please wait a few minutes or ask us on WhatsApp.' };
+  if ((await hit(`${bucket}:${await clientIp()}`, 10 * 60)) > 20) return { error: 'Too many attempts. Please wait a few minutes or ask us on WhatsApp.' };
   const o = await orderByNumber(number);
   if (!o || normalizePhone(o.phone) !== phone) return { error: 'We could not find an order with that number and mobile number. Please check both and try again.' };
-  redirect(`/order/${o.number}`);
+  return { order: o, phone };
+}
+
+export async function trackOrder(_: unknown, form: FormData): Promise<{ error: string }> {
+  const r = await provenOrder(form, 'track');
+  if ('error' in r) return r;
+  redirect(`/order/${r.order.number}`);
+}
+
+export async function accountSignIn(_: unknown, form: FormData): Promise<{ error: string }> {
+  const r = await provenOrder(form, 'account');
+  if ('error' in r) return r;
+  await startCustomerSession(r.phone);
+  redirect('/account');
+}
+
+export async function accountSignOut() {
+  await endCustomerSession();
+  redirect('/account');
 }

@@ -98,6 +98,7 @@ export default function MobileNavigation({ nav, sale, pages, whatsapp }: { nav: 
                 <Link href="/contact" className={small}>{t('Contact')}</Link>
                 <Link href="/wishlist" className={small}>{t('Wishlist')}</Link>
                 <Link href="/track-order" className={small}>{t('Track order')}</Link>
+                <Link href="/account" className={small}>{t('My account')}</Link>
               </div>
             </div>
 

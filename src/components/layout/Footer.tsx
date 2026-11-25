@@ -43,6 +43,7 @@ export default async function Footer() {
             <li><Link className={a} href="/search?q=khaddar">{t('Shop All')}</Link></li>
             <li><Link className={a} href="/cart-detail">{t('Shopping Bag')}</Link></li>
             <li><Link className={a} href="/wishlist">{t('Wishlist')}</Link></li>
+            <li><Link className={a} href="/account">{t('My account')}</Link></li>
             <li><Link className={a} href="/about-us">{t('Our Story')}</Link></li>
           </ul>
         </section>

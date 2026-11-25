@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { navigation } from '@/lib/catalog';
 import { db } from '@/lib/db';
 import { getSettings, whatsappLink } from '@/lib/settings';
-import { WhatsappIcon, ChevronDown } from '@/components/icons';
+import { WhatsappIcon, ChevronDown, UserIcon } from '@/components/icons';
 import SearchOverlay from './SearchOverlay';
 import MobileNavigation from './MobileNavigation';
 import { CartButton } from '@/components/cart/CartDrawer';
@@ -70,6 +70,7 @@ export default async function Header() {
               </a>
             )}
             <LangSwitch className={langBtn} />
+            <Link href="/account" aria-label={t('My account')} className="flex h-11 w-11 items-center justify-center rounded-full text-ink transition-colors hover:bg-soft hover:text-gold-dark"><UserIcon className="h-5 w-5" /></Link>
             <WishlistLink />
             <CartButton />
           </div>

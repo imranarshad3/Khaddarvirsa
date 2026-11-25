@@ -16,6 +16,7 @@ export const CloseIcon = s('m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4
 export const ArrowRight = s('M13.2 5.3 19.9 12l-6.7 6.7-1.4-1.4 4.3-4.3H4v-2h12.1l-4.3-4.3 1.4-1.4Z');
 export const ChevronDown = s('M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z');
 export const TruckIcon = s('M2 5h12v3h4l4 5v5h-2a3 3 0 0 1-6 0H9a3 3 0 0 1-6 0H2V5Zm12 5v3h6l-2.4-3H14ZM6 17a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm11 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z');
+export const UserIcon = s('M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm0 10c4.4 0 8 2.2 8 5v3H4v-3c0-2.8 3.6-5 8-5Zm0 2c-3.5 0-6 1.6-6 3v1h12v-1c0-1.4-2.5-3-6-3Z');
 export const CheckIcon = s('M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z');
 export const ZoomIcon = s('M10 2a8 8 0 0 1 6.32 12.9l5.4 5.4-1.42 1.4-5.4-5.38A8 8 0 1 1 10 2Zm-1 4v3H6v2h3v3h2v-3h3V9h-3V6H9Z');
 export const ExpandIcon = s('M4 4h6v2H6v4H4V4Zm10 0h6v6h-2V6h-4V4ZM4 14h2v4h4v2H4v-6Zm14 0h2v6h-6v-2h4v-4Z');

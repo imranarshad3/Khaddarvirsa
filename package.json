@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx src/lib/pricing.test.ts && tsx src/lib/search.test.ts && tsx src/lib/csv.test.ts",
+    "test": "tsx src/lib/pricing.test.ts && tsx src/lib/search.test.ts && tsx src/lib/csv.test.ts && tsx --conditions=react-server src/lib/customer.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
