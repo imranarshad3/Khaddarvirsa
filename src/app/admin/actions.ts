@@ -7,6 +7,7 @@ import { saveImage } from '@/lib/uploads';
 import { getSettings, saveSettings, type Settings } from '@/lib/settings';
 import { applyOrderUpdate } from '@/lib/orders';
 import { parseCsv } from '@/lib/csv';
+import { slugify } from '@/lib/slug';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const optStr = (f: FormData, k: string) => str(f, k) || null;
@@ -14,7 +15,6 @@ const int = (f: FormData, k: string) => { const v = str(f, k); return v === '' ?
 const bool = (f: FormData, k: string) => (f.get(k) ? 1 : 0);
 const lines = (f: FormData, k: string) => str(f, k).split('\n').map((l) => l.trim()).filter(Boolean);
 const pipes = (f: FormData, k: string) => lines(f, k).map((l) => l.split('|').map((x) => x.trim()));
-const slugify = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g, '').trim().replace(/[\s_]+/g, '-').replace(/-+/g, '-');
 
 function fail(path: string, msg: string): never {
   redirect(`${path}${path.includes('?') ? '&' : '?'}error=${encodeURIComponent(msg)}`);

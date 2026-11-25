@@ -5,7 +5,7 @@ import { askAssistant, confirmAssistantAction, type ChatMsg } from '../assistant
 import type { PendingAction } from '@/lib/assistant';
 
 type Line = ChatMsg & { kind?: 'error' | 'done' };
-const STARTERS = ['Aaj ka summary do', 'Kaun se products kam stock mein hain?', 'Pending orders dikhao', 'Free shipping kaise set karun?'];
+const STARTERS = ['Aaj ka summary do', 'Kaun se products kam stock mein hain?', 'Pending orders dikhao', 'Naya "Shipping Policy" page banao'];
 const STORE = 'kk-assistant-chat';
 
 /** Turns /admin/... paths in a reply into links. */
@@ -65,7 +65,7 @@ export default function AssistantChat() {
             <span aria-hidden className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sand to-gold text-ink">✦</span>
             <div className="flex-1 leading-tight">
               <p className="font-display text-[17px]">Store assistant</p>
-              <p className="text-[11px] text-sand/80">Guides you, finds orders and stock, makes changes after you confirm</p>
+              <p className="text-[11px] text-sand/80">Runs the store and pages for you. Nothing changes until you confirm</p>
             </div>
             {lines.length > 0 && <button type="button" onClick={() => { setLines([]); setPending(null); }} className="rounded-full px-2 py-1 text-[11px] uppercase tracking-[0.14em] text-sand/80 hover:text-white">Clear</button>}
           </header>
@@ -73,7 +73,7 @@ export default function AssistantChat() {
           <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
             {lines.length === 0 && (
               <div className="space-y-3">
-                <p className="text-[14px] text-body">Assalam o Alaikum! Main store chalane mein madad karta hoon: orders, stock, prices, settings, aur admin panel ka koi bhi kaam. Kuch bhi poochein.</p>
+                <p className="text-[14px] text-body">Assalam o Alaikum! Main store chalane mein madad karta hoon: orders, products, categories, discounts, sale, pages, settings: sab kuch. Har change se pehle aap se Confirm lunga. Kuch bhi poochein.</p>
                 <div className="flex flex-wrap gap-2">
                   {STARTERS.map((s) => <button key={s} type="button" onClick={() => send(s)} className="rounded-full border border-line bg-white px-3 py-1.5 text-[12px] font-medium text-ink-2 transition hover:border-gold hover:text-gold-dark">{s}</button>)}
                 </div>
@@ -88,11 +88,11 @@ export default function AssistantChat() {
               </div>
             ))}
             {pending && (
-              <div className="rounded-2xl border border-sand bg-white p-3.5 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-dark">Confirm change</p>
-                <p className="mt-1 text-[14px] text-ink-2">{pending.summary}</p>
+              <div className={`rounded-2xl border p-3.5 shadow-sm ${pending.danger ? 'border-red-300 bg-red-50' : 'border-sand bg-white'}`}>
+                <p className={`text-[11px] font-semibold uppercase tracking-[0.14em] ${pending.danger ? 'text-red-700' : 'text-gold-dark'}`}>{pending.danger ? 'Careful: confirm this change' : 'Confirm change'}</p>
+                <p className="mt-1 whitespace-pre-wrap break-words text-[14px] text-ink-2">{pending.summary}</p>
                 <div className="mt-3 flex gap-2">
-                  <button type="button" onClick={confirm} disabled={busy} className="rounded-full bg-ink px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-white hover:bg-gold-dark disabled:opacity-50">Confirm</button>
+                  <button type="button" onClick={confirm} disabled={busy} className={`rounded-full px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-white disabled:opacity-50 ${pending.danger ? 'bg-red-700 hover:bg-red-800' : 'bg-ink hover:bg-gold-dark'}`}>{pending.danger ? 'Yes, do it' : 'Confirm'}</button>
                   <button type="button" onClick={() => { setPending(null); setLines((l) => [...l, { role: 'assistant', content: 'Theek hai, kuch nahi badla.' }]); }} disabled={busy}
                     className="rounded-full border border-line px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-2 hover:border-gold">Cancel</button>
                 </div>
