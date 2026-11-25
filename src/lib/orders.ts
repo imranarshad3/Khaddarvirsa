@@ -88,7 +88,7 @@ export async function placeOrder(input: OrderInput) {
 export type Order = {
   id: number; number: string; name: string; phone: string; email: string | null; city: string; address: string; remarks: string | null;
   payment_method: PaymentMethod; subtotal: number; discount: number; discount_code: string | null; shipping: number; total: number;
-  status: string; admin_note: string | null; created_at: string;
+  status: string; admin_note: string | null; courier: string | null; tracking: string | null; created_at: string;
 };
 export type OrderItem = { id: number; product_id: number | null; title: string; code: string | null; img: string | null; unit_price: number; qty: number };
 

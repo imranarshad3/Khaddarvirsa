@@ -101,6 +101,7 @@ export default async function OrderPage({ params }: { params: Promise<{ number: 
             <p className={eyebrow}>{t('Delivery')}</p>
             <div className="mt-4 grid gap-4 text-[14px] sm:grid-cols-2">
               <div className="flex gap-3"><PinIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-dark" /><div><p className="font-semibold text-ink">{o.name}</p><p className="text-muted">{o.city} · {phone}</p></div></div>
+              {o.tracking && !cancelled && <div className="flex gap-3 sm:col-span-2"><TruckIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-dark" /><div><p className="font-semibold text-ink">{o.courier || t('Courier')}</p><p className="text-muted">{t('Tracking number')}: <span className="select-all font-semibold text-ink">{o.tracking}</span></p></div></div>}
               <div className="flex gap-3"><TruckIcon className="mt-0.5 h-5 w-5 shrink-0 text-gold-dark" /><div><p className="font-semibold text-ink">{t(PAYMENT_METHODS[o.payment_method])}</p><p className="text-muted">{t(o.payment_method === 'cod' ? 'Pay when your parcel arrives.' : 'Dispatched once payment is received.')}</p></div></div>
             </div>
           </div>

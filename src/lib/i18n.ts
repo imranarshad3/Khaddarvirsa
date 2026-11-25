@@ -6,7 +6,7 @@ export const UR: Record<string, string> = {
   // Navigation & layout
   'Home': 'ہوم', 'Menu': 'مینو', 'Open menu': 'مینو کھولیں', 'Close menu': 'مینو بند کریں', 'Shop': 'خریداری', 'Shop All': 'سب دیکھیں', 'Shop all': 'سب دیکھیں',
   'Shop now': 'ابھی خریدیں', 'Shop the sale': 'سیل دیکھیں', 'Show categories': 'کیٹیگریز دکھائیں', 'View all': 'سب دیکھیں', 'Help': 'مدد', 'Contact': 'رابطہ',
-  'Contact Us': 'ہم سے رابطہ کریں', 'Wishlist': 'پسندیدہ', 'Track order': 'آرڈر ٹریک کریں', 'Track Order': 'آرڈر ٹریک کریں', 'View bag': 'بیگ دیکھیں',
+  'Courier': 'کوریئر', 'Tracking number': 'ٹریکنگ نمبر', 'Contact Us': 'ہم سے رابطہ کریں', 'Wishlist': 'پسندیدہ', 'Track order': 'آرڈر ٹریک کریں', 'Track Order': 'آرڈر ٹریک کریں', 'View bag': 'بیگ دیکھیں',
   'Order on WhatsApp': 'واٹس ایپ پر آرڈر کریں', 'Breadcrumb': 'راستہ', 'Customer care': 'کسٹمر کیئر', 'Feel the Fabric of Tradition': 'روایت کے کپڑے کو محسوس کریں',
   'Let’s stay in touch': 'رابطے میں رہیں', 'Let’s talk style': 'آئیں اسٹائل کی بات کریں', 'All rights reserved.': 'جملہ حقوق محفوظ ہیں۔', 'We accept': 'ہم قبول کرتے ہیں',
   'Get in touch': 'رابطہ کریں', 'Contact details': 'رابطے کی تفصیل', 'A little inspiration, stitched in.': 'تھوڑی سی تحریک، سلائی کے ساتھ۔',

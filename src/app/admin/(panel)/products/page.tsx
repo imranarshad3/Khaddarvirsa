@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
 import { imageUrl, type Product } from '@/lib/catalog';
-import { bulkProducts, deleteProductRow, duplicateProductRow, quickUpdateProducts } from '../../actions';
+import { bulkProducts, deleteProductRow, duplicateProductRow, importProducts, quickUpdateProducts } from '../../actions';
 import ConfirmButton from '../ConfirmButton';
 import SelectAll from './SelectAll';
 import { BTN, BTN_DARK, Card, H1, Notice, Save, type SP } from '../ui';
@@ -72,6 +72,18 @@ export default async function Products({ searchParams }: { searchParams: SP }) {
         <button className={BTN}>Search</button>
         {(q || sub || stock || sort !== 'new') && <Link href="/admin/products" className={BTN}>Clear</Link>}
       </form>
+      <details className="mb-4 rounded-2xl border border-line/70 bg-white px-5 py-3">
+        <summary className="cursor-pointer text-[13px] font-semibold text-ink-2">Edit many prices and stock in Excel (CSV)</summary>
+        <ol className="mt-3 list-decimal space-y-1 pl-5 text-[13px] text-muted">
+          <li><a download href="/admin/export/products" className="font-semibold text-primary underline">Download the products CSV</a>.</li>
+          <li>Open it in Excel or Google Sheets and change <b>price</b>, <b>sale_price</b>, <b>stock</b>, <b>in_stock</b>, <b>hidden</b>, <b>on_sale</b> (1 = yes, 0 = no). Leave <b>id</b> as it is. Other columns are ignored.</li>
+          <li>Save as CSV and upload it here. If any row has a mistake, nothing is changed and you are told which row.</li>
+        </ol>
+        <form action={importProducts} className="mt-3 flex flex-wrap items-center gap-2">
+          <input type="file" name="file" accept=".csv,text/csv" required aria-label="Products CSV file" className="text-[13px]" />
+          <button className={BTN}>Upload CSV</button>
+        </form>
+      </details>
       <p className="mb-3 text-[13px] text-muted">Change price or stock right in the table and press <b>Save changes</b>. Tick products to hide, show, mark premium or delete many at once.</p>
       <Card>
         <form action={quickUpdateProducts}>

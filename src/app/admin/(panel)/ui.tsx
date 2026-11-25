@@ -6,7 +6,7 @@ export type SP = Promise<Record<string, string | undefined>>;
 
 export function Notice({ sp }: { sp: Record<string, string | undefined> }) {
   if (sp.error) return <p role="alert" className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sale">{sp.error}</p>;
-  if (sp.saved) return <p role="status" className="mb-5 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-800"><span aria-hidden>✓</span> Saved.</p>;
+  if (sp.saved) return <p role="status" className="mb-5 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-800"><span aria-hidden>✓</span> {sp.saved === '1' ? 'Saved.' : sp.saved}</p>;
   return null;
 }
 

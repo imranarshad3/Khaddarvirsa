@@ -6,6 +6,7 @@ import { endSession, requireAdmin } from '@/lib/auth';
 import { saveImage } from '@/lib/uploads';
 import { getSettings, saveSettings, type Settings } from '@/lib/settings';
 import { ORDER_STATUSES } from '@/lib/orders';
+import { parseCsv } from '@/lib/csv';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const optStr = (f: FormData, k: string) => str(f, k) || null;
@@ -88,6 +89,38 @@ export async function quickUpdateProducts(form: FormData) {
   const back = str(form, 'back') || '/admin/products';
   if (errors.length) fail(back, `Not saved for product IDs ${errors.join(', ')}: check price, sale price and stock.`);
   redirect(`${back}${back.includes('?') ? '&' : '?'}saved=1`);
+}
+
+const CSV_COLS = ['id', 'price', 'sale_price', 'stock', 'in_stock', 'hidden', 'on_sale'];
+/** Uploads the products CSV (from Download CSV) back: updates price, sale, stock and flags of existing products. All rows or none. */
+export async function importProducts(form: FormData) {
+  await requireAdmin();
+  const back = '/admin/products';
+  const file = form.get('file');
+  if (!(file instanceof File) || !file.size) fail(back, 'Choose a CSV file first.');
+  if (file.size > 2_000_000) fail(back, 'That file is too big (max 2 MB).');
+  const rows = parseCsv(await file.text());
+  const missing = CSV_COLS.filter((c) => rows[0] && !(c in rows[0]));
+  if (!rows.length || missing.length) fail(back, `The file needs these columns: ${CSV_COLS.join(', ')}. Download the CSV from this page, edit it, and upload it back.`);
+  const whole = (v: string) => (v === '' ? null : /^\d+$/.test(v) ? Number(v) : NaN);
+  const flag = (v: string) => (/^(1|yes|y|true)$/i.test(v) ? 1 : /^(0|no|n|false|)$/i.test(v) ? 0 : NaN);
+  const errors: string[] = [];
+  const updates = rows.map((r, i) => {
+    const [id, price, sale, stock] = [whole(r.id), whole(r.price), whole(r.sale_price), whole(r.stock)];
+    const [inStock, hidden, onSale] = [flag(r.in_stock), flag(r.hidden), flag(r.on_sale)];
+    const ok = id && price && !Number.isNaN(sale) && !Number.isNaN(stock) && (sale === null || (sale > 0 && sale < price))
+      && ![inStock, hidden, onSale].some(Number.isNaN);
+    if (!ok) errors.push(`row ${i + 2}${r.id ? ` (id ${r.id})` : ''}`);
+    return [price, sale, stock === 0 ? 0 : inStock, stock, hidden, onSale, id] as (number | null)[];
+  });
+  if (errors.length) fail(back, `Nothing was changed. Check price, sale price (lower than price), stock and the 1/0 columns in ${errors.slice(0, 5).join(', ')}${errors.length > 5 ? ` and ${errors.length - 5} more` : ''}.`);
+  let changed = 0;
+  await tx(async (d) => {
+    const upd = d.prepare(`UPDATE products SET price=?, sale_price=?, in_stock=?, stock=?, hidden=?, on_sale=?, updated_at=datetime('now') WHERE id=?`);
+    for (const u of updates) changed += (await upd.run(...u)).changes;
+  });
+  const skipped = updates.length - changed;
+  redirect(`${back}?saved=${encodeURIComponent(`Updated ${changed} product${changed === 1 ? '' : 's'} from the CSV.${skipped ? ` ${skipped} row${skipped === 1 ? '' : 's'} had an id that is not in the store and ${skipped === 1 ? 'was' : 'were'} skipped.` : ''}`)}`);
 }
 
 const BULK: Record<string, string> = {
@@ -186,7 +219,8 @@ export async function updateOrder(form: FormData) {
       const st = d.prepare(`UPDATE products SET stock = MAX(stock + ?, 0), in_stock = CASE WHEN stock + ? > 0 THEN 1 ELSE 0 END WHERE id = ? AND stock IS NOT NULL`);
       for (const it of items) (await st.run(sign * it.qty, sign * it.qty, it.product_id));
     }
-    (await d.prepare("UPDATE orders SET status = ?, admin_note = ?, updated_at = datetime('now') WHERE id = ?").run(status, optStr(form, 'admin_note'), id));
+    (await d.prepare("UPDATE orders SET status = ?, admin_note = ?, courier = ?, tracking = ?, updated_at = datetime('now') WHERE id = ?")
+      .run(status, optStr(form, 'admin_note'), optStr(form, 'courier'), optStr(form, 'tracking'), id));
   });
   redirect(`/admin/orders/${id}?saved=1`);
 }

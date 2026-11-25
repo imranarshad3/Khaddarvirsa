@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS orders (
   name TEXT NOT NULL, phone TEXT NOT NULL, email TEXT, city TEXT NOT NULL, address TEXT NOT NULL, remarks TEXT,
   payment_method TEXT NOT NULL, subtotal INTEGER NOT NULL, discount INTEGER NOT NULL DEFAULT 0,
   discount_code TEXT, shipping INTEGER NOT NULL, total INTEGER NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending', admin_note TEXT,
+  status TEXT NOT NULL DEFAULT 'pending', admin_note TEXT, courier TEXT, tracking TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE TABLE IF NOT EXISTS order_items (
@@ -90,9 +90,11 @@ async function open() {
   if (!process.env.TURSO_DATABASE_URL) fs.mkdirSync(path.dirname(LOCAL_PATH), { recursive: true });
   const c = createClient({ url: DB_URL, authToken: process.env.TURSO_AUTH_TOKEN });
   await c.executeMultiple(SCHEMA);
-  // Databases created before the premium flag existed get the column once.
-  if (!(await c.execute('PRAGMA table_info(products)')).rows.some((r) => r.name === 'premium'))
-    await c.execute('ALTER TABLE products ADD COLUMN premium INTEGER NOT NULL DEFAULT 0');
+  // Databases created before these columns existed get them once.
+  for (const [table, col, type] of [['products', 'premium', 'INTEGER NOT NULL DEFAULT 0'], ['orders', 'courier', 'TEXT'], ['orders', 'tracking', 'TEXT']]) {
+    if (!(await c.execute(`PRAGMA table_info(${table})`)).rows.some((r) => r.name === col))
+      await c.execute(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`);
+  }
   if (!Number((await c.execute('SELECT COUNT(*) n FROM categories')).rows[0].n)) await seed(c);
   return c;
 }

@@ -19,6 +19,8 @@ export default async function Dashboard() {
     ['Out of stock', await n('SELECT COUNT(*) n FROM products WHERE in_stock = 0'), '/admin/products?stock=out', 'products'],
     ["Today's orders", await n("SELECT COUNT(*) n FROM orders WHERE date(created_at) = date('now')"), '/admin/orders', 'orders'],
   ] as const;
+  const lowCount = await n('SELECT COUNT(*) n FROM products WHERE stock BETWEEN 1 AND 3 AND hidden = 0');
+  const outCount = Number(stats[4][1]);
   const recent = (await d.prepare('SELECT * FROM orders ORDER BY id DESC LIMIT 10').all()) as Order[];
   const low = (await d.prepare('SELECT id, title, code, img, stock FROM products WHERE stock BETWEEN 1 AND 3 AND hidden = 0 ORDER BY stock, id DESC LIMIT 8')
     .all()) as { id: number; title: string; code: string | null; img: string | null; stock: number }[];
@@ -38,6 +40,14 @@ export default async function Dashboard() {
           </div>
         </div>
       </section>
+      {(lowCount > 0 || outCount > 0) && (
+        <div role="status" className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-300 bg-amber-50 px-5 py-4 text-amber-900">
+          <span aria-hidden className="text-[20px]">⚠</span>
+          <p className="flex-1"><b>Stock alert:</b> {lowCount > 0 && `${lowCount} product${lowCount > 1 ? 's are' : ' is'} almost sold out (3 or fewer left)`}{lowCount > 0 && outCount > 0 && ' and '}{outCount > 0 && `${outCount} ${outCount > 1 ? 'are' : 'is'} out of stock`}.</p>
+          {lowCount > 0 && <Link href="/admin/products?stock=low" className="rounded-full bg-amber-900 px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-amber-800">See low stock</Link>}
+          {outCount > 0 && <Link href="/admin/products?stock=out" className="rounded-full border border-amber-900/30 px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] hover:border-amber-900">See out of stock</Link>}
+        </div>
+      )}
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {stats.map(([label, value, href, icon]) => (
           <Link key={label} href={href} className="group rounded-2xl border border-line/70 bg-white p-5 shadow-[0_12px_32px_-20px_rgba(53,34,24,.25)] transition hover:-translate-y-0.5 hover:border-gold/50">

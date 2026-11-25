@@ -6,7 +6,9 @@ const QUERIES: Record<string, string> = {
   orders: `SELECT o.number, o.created_at, o.status, o.name, o.phone, o.email, o.city, o.address, o.payment_method,
     o.subtotal, o.discount, o.discount_code, o.shipping, o.total,
     (SELECT GROUP_CONCAT(i.qty || ' x ' || i.title || COALESCE(' (' || i.code || ')', ''), '; ') FROM order_items i WHERE i.order_id = o.id) items,
-    o.remarks, o.admin_note FROM orders o ORDER BY o.id DESC`,
+    o.courier, o.tracking, o.remarks, o.admin_note FROM orders o ORDER BY o.id DESC`,
+  products: `SELECT p.id, p.code, p.title, s.name collection, p.price, p.sale_price, p.stock, p.in_stock, p.hidden, p.on_sale, p.premium, p.alias
+    FROM products p JOIN sub_categories s ON s.id = p.sub_category_id ORDER BY p.id DESC`,
   subscribers: 'SELECT email, created_at FROM subscribers ORDER BY id DESC',
 };
 
