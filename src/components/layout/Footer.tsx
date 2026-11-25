@@ -16,7 +16,7 @@ export default async function Footer() {
         <div className="container-kk grid gap-6 py-12 md:grid-cols-2 md:items-center">
           <div>
             <p className="eyebrow !text-sand">{t('Let’s stay in touch')}</p>
-            <h2 className="font-display mt-2 text-[30px] text-white md:text-[36px]">{t('A little inspiration, stitched in.')}</h2>
+            <p className="font-display mt-2 text-[30px] text-white md:text-[36px]">{t('A little inspiration, stitched in.')}</p>
             <p className="mt-2">{t('New khaddar arrivals, winter weaves and exclusive updates.')}</p>
           </div>
           <Newsletter />
@@ -37,7 +37,7 @@ export default async function Footer() {
           )}
         </section>
         <section>
-          <h2 className={h}>{t('Shop')}</h2>
+          <p className={h}>{t('Shop')}</p>
           <ul className="space-y-2">
             <li><Link className={a} href="/today-sale">{s.sale_title}</Link></li>
             <li><Link className={a} href="/search?q=khaddar">{t('Shop All')}</Link></li>
@@ -47,7 +47,7 @@ export default async function Footer() {
           </ul>
         </section>
         <section>
-          <h2 className={h}>{t('Customer care')}</h2>
+          <p className={h}>{t('Customer care')}</p>
           <ul className="space-y-2">
             <li><Link className={a} href="/contact">{t('Contact')}</Link></li>
             <li><Link className={a} href="/track-order">{t('Track order')}</Link></li>
@@ -58,7 +58,7 @@ export default async function Footer() {
           </ul>
         </section>
         <section>
-          <h2 className={h}>{t('Get in touch')}</h2>
+          <p className={h}>{t('Get in touch')}</p>
           <ul className="space-y-2.5">
             {s.contact.address.map((x) => <li key={x} className="flex gap-2.5"><PinIcon className="mt-1 h-4 w-4 shrink-0 text-sand" />{x}</li>)}
             {s.contact.email.map((x) => <li key={x} className="flex gap-2.5"><MailIcon className="mt-1 h-4 w-4 shrink-0 text-sand" /><a className={a} href={`mailto:${x}`}>{x}</a></li>)}

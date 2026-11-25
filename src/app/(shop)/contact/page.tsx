@@ -7,7 +7,7 @@ import PageBanner from '@/components/layout/PageBanner';
 import HelpNav from '@/components/layout/HelpNav';
 import { ArrowRight, MailIcon, PhoneIcon, PinIcon, TruckIcon, WhatsappIcon } from '@/components/icons';
 
-export const metadata: Metadata = { title: 'Contact Us', alternates: { canonical: '/contact' } };
+export const metadata: Metadata = { title: 'Contact Us', description: 'Contact Khaddar Virsa by phone, WhatsApp or email for help with khaddar suit sizes, fabric, orders, delivery and Cash on Delivery anywhere in Pakistan.', alternates: { canonical: '/contact' } };
 
 type Way = { icon: ReactNode; label: string; value: string; action: string; href: string; external?: boolean };
 

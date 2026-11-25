@@ -90,6 +90,34 @@ export async function quickUpdateProducts(form: FormData) {
   redirect(`${back}${back.includes('?') ? '&' : '?'}saved=1`);
 }
 
+const BULK: Record<string, string> = {
+  hide: 'hidden = 1', show: 'hidden = 0',
+  in: 'in_stock = CASE WHEN stock = 0 THEN 0 ELSE 1 END', out: 'in_stock = 0', // a tracked stock of 0 stays out of stock
+  sale_on: 'on_sale = 1', sale_off: 'on_sale = 0', premium_off: 'premium = 0',
+};
+
+/** One action on every ticked product in the list: hide/show, stock, sale, premium, delete. */
+export async function bulkProducts(form: FormData) {
+  await requireAdmin();
+  const raw = str(form, 'back');
+  const back = raw.startsWith('/admin/') ? raw : '/admin/products';
+  const ids = [...new Set(form.getAll('sel').map(Number).filter((n) => Number.isInteger(n) && n > 0))];
+  const op = str(form, 'bulk');
+  if (!ids.length) fail(back, 'Tick at least one product first.');
+  if (!op) fail(back, 'Choose what to do with the selected products.');
+  const marks = ids.map(() => '?').join(',');
+  if (op === 'delete') await db().prepare(`DELETE FROM products WHERE id IN (${marks})`).run(...ids);
+  else if (op === 'premium_on') await tx(async (d) => {
+    // New premium products go after the existing ones, in list order; already-premium keep their position.
+    let next = Number(((await d.prepare('SELECT IFNULL(MAX(premium), 0) n FROM products').get()) as { n: number }).n);
+    const upd = d.prepare(`UPDATE products SET premium = ?, updated_at = datetime('now') WHERE id = ? AND premium = 0`);
+    for (const id of ids) if ((await upd.run(next + 1, id)).changes) next++;
+  });
+  else if (BULK[op]) await db().prepare(`UPDATE products SET ${BULK[op]}, updated_at = datetime('now') WHERE id IN (${marks})`).run(...ids);
+  else fail(back, 'Unknown action.');
+  redirect(`${back}${back.includes('?') ? '&' : '?'}saved=1`);
+}
+
 /* ---------------- categories & collections ---------------- */
 export async function saveCategory(form: FormData) {
   await requireAdmin();
@@ -268,6 +296,10 @@ export async function deleteSubscriber(form: FormData) {
 }
 
 /** Copies a product as a hidden draft, so a similar article can be listed without retyping. */
+// Row buttons inside the list form: React rewrites a formAction button's name, so the id travels as a bound arg.
+export async function deleteProductRow(id: number) { const f = new FormData(); f.set('id', String(id)); return deleteProduct(f); }
+export async function duplicateProductRow(id: number) { const f = new FormData(); f.set('id', String(id)); return duplicateProduct(f); }
+
 export async function duplicateProduct(form: FormData) {
   await requireAdmin();
   const id = int(form, 'id');

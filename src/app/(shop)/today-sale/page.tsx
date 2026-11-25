@@ -8,7 +8,7 @@ import Countdown from '@/components/layout/Countdown';
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
-  return { title: s.sale_title, description: s.sale_headline || undefined, alternates: { canonical: '/today-sale' } };
+  return { title: s.sale_title, description: s.sale_headline || `${s.sale_title}: discounted men's khaddar and cotton khaddi suit fabric at ${s.store_name}. Limited stock, Cash on Delivery across Pakistan.`, alternates: { canonical: '/today-sale' } };
 }
 
 export default async function TodaySalePage() {

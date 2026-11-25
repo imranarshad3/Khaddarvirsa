@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = p.meta_title || `${p.title} ${p.code ?? ''}`.trim();
   const price = unitPrice(p);
   const description = p.meta_description || p.description.split('\n')[0].slice(0, 160)
-    || `${title}: Rs ${price.toLocaleString()} at ${(await getSettings()).store_name}. Cash on Delivery across Pakistan.`;
+    || `Buy ${title}, ${p.sub_name} men's unstitched khaddar suit fabric, for Rs ${price.toLocaleString()} at ${(await getSettings()).store_name}. Cash on Delivery and fast delivery across Pakistan.`;
   const img = imageUrl(p.img, 'product');
   return { title, description, alternates: { canonical: `/product/${p.alias}` }, openGraph: { title, description, images: [img], type: 'website' }, twitter: { card: 'summary_large_image', images: [img] } };
 }
@@ -53,7 +53,7 @@ export default async function ProductPage({ params }: Props) {
     <>
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'Product', name: `${p.title} ${p.code ?? ''}`.trim(), sku: p.code ?? String(p.id),
-        image: [imageUrl(p.img, 'product')], description: p.description, category: p.sub_name, brand: { '@type': 'Brand', name: s.store_name },
+        image: [imageUrl(p.img, 'product')], description: p.description || `${p.title} ${p.code ?? ''} — ${p.sub_name} men's unstitched khaddar suit fabric by ${s.store_name}. Cash on Delivery across Pakistan.`, category: p.sub_name, brand: { '@type': 'Brand', name: s.store_name },
         offers: {
           '@type': 'Offer', url: `${base}/product/${p.alias}`, priceCurrency: 'PKR', price,
           availability: p.in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', itemCondition: 'https://schema.org/NewCondition',
@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: Props) {
 
         <div>
           <Link href={`/product-category/${p.sub_alias}`} className="eyebrow hover:text-ink">{p.sub_name}</Link>
-          <h1 className="font-display mt-3 text-[36px] leading-[1.1] text-ink sm:text-[46px]">{p.title}</h1>
+          <h1 className="font-display mt-3 text-[36px] leading-[1.1] text-ink sm:text-[46px]">{`${p.title} ${p.code ?? ''}`.trim()}</h1>
           {p.code && <p className="mt-3 text-[13px] uppercase tracking-[0.2em] text-muted">{t('Code')} · <span className="text-ink-2">{p.code}</span></p>}
 
           <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-y border-line py-5">
